@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout1">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:alpha="0.8"
+            android:background="@android:color/background_light">
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_above="@id/linearLayout1"
+                android:id="@+id/progressBar1" />
+            <TextView
+                android:text="Application initialization..."
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textView1"
+                android:textColor="@android:color/background_dark"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

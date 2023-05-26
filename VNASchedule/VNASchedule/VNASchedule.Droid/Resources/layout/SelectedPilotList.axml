@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:background="@color/clWhite"
+	android:clickable="true">
+	<RelativeLayout
+		android:background="@color/headerBlue"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/relativeLayout1">
+		<ImageView
+			android:tint="@color/white"
+			android:src="@drawable/icon_back30"
+			android:layout_width="40dp"
+			android:layout_height="40dp"
+			android:id="@+id/img_survey_pilot_Back"
+			android:padding="10dp"
+			android:layout_centerVertical="true" />
+		<TextView			
+			android:ellipsize="end"
+			android:gravity="center"
+			android:lines="2"
+			android:maxLines="2"			
+			android:text="Pilot"
+			android:layout_width="200dp"
+			android:layout_height="wrap_content"
+			android:id="@+id/textView1"
+			android:textColor="@color/white"
+			android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true"
+			android:textSize="18sp"
+			android:tag="TITLE_LICENSE" />				
+    </RelativeLayout>
+	<RelativeLayout 
+		
+		android:orientation="vertical"	
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+		<android.support.v7.widget.RecyclerView					
+			android:id="@+id/recycle_survey_pilot"
+			android:layout_height="match_parent"		
+			android:layout_width="match_parent">
+		</android.support.v7.widget.RecyclerView>
+		<LinearLayout
+			android:clickable="true"
+		
+			android:visibility="gone"
+			android:id="@+id/ln_EmptyData_List_Pilot"
+			android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="vertical">
+			<ImageView
+				android:tint="@android:color/darker_gray"
+				android:src="@drawable/icon_list_empty"
+				android:layout_height="90dp"
+				android:layout_width="90dp"/>
+			<TextView
+			android:textColor="@android:color/darker_gray"
+			android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:text="@string/data_not_found"/> 
+	</LinearLayout>
+		<TextView 
+		android:background="@color/clGraylight"	
+		android:layout_alignParentBottom="true"	
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		/>
+	</RelativeLayout>
+	<LinearLayout 
+	android:padding="10dp"	
+	android:orientation="horizontal"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent">
+	<TextView	
+	android:gravity="center"	
+	android:id="@+id/tv_add_to_survey"		
+	android:text="Add to survey"		
+	android:textColor="@color/clWhite"		
+	android:layout_height="35dp"
+	android:background="@color/clBlue"	
+	android:layout_width="0dp"
+	android:layout_weight="1"/>
+	<TextView
+	android:enabled="false"	
+	android:textColor="@color/clWhite"				
+	android:text="Delete pilots"		
+	android:gravity="center"			
+	android:id="@+id/tv_delete"		
+	android:layout_marginLeft="20dp"		
+	android:layout_gravity="center"		
+	android:layout_height="35dp"
+	android:background="@color/clGray"	
+	android:layout_width="0dp"
+	android:layout_weight="1" />
+	</LinearLayout>
+</LinearLayout>

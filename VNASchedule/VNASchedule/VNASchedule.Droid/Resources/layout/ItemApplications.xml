@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+	 android:minWidth="25px"
+    android:minHeight="25px"
+    android:background="@android:color/background_light">
+    <RelativeLayout		
+		android:foreground= "?android:attr/selectableItemBackground"
+		android:id="@+id/relative_application"
+		android:paddingTop="10dp"
+		android:paddingLeft="20dp"
+		android:paddingBottom="10dp"
+		android:paddingRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">		
+        <LinearLayout
+			android:minWidth="25px"
+			android:minHeight="25px"
+		    android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="10">
+            <TextView
+				android:textSize="@dimen/title"
+                android:text="Text1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/tv_ItemApp_Title"
+                android:layout_weight="7"
+                android:textStyle="bold"
+                android:textColor="@color/headerBlue"
+                android:fontFamily="sans-serif-light"
+                android:lines="1"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:id="@+id/ln_ViewPopupFilterTraining2_Filter"
+        android:background="@color/headerBlue"
+        android:layout_height="240dp"
+        android:layout_width="match_parent">
+        <!-- khoahd - item = 40dp, hiện 6items -> 6*40dp  -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1px"
+            android:background="@color/white"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_ViewPopupFilterTraining2_Filter"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/white" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:clickable="true"
+        android:id="@+id/ln_ViewPopupFilterViewPopupFilterTraining2_Blur"
+        android:visibility="visible"
+        android:background="#73000000"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+</LinearLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="10"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:background="@android:color/background_light">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/linearLayout1"
+        android:weightSum="10"
+        android:padding="10dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout2"
+            android:layout_weight="6"
+            android:gravity="center_vertical">
+            <TextView
+                android:text="Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_ItemTicketRequest_Code"
+                android:textColor="@android:color/background_dark" />
+            <TextView
+                android:text="Text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_ItemTicketRequest_Date"
+                android:textColor="@android:color/background_dark"
+                android:fontFamily="sans-serif-light" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout3"
+            android:layout_weight="3"
+            android:gravity="center">
+            <TextView
+                android:text="Rejected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_ItemTicketRequest_Status"
+                android:textColor="@color/clRedMain"
+                android:gravity="center"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/frameLayout1"
+            android:layout_weight="1">
+            <ImageView
+                android:src="@drawable/icon_avatar25"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/img_ItemTicketRequest"
+                android:layout_centerInParent="true"
+                android:padding="5dp" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+                <TextView
+                    android:text="11"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:id="@+id/tv_ItemTicketRequest_Num"
+                    android:gravity="center"
+                    android:background="@drawable/texttronblue"
+                    android:textSize="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@android:color/background_light" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/view1"
+        android:background="@color/clGray" />
+</LinearLayout>
