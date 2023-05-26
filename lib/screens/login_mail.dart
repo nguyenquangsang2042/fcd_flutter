@@ -12,6 +12,22 @@ class LoginMailScreen extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              child: Text("a"),
+            ),
+          ),
+          // Center empty container
+          Expanded(
+            child: Container(),
+          ),
+          Container(
+           child: Text("B"),
+          ),
+        ],
+      )
     );
   }
 }
