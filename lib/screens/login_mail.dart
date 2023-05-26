@@ -14,10 +14,9 @@ class LoginMailScreen extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
-          Expanded(
-            child: Container(
-              child: Text("a"),
-            ),
+          SizedBox(height: 30,),
+          Container(
+              child: Image.asset('asset/images/vna_logo.png')
           ),
           // Center empty container
           Expanded(
