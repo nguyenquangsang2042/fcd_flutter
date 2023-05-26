@@ -30,23 +30,44 @@ class LoginMailScreen extends StatelessWidget {
                       hintStyle: TextStyle(
                           color: Colors.white,
                           fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal
-                      ),
+                          fontWeight: FontWeight.normal),
                       // add any other decoration properties you want
                     ),
                   )
                 ],
               )),
-              // Center empty container
+              Container(margin: EdgeInsets.only(top: 10),child:  Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(width: 10),
+                  RawMaterialButton(
+                    onPressed: () {
+                      // do something onTap
+                    },
+                    elevation: 2.0,
+                    fillColor: Colors.white,
+                    child: Text("Next"),
+                    padding: EdgeInsets.all(15.0),
+                    shape: CircleBorder(),
+                  ),
+                ],
+              ),)
+,              // Center empty container
               Expanded(
                 child: Container(),
               ),
               Container(
-                child: Text(" sB"),
+                padding: EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Image.asset('asset/images/icon_helpdesk.png',color: Colors.white,),
+                    Text("data"),
+                    Text(" / "),
+                    Text("data"),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 20,
-              )
+
             ],
           )),
     );
