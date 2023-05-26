@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginMailScreen extends StatelessWidget {
   const LoginMailScreen({Key? key}) : super(key: key);
@@ -61,9 +62,9 @@ class LoginMailScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Image.asset('asset/images/icon_helpdesk.png',color: Colors.white,),
-                    Text("data"),
-                    Text(" / "),
-                    Text("data"),
+                    TextButton(onPressed: ()=>_launchUrl('tel','0966443324'),child: Text("0966443324",style: TextStyle(color: Colors.white,fontSize: 14),),),
+                    Text("/"),
+                    TextButton(onPressed: ()=>_launchUrl('tel','0966443324'),child: Text("0966443324",style: TextStyle(color: Colors.white,fontSize: 14),),),
                   ],
                 ),
               ),
@@ -71,5 +72,14 @@ class LoginMailScreen extends StatelessWidget {
             ],
           )),
     );
+  }
+  Future<void> _launchUrl(_type,_url) async {
+    final Uri smsLaunchUri = Uri(
+      scheme: _type,
+      path: _url,
+    );
+    if (!await launchUrl(smsLaunchUri)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }
