@@ -5,6 +5,13 @@ class LoginMailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('asset/images/Background.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 }
