@@ -44,6 +44,122 @@ class _ApiClient implements ApiClient {
     return value;
   }
 
+  @override
+  Future<ApiList<Setting>> getSettings(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<Setting>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanSettings',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<Setting>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<User>> getUsers(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<User>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanUser',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<User>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<Airport>> getAirports(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<Airport>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanAirport',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<Airport>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<UserTicketStatus>> getUserTicketStatuses(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<UserTicketStatus>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanUserTicketStatus',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<UserTicketStatus>.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../base/exports_base.dart';
+import '../../blocs/login/login_cubit.dart';
 
 class LoginMailScreen extends StatelessWidget {
   const LoginMailScreen({Key? key}) : super(key: key);
@@ -75,10 +76,7 @@ class LoginMailScreen extends StatelessWidget {
                                       context, "Vietnam Airlines",
                                       "We have sent OTP to your email address, please check email to get OTP code. Thank you.",
                                       "Close",(){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => LoginOTPScreen()),
-                                    );
+                                    BlocProvider.of<LoginCubit>(context).navigationToLoginOTP();
                                   });
                                 }
                                 else {

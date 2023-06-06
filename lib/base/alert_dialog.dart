@@ -22,7 +22,9 @@ class AlertDialogController {
             if (onPress == null) {
               Navigator.of(context).pop();
             } else {
+              Navigator.of(context).pop();
               onPress();
+
             }
           },
           isDefaultAction: true,
@@ -48,6 +50,7 @@ class AlertDialogController {
                   if (onPress == null) {
                     Navigator.of(context).pop();
                   } else {
+                    Navigator.of(context).pop();
                     onPress();
                   }
                 },

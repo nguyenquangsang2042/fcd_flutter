@@ -7,6 +7,9 @@ class ApiData extends Status {
 
   ApiData.fromJson(Map<String, dynamic> json) {
     data = json['data'];
+    status = json['status'];
+    mess = (json['mess'] != null ? Mess.fromJson(json['mess']) : null)!;
+    dateNow = json['dateNow'];
   }
 
   Map<String, dynamic> toJson() {

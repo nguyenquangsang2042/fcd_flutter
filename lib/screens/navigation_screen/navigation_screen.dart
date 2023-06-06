@@ -1,5 +1,6 @@
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
 import 'package:fcd_flutter/screens/login/login_mail.dart';
+import 'package:fcd_flutter/screens/login/login_provider.dart';
 import 'package:fcd_flutter/screens/pilot_main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,7 +16,7 @@ class NavigationScreen extends StatelessWidget {
         bloc: BlocProvider.of<NavigationCubit>(context),
         builder: (BuildContext context, state) {
           if (state == NavigationView.login) {
-            return LoginMailScreen();
+            return LoginProvider();
           } else if (state == NavigationView.main) {
             return PilotMainScreen();
           }
