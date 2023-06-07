@@ -1,8 +1,15 @@
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/airport.dart';
+import 'package:fcd_flutter/base/model/app/app_language.dart';
+import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
+import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/pilot_schedule_all.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
+import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
 import 'package:fcd_flutter/base/model/status.dart';
+
+import 'app/faqs.dart';
 
 class ApiList<T> extends Status {
   late List<T> data;
@@ -30,6 +37,19 @@ class ApiList<T> extends Status {
       return Airport.fromJson(data);
     } else if (T == UserTicketStatus) {
       return UserTicketStatus.fromJson(data);
+    } else if (T == AppLanguage) {
+      return AppLanguage.fromJson(data);
+    } else if (T == UserTicketCategory) {
+      return UserTicketCategory.fromJson(data);
+    } else if (T == FAQs) {
+      return FAQs.fromJson(data);
+    }else if (T == HelpDeskCategory) {
+      return HelpDeskCategory.fromJson(data);
+    }else if (T == PilotScheduleAll) {
+      return PilotScheduleAll.fromJson(data);
+    }
+    else if (T == HelpDeskLinhVuc) {
+      return HelpDeskLinhVuc.fromJson(data);
     } else {
       return null;
     }

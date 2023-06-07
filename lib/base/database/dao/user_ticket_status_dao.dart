@@ -6,5 +6,5 @@ import '../../model/app/user_ticket_status.dart';
 @dao
 abstract class UserTicketStatusDao {
   @Insert(onConflict: OnConflictStrategy.replace)
-  Future<void> insertUserTicketStatuses(List< UserTicketStatus> users);
+  Future<void> insertUserTicketStatuses(List< UserTicketStatus> userTicketStatuses);
 }

@@ -71,6 +71,18 @@ class _$AppDatabase extends AppDatabase {
 
   UserTicketStatusDao? _userTicketStatusDaoInstance;
 
+  AppLanguageDao? _appLanguageDaoInstance;
+
+  UserTicketCategoryDao? _userTicketCategoryDaoInstance;
+
+  FAQsDao? _faqDaoInstance;
+
+  HelpDeskCategoryDao? _helpDeskCategoryDaoInstance;
+
+  PilotScheduleAllDao? _pilotScheduleAllDaoInstance;
+
+  HelpDeskLinhVucDao? _helpDeskLinhVucDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -102,6 +114,18 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `Airport` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `code` TEXT NOT NULL, `description` TEXT NOT NULL, `status` INTEGER NOT NULL, `modified` TEXT NOT NULL, `created` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `UserTicketStatus` (`id` INTEGER NOT NULL, `title` TEXT, `titleEn` TEXT, `modified` TEXT, `created` TEXT, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `AppLanguage` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY (`key`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `UserTicketCategory` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `created` TEXT NOT NULL, `modified` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `FAQs` (`id` INTEGER NOT NULL, `departmentId` INTEGER, `question` TEXT NOT NULL, `answer` TEXT NOT NULL, `status` INTEGER NOT NULL, `created` TEXT NOT NULL, `modified` TEXT NOT NULL, `language` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `HelpDeskCategory` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `modified` TEXT NOT NULL, `created` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `PilotScheduleAll` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `filePath` TEXT NOT NULL, `scheduleDate` TEXT NOT NULL, `creator` TEXT NOT NULL, `userModified` TEXT, `modified` TEXT NOT NULL, `created` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `HelpDeskLinhVuc` (`id` REAL NOT NULL, `titleEn` TEXT NOT NULL, `titleVn` TEXT NOT NULL, `status` INTEGER NOT NULL, `order` INTEGER NOT NULL, `modified` TEXT NOT NULL, `idGroupMail` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -133,6 +157,41 @@ class _$AppDatabase extends AppDatabase {
   UserTicketStatusDao get userTicketStatusDao {
     return _userTicketStatusDaoInstance ??=
         _$UserTicketStatusDao(database, changeListener);
+  }
+
+  @override
+  AppLanguageDao get appLanguageDao {
+    return _appLanguageDaoInstance ??=
+        _$AppLanguageDao(database, changeListener);
+  }
+
+  @override
+  UserTicketCategoryDao get userTicketCategoryDao {
+    return _userTicketCategoryDaoInstance ??=
+        _$UserTicketCategoryDao(database, changeListener);
+  }
+
+  @override
+  FAQsDao get faqDao {
+    return _faqDaoInstance ??= _$FAQsDao(database, changeListener);
+  }
+
+  @override
+  HelpDeskCategoryDao get helpDeskCategoryDao {
+    return _helpDeskCategoryDaoInstance ??=
+        _$HelpDeskCategoryDao(database, changeListener);
+  }
+
+  @override
+  PilotScheduleAllDao get pilotScheduleAllDao {
+    return _pilotScheduleAllDaoInstance ??=
+        _$PilotScheduleAllDao(database, changeListener);
+  }
+
+  @override
+  HelpDeskLinhVucDao get helpDeskLinhVucDao {
+    return _helpDeskLinhVucDaoInstance ??=
+        _$HelpDeskLinhVucDao(database, changeListener);
   }
 }
 
@@ -275,9 +334,9 @@ class _$AirportDao extends AirportDao {
   final InsertionAdapter<Airport> _airportInsertionAdapter;
 
   @override
-  Future<void> insertAirport(List<Airport> settings) async {
+  Future<void> insertAirport(List<Airport> airports) async {
     await _airportInsertionAdapter.insertList(
-        settings, OnConflictStrategy.replace);
+        airports, OnConflictStrategy.replace);
   }
 }
 
@@ -303,8 +362,183 @@ class _$UserTicketStatusDao extends UserTicketStatusDao {
   final InsertionAdapter<UserTicketStatus> _userTicketStatusInsertionAdapter;
 
   @override
-  Future<void> insertUserTicketStatuses(List<UserTicketStatus> users) async {
+  Future<void> insertUserTicketStatuses(
+      List<UserTicketStatus> userTicketStatuses) async {
     await _userTicketStatusInsertionAdapter.insertList(
-        users, OnConflictStrategy.replace);
+        userTicketStatuses, OnConflictStrategy.replace);
+  }
+}
+
+class _$AppLanguageDao extends AppLanguageDao {
+  _$AppLanguageDao(
+    this.database,
+    this.changeListener,
+  ) : _appLanguageInsertionAdapter = InsertionAdapter(
+            database,
+            'AppLanguage',
+            (AppLanguage item) =>
+                <String, Object?>{'key': item.key, 'value': item.value});
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<AppLanguage> _appLanguageInsertionAdapter;
+
+  @override
+  Future<void> insertAppLanguage(List<AppLanguage> appLanguages) async {
+    await _appLanguageInsertionAdapter.insertList(
+        appLanguages, OnConflictStrategy.replace);
+  }
+}
+
+class _$UserTicketCategoryDao extends UserTicketCategoryDao {
+  _$UserTicketCategoryDao(
+    this.database,
+    this.changeListener,
+  ) : _userTicketCategoryInsertionAdapter = InsertionAdapter(
+            database,
+            'UserTicketCategory',
+            (UserTicketCategory item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'created': item.created,
+                  'modified': item.modified
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<UserTicketCategory>
+      _userTicketCategoryInsertionAdapter;
+
+  @override
+  Future<void> insertUserTicketCategories(
+      List<UserTicketCategory> userTicketCategories) async {
+    await _userTicketCategoryInsertionAdapter.insertList(
+        userTicketCategories, OnConflictStrategy.replace);
+  }
+}
+
+class _$FAQsDao extends FAQsDao {
+  _$FAQsDao(
+    this.database,
+    this.changeListener,
+  ) : _fAQsInsertionAdapter = InsertionAdapter(
+            database,
+            'FAQs',
+            (FAQs item) => <String, Object?>{
+                  'id': item.id,
+                  'departmentId': item.departmentId,
+                  'question': item.question,
+                  'answer': item.answer,
+                  'status': item.status,
+                  'created': item.created,
+                  'modified': item.modified,
+                  'language': item.language
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<FAQs> _fAQsInsertionAdapter;
+
+  @override
+  Future<void> insertFAQs(List<FAQs> faqs) async {
+    await _fAQsInsertionAdapter.insertList(faqs, OnConflictStrategy.replace);
+  }
+}
+
+class _$HelpDeskCategoryDao extends HelpDeskCategoryDao {
+  _$HelpDeskCategoryDao(
+    this.database,
+    this.changeListener,
+  ) : _helpDeskCategoryInsertionAdapter = InsertionAdapter(
+            database,
+            'HelpDeskCategory',
+            (HelpDeskCategory item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'description': item.description,
+                  'modified': item.modified,
+                  'created': item.created
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<HelpDeskCategory> _helpDeskCategoryInsertionAdapter;
+
+  @override
+  Future<void> insertHelpDeskCategory(
+      List<HelpDeskCategory> helpDeskCategories) async {
+    await _helpDeskCategoryInsertionAdapter.insertList(
+        helpDeskCategories, OnConflictStrategy.replace);
+  }
+}
+
+class _$PilotScheduleAllDao extends PilotScheduleAllDao {
+  _$PilotScheduleAllDao(
+    this.database,
+    this.changeListener,
+  ) : _pilotScheduleAllInsertionAdapter = InsertionAdapter(
+            database,
+            'PilotScheduleAll',
+            (PilotScheduleAll item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'filePath': item.filePath,
+                  'scheduleDate': item.scheduleDate,
+                  'creator': item.creator,
+                  'userModified': item.userModified,
+                  'modified': item.modified,
+                  'created': item.created
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<PilotScheduleAll> _pilotScheduleAllInsertionAdapter;
+
+  @override
+  Future<void> insertPilotScheduleAll(
+      List<PilotScheduleAll> pilotScheduleAll) async {
+    await _pilotScheduleAllInsertionAdapter.insertList(
+        pilotScheduleAll, OnConflictStrategy.replace);
+  }
+}
+
+class _$HelpDeskLinhVucDao extends HelpDeskLinhVucDao {
+  _$HelpDeskLinhVucDao(
+    this.database,
+    this.changeListener,
+  ) : _helpDeskLinhVucInsertionAdapter = InsertionAdapter(
+            database,
+            'HelpDeskLinhVuc',
+            (HelpDeskLinhVuc item) => <String, Object?>{
+                  'id': item.id,
+                  'titleEn': item.titleEn,
+                  'titleVn': item.titleVn,
+                  'status': item.status,
+                  'order': item.order,
+                  'modified': item.modified,
+                  'idGroupMail': item.idGroupMail
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<HelpDeskLinhVuc> _helpDeskLinhVucInsertionAdapter;
+
+  @override
+  Future<void> insertHelpDeskLinhVucs(
+      List<HelpDeskLinhVuc> helpDeskLinhVucs) async {
+    await _helpDeskLinhVucInsertionAdapter.insertList(
+        helpDeskLinhVucs, OnConflictStrategy.replace);
   }
 }

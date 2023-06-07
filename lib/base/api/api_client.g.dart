@@ -160,6 +160,180 @@ class _ApiClient implements ApiClient {
     return value;
   }
 
+  @override
+  Future<ApiList<AppLanguage>> getAppLanguages(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<AppLanguage>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanAppLanguage',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<AppLanguage>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<UserTicketCategory>> getUserTicketCategories(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<UserTicketCategory>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanUserTicketCategory',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<UserTicketCategory>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<FAQs>> getFAQs(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<FAQs>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanFAQs',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<FAQs>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<HelpDeskCategory>> getHelpDeskCategories(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<HelpDeskCategory>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanHelpDeskCategory',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<HelpDeskCategory>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<PilotScheduleAll>> getPilotScheduleAll(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<PilotScheduleAll>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanPilotScheduleAll',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<PilotScheduleAll>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<HelpDeskLinhVuc>> getHelpDeskLinhVucs(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<HelpDeskLinhVuc>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanHelpDeskLinhVuc',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<HelpDeskLinhVuc>.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
