@@ -5,6 +5,8 @@ import 'package:floor/floor.dart';
 abstract class DBVariableDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertDBVariable(DBVariable dbVariable);
+  @Query('SELECT * FROM DBVariable')
+  Future<List<DBVariable>> findAllDBVariable();
   @Query('Select * from DBVariable where Id like :id')
   Future<DBVariable? >findDBVariableById(String id);
 }

@@ -243,6 +243,13 @@ class _$DBVariableDao extends DBVariableDao {
   final InsertionAdapter<DBVariable> _dBVariableInsertionAdapter;
 
   @override
+  Future<List<DBVariable>> findAllDBVariable() async {
+    return _queryAdapter.queryList('SELECT * FROM DBVariable',
+        mapper: (Map<String, Object?> row) =>
+            DBVariable(row['Id'] as String, row['Value'] as String));
+  }
+
+  @override
   Future<DBVariable?> findDBVariableById(String id) async {
     return _queryAdapter.query('Select * from DBVariable where Id like ?1',
         mapper: (Map<String, Object?> row) =>
