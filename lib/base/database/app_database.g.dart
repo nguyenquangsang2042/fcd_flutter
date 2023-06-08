@@ -83,6 +83,10 @@ class _$AppDatabase extends AppDatabase {
 
   HelpDeskLinhVucDao? _helpDeskLinhVucDaoInstance;
 
+  DepartmentDao? _departmentDaoInstance;
+
+  PilotSchedulePdfDao? _pilotSchedulePdfDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -126,6 +130,10 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `PilotScheduleAll` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `filePath` TEXT NOT NULL, `scheduleDate` TEXT NOT NULL, `creator` TEXT NOT NULL, `userModified` TEXT, `modified` TEXT NOT NULL, `created` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `HelpDeskLinhVuc` (`id` REAL NOT NULL, `titleEn` TEXT NOT NULL, `titleVn` TEXT NOT NULL, `status` INTEGER NOT NULL, `order` INTEGER NOT NULL, `modified` TEXT NOT NULL, `idGroupMail` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Department` (`id` REAL NOT NULL, `title` TEXT NOT NULL, `code` TEXT NOT NULL, `parentID` REAL, `parentName` TEXT NOT NULL, `groupID` REAL NOT NULL, `modified` TEXT NOT NULL, `effect` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `PilotSchedulePdf` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `filePath` TEXT NOT NULL, `scheduleDate` TEXT NOT NULL, `creator` TEXT NOT NULL, `userModified` TEXT NOT NULL, `created` TEXT NOT NULL, `modified` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -192,6 +200,17 @@ class _$AppDatabase extends AppDatabase {
   HelpDeskLinhVucDao get helpDeskLinhVucDao {
     return _helpDeskLinhVucDaoInstance ??=
         _$HelpDeskLinhVucDao(database, changeListener);
+  }
+
+  @override
+  DepartmentDao get departmentDao {
+    return _departmentDaoInstance ??= _$DepartmentDao(database, changeListener);
+  }
+
+  @override
+  PilotSchedulePdfDao get pilotSchedulePdfDao {
+    return _pilotSchedulePdfDaoInstance ??=
+        _$PilotSchedulePdfDao(database, changeListener);
   }
 }
 
@@ -547,5 +566,68 @@ class _$HelpDeskLinhVucDao extends HelpDeskLinhVucDao {
       List<HelpDeskLinhVuc> helpDeskLinhVucs) async {
     await _helpDeskLinhVucInsertionAdapter.insertList(
         helpDeskLinhVucs, OnConflictStrategy.replace);
+  }
+}
+
+class _$DepartmentDao extends DepartmentDao {
+  _$DepartmentDao(
+    this.database,
+    this.changeListener,
+  ) : _departmentInsertionAdapter = InsertionAdapter(
+            database,
+            'Department',
+            (Department item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'code': item.code,
+                  'parentID': item.parentID,
+                  'parentName': item.parentName,
+                  'groupID': item.groupID,
+                  'modified': item.modified,
+                  'effect': item.effect ? 1 : 0
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<Department> _departmentInsertionAdapter;
+
+  @override
+  Future<void> insertDepartment(List<Department> departments) async {
+    await _departmentInsertionAdapter.insertList(
+        departments, OnConflictStrategy.replace);
+  }
+}
+
+class _$PilotSchedulePdfDao extends PilotSchedulePdfDao {
+  _$PilotSchedulePdfDao(
+    this.database,
+    this.changeListener,
+  ) : _pilotSchedulePdfInsertionAdapter = InsertionAdapter(
+            database,
+            'PilotSchedulePdf',
+            (PilotSchedulePdf item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'filePath': item.filePath,
+                  'scheduleDate': item.scheduleDate,
+                  'creator': item.creator,
+                  'userModified': item.userModified,
+                  'created': item.created,
+                  'modified': item.modified
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<PilotSchedulePdf> _pilotSchedulePdfInsertionAdapter;
+
+  @override
+  Future<void> insertPilotSchedulePdf(
+      List<PilotSchedulePdf> pilotSchedulePdf) async {
+    await _pilotSchedulePdfInsertionAdapter.insertList(
+        pilotSchedulePdf, OnConflictStrategy.replace);
   }
 }

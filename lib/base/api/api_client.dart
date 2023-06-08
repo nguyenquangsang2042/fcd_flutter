@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
+import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
@@ -10,6 +11,7 @@ import '../model/app/airport.dart';
 import '../model/app/app_language.dart';
 import '../model/app/helpdesk_linhvuc.dart';
 import '../model/app/pilot_schedule_all.dart';
+import '../model/app/pilot_schedule_pdf.dart';
 import '../model/app/user.dart';
 part 'api_client.g.dart';
 
@@ -49,5 +51,12 @@ abstract class ApiClient {
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanHelpDeskLinhVuc')
   Future<ApiList<HelpDeskLinhVuc>> getHelpDeskLinhVucs(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanDepartment')
+  Future<ApiList<Department>> getDepartments(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanPilotSchedulePdf')
+  Future<ApiList<PilotSchedulePdf>> getPilotSchedulePdf(
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
 }

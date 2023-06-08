@@ -1,6 +1,7 @@
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/app_language.dart';
+import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
 import 'package:fcd_flutter/base/model/app/pilot_schedule_all.dart';
@@ -50,6 +51,9 @@ class ApiList<T> extends Status {
     }
     else if (T == HelpDeskLinhVuc) {
       return HelpDeskLinhVuc.fromJson(data);
+    }
+    else if (T == Department) {
+      return Department.fromJson(data);
     } else {
       return null;
     }

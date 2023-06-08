@@ -1,4 +1,5 @@
 import 'package:fcd_flutter/base/model/app/airport.dart';
+import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
@@ -11,6 +12,7 @@ import '../model/api_list.dart';
 import '../model/app/app_language.dart';
 import '../model/app/db_variable.dart';
 import '../model/app/pilot_schedule_all.dart';
+import '../model/app/pilot_schedule_pdf.dart';
 import '../model/app/settings.dart';
 
 class ApiController {
@@ -25,6 +27,8 @@ class ApiController {
     updateHelpDeskCategories();
     updatePilotScheduleAll();
     updateHelpDeskLinhVuc();
+    updateDepartments();
+    updatePilotSchedulePdf();
   }
 
   void updateSetting()async {
@@ -227,6 +231,48 @@ void updateHelpDeskCategories()async {
         Constanst.db.helpDeskLinhVucDao.insertHelpDeskLinhVucs(data.data);
         Constanst.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("HelpDeskLinhVuc", data.dateNow));
+      });
+    }
+  }
+
+  void updateDepartments()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("Department");
+    if(dbVariable!=null) {
+      Constanst.api.getDepartments(dbVariable.Value, "0").then((value) {
+        ApiList<Department> data = value;
+        Constanst.db.departmentDao.insertDepartment(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Department", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getDepartments("", "1").then((value) {
+        ApiList<Department> data = value;
+        Constanst.db.departmentDao.insertDepartment(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Department", data.dateNow));
+      });
+    }
+  }
+
+  void updatePilotSchedulePdf()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("PilotSchedulePdf");
+    if(dbVariable!=null) {
+      Constanst.api.getPilotSchedulePdf(dbVariable.Value, "0").then((value) {
+        ApiList<PilotSchedulePdf> data = value;
+        Constanst.db.pilotSchedulePdfDao.insertPilotSchedulePdf(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("PilotSchedulePdf", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getPilotSchedulePdf("", "1").then((value) {
+        ApiList<PilotSchedulePdf> data = value;
+        Constanst.db.pilotSchedulePdfDao.insertPilotSchedulePdf(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("PilotSchedulePdf", data.dateNow));
       });
     }
   }
