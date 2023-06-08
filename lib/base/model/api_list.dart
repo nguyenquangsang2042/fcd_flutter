@@ -1,13 +1,19 @@
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/airport.dart';
+import 'package:fcd_flutter/base/model/app/announcement_category.dart';
 import 'package:fcd_flutter/base/model/app/app_language.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
+import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/pilot_schedule_all.dart';
+import 'package:fcd_flutter/base/model/app/pilot_schedule_pdf.dart';
+import 'package:fcd_flutter/base/model/app/province.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
+import 'package:fcd_flutter/base/model/app/ward.dart';
 import 'package:fcd_flutter/base/model/status.dart';
 
 import 'app/faqs.dart';
@@ -44,16 +50,26 @@ class ApiList<T> extends Status {
       return UserTicketCategory.fromJson(data);
     } else if (T == FAQs) {
       return FAQs.fromJson(data);
-    }else if (T == HelpDeskCategory) {
+    } else if (T == HelpDeskCategory) {
       return HelpDeskCategory.fromJson(data);
-    }else if (T == PilotScheduleAll) {
+    } else if (T == PilotScheduleAll) {
       return PilotScheduleAll.fromJson(data);
-    }
-    else if (T == HelpDeskLinhVuc) {
+    } else if (T == HelpDeskLinhVuc) {
       return HelpDeskLinhVuc.fromJson(data);
-    }
-    else if (T == Department) {
+    } else if (T == Department) {
       return Department.fromJson(data);
+    } else if (T == AnnouncementCategory) {
+      return AnnouncementCategory.fromJson(data);
+    } else if (T == PilotSchedulePdf) {
+      return PilotSchedulePdf.fromJson(data);
+    } else if (T == Nation) {
+      return Nation.fromJson(data);
+    } else if (T == Province) {
+      return Province.fromJson(data);
+    }else if (T == District) {
+      return District.fromJson(data);
+    }else if (T == Ward) {
+      return Ward.fromJson(data);
     } else {
       return null;
     }

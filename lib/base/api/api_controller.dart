@@ -1,19 +1,24 @@
 import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
+import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
 
 import '../constans.dart';
 import '../model/api_list.dart';
+import '../model/app/announcement_category.dart';
 import '../model/app/app_language.dart';
 import '../model/app/db_variable.dart';
 import '../model/app/pilot_schedule_all.dart';
 import '../model/app/pilot_schedule_pdf.dart';
+import '../model/app/province.dart';
 import '../model/app/settings.dart';
+import '../model/app/ward.dart';
 
 class ApiController {
   void updateMasterData() async {
@@ -29,6 +34,11 @@ class ApiController {
     updateHelpDeskLinhVuc();
     updateDepartments();
     updatePilotSchedulePdf();
+    updateAnnouncementCategory();
+    updateNation();
+    updateProvince();
+    updateDistrict();
+    updateWard();
   }
 
   void updateSetting()async {
@@ -273,6 +283,108 @@ void updateHelpDeskCategories()async {
         Constanst.db.pilotSchedulePdfDao.insertPilotSchedulePdf(data.data);
         Constanst.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("PilotSchedulePdf", data.dateNow));
+      });
+    }
+  }
+  void updateAnnouncementCategory()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("AnnouncementCategory");
+    if(dbVariable!=null) {
+      Constanst.api.getAnnouncementCategory(dbVariable.Value, "0").then((value) {
+        ApiList<AnnouncementCategory> data = value;
+        Constanst.db.announcementCategoryDao.insertAnnouncementCategories(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("AnnouncementCategory", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getAnnouncementCategory("", "1").then((value) {
+        ApiList<AnnouncementCategory> data = value;
+        Constanst.db.announcementCategoryDao.insertAnnouncementCategories(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("AnnouncementCategory", data.dateNow));
+      });
+    }
+  }
+  void updateNation()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("Nation");
+    if(dbVariable!=null) {
+      Constanst.api.getNation(dbVariable.Value, "0").then((value) {
+        ApiList<Nation> data = value;
+        Constanst.db.nationDao.insertNations(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Nation", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getNation("", "1").then((value) {
+        ApiList<Nation> data = value;
+        Constanst.db.nationDao.insertNations(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Nation", data.dateNow));
+      });
+    }
+  }
+  void updateProvince()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("Province");
+    if(dbVariable!=null) {
+      Constanst.api.getProvince(dbVariable.Value, "0").then((value) {
+        ApiList<Province> data = value;
+        Constanst.db.provinceDao.insertProvince(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Province", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getProvince("", "1").then((value) {
+        ApiList<Province> data = value;
+        Constanst.db.provinceDao.insertProvince(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Province", data.dateNow));
+      });
+    }
+  }
+
+  void updateDistrict()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("District");
+    if(dbVariable!=null) {
+      Constanst.api.getDistrict(dbVariable.Value, "0").then((value) {
+        ApiList<District> data = value;
+        Constanst.db.districtDao.insertDistrict(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("District", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getDistrict("", "1").then((value) {
+        ApiList<District> data = value;
+        Constanst.db.districtDao.insertDistrict(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("District", data.dateNow));
+      });
+    }
+  }
+
+  void updateWard()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("Ward");
+    if(dbVariable!=null) {
+      Constanst.api.getWard(dbVariable.Value, "0").then((value) {
+        ApiList<Ward> data = value;
+        Constanst.db.wardDao.insertWard(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Ward", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getWard("", "1").then((value) {
+        ApiList<Ward> data = value;
+        Constanst.db.wardDao.insertWard(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Ward", data.dateNow));
       });
     }
   }

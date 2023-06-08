@@ -13,7 +13,7 @@ PilotSchedulePdf _$PilotSchedulePdfFromJson(Map<String, dynamic> json) =>
       json['FilePath'] as String,
       json['ScheduleDate'] as String,
       json['Creator'] as String,
-      json['UserModified'] as String,
+      json['UserModified'] as String?,
       json['Created'] as String,
       json['Modified'] as String,
     );

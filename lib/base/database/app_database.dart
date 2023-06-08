@@ -2,32 +2,42 @@ import 'dart:async';
 import 'package:fcd_flutter/base/database/dao/airport_dao.dart';
 import 'package:fcd_flutter/base/database/dao/db_variable_dao.dart';
 import 'package:fcd_flutter/base/database/dao/department_dao.dart';
+import 'package:fcd_flutter/base/database/dao/district_dao.dart';
 import 'package:fcd_flutter/base/database/dao/faqs_dao.dart';
 import 'package:fcd_flutter/base/database/dao/help_desk_category_dao.dart';
+import 'package:fcd_flutter/base/database/dao/nation_dao.dart';
 import 'package:fcd_flutter/base/database/dao/pilot_schedule_all_dao.dart';
 import 'package:fcd_flutter/base/database/dao/settings_dao.dart';
 import 'package:fcd_flutter/base/database/dao/user_dao.dart';
 import 'package:fcd_flutter/base/database/dao/user_ticket_category_dao.dart';
 import 'package:fcd_flutter/base/database/dao/user_ticket_status_dao.dart';
+import 'package:fcd_flutter/base/database/dao/ward_dao.dart';
 import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/app_language.dart';
 import 'package:fcd_flutter/base/model/app/db_variable.dart';
+import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/nation.dart';
+import 'package:fcd_flutter/base/model/app/province.dart';
 import 'package:fcd_flutter/base/model/app/settings.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
+import 'package:fcd_flutter/base/model/app/ward.dart';
 import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
+import '../model/app/announcement_category.dart';
 import '../model/app/department.dart';
 import '../model/app/pilot_schedule_all.dart';
 import '../model/app/pilot_schedule_pdf.dart';
 import '../model/app/user.dart';
 import '../model/app/user_ticket_category.dart';
+import 'dao/announcement_category_dao.dart';
 import 'dao/app_language_dao.dart';
 import 'dao/helpdesk_linhvuc_dao.dart';
 import 'dao/pilot_schedule_pdf_dao.dart';
+import 'dao/province_dao.dart';
 
 part 'app_database.g.dart'; // the generated code will be there
 
@@ -44,7 +54,12 @@ part 'app_database.g.dart'; // the generated code will be there
   PilotScheduleAll,
   HelpDeskLinhVuc,
   Department,
-  PilotSchedulePdf
+  PilotSchedulePdf,
+  AnnouncementCategory,
+  Nation,
+  Province,
+  Ward,
+  District
 ])
 abstract class AppDatabase extends FloorDatabase {
   SettingsDao get settingDao;
@@ -61,4 +76,9 @@ abstract class AppDatabase extends FloorDatabase {
   HelpDeskLinhVucDao get helpDeskLinhVucDao;
   DepartmentDao get departmentDao;
   PilotSchedulePdfDao get pilotSchedulePdfDao;
+  AnnouncementCategoryDao get announcementCategoryDao;
+  NationDao get nationDao;
+  ProvinceDao get provinceDao;
+  DistrictDao get districtDao;
+  WardDao get wardDao;
 }

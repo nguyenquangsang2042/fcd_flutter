@@ -87,6 +87,16 @@ class _$AppDatabase extends AppDatabase {
 
   PilotSchedulePdfDao? _pilotSchedulePdfDaoInstance;
 
+  AnnouncementCategoryDao? _announcementCategoryDaoInstance;
+
+  NationDao? _nationDaoInstance;
+
+  ProvinceDao? _provinceDaoInstance;
+
+  DistrictDao? _districtDaoInstance;
+
+  WardDao? _wardDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -133,7 +143,17 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Department` (`id` REAL NOT NULL, `title` TEXT NOT NULL, `code` TEXT NOT NULL, `parentID` REAL, `parentName` TEXT NOT NULL, `groupID` REAL NOT NULL, `modified` TEXT NOT NULL, `effect` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `PilotSchedulePdf` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `filePath` TEXT NOT NULL, `scheduleDate` TEXT NOT NULL, `creator` TEXT NOT NULL, `userModified` TEXT NOT NULL, `created` TEXT NOT NULL, `modified` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `PilotSchedulePdf` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `filePath` TEXT NOT NULL, `scheduleDate` TEXT NOT NULL, `creator` TEXT NOT NULL, `userModified` TEXT, `created` TEXT NOT NULL, `modified` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `AnnouncementCategory` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `titleEN` TEXT, `description` TEXT NOT NULL, `iconPath` TEXT NOT NULL, `imagePath` TEXT NOT NULL, `announceTemplateId` INTEGER, `notifyTemplateId` INTEGER NOT NULL, `resourceCategoryId` INTEGER NOT NULL, `urlDetail` TEXT, `remindBeforeTime` INTEGER NOT NULL, `isCreate` INTEGER NOT NULL, `device` INTEGER NOT NULL, `modified` TEXT NOT NULL, `created` TEXT NOT NULL, `orders` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Nation` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `rank` INTEGER NOT NULL, `modified` TEXT NOT NULL, `created` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Province` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `nationId` INTEGER NOT NULL, `modified` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Ward` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `districtId` INTEGER NOT NULL, `modified` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `District` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `provinceId` INTEGER NOT NULL, `modified` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -211,6 +231,32 @@ class _$AppDatabase extends AppDatabase {
   PilotSchedulePdfDao get pilotSchedulePdfDao {
     return _pilotSchedulePdfDaoInstance ??=
         _$PilotSchedulePdfDao(database, changeListener);
+  }
+
+  @override
+  AnnouncementCategoryDao get announcementCategoryDao {
+    return _announcementCategoryDaoInstance ??=
+        _$AnnouncementCategoryDao(database, changeListener);
+  }
+
+  @override
+  NationDao get nationDao {
+    return _nationDaoInstance ??= _$NationDao(database, changeListener);
+  }
+
+  @override
+  ProvinceDao get provinceDao {
+    return _provinceDaoInstance ??= _$ProvinceDao(database, changeListener);
+  }
+
+  @override
+  DistrictDao get districtDao {
+    return _districtDaoInstance ??= _$DistrictDao(database, changeListener);
+  }
+
+  @override
+  WardDao get wardDao {
+    return _wardDaoInstance ??= _$WardDao(database, changeListener);
   }
 }
 
@@ -629,5 +675,154 @@ class _$PilotSchedulePdfDao extends PilotSchedulePdfDao {
       List<PilotSchedulePdf> pilotSchedulePdf) async {
     await _pilotSchedulePdfInsertionAdapter.insertList(
         pilotSchedulePdf, OnConflictStrategy.replace);
+  }
+}
+
+class _$AnnouncementCategoryDao extends AnnouncementCategoryDao {
+  _$AnnouncementCategoryDao(
+    this.database,
+    this.changeListener,
+  ) : _announcementCategoryInsertionAdapter = InsertionAdapter(
+            database,
+            'AnnouncementCategory',
+            (AnnouncementCategory item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'titleEN': item.titleEN,
+                  'description': item.description,
+                  'iconPath': item.iconPath,
+                  'imagePath': item.imagePath,
+                  'announceTemplateId': item.announceTemplateId,
+                  'notifyTemplateId': item.notifyTemplateId,
+                  'resourceCategoryId': item.resourceCategoryId,
+                  'urlDetail': item.urlDetail,
+                  'remindBeforeTime': item.remindBeforeTime,
+                  'isCreate': item.isCreate ? 1 : 0,
+                  'device': item.device,
+                  'modified': item.modified,
+                  'created': item.created,
+                  'orders': item.orders
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<AnnouncementCategory>
+      _announcementCategoryInsertionAdapter;
+
+  @override
+  Future<void> insertAnnouncementCategories(
+      List<AnnouncementCategory> announcementCategories) async {
+    await _announcementCategoryInsertionAdapter.insertList(
+        announcementCategories, OnConflictStrategy.replace);
+  }
+}
+
+class _$NationDao extends NationDao {
+  _$NationDao(
+    this.database,
+    this.changeListener,
+  ) : _nationInsertionAdapter = InsertionAdapter(
+            database,
+            'Nation',
+            (Nation item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'rank': item.rank,
+                  'modified': item.modified,
+                  'created': item.created
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<Nation> _nationInsertionAdapter;
+
+  @override
+  Future<void> insertNations(List<Nation> nation) async {
+    await _nationInsertionAdapter.insertList(
+        nation, OnConflictStrategy.replace);
+  }
+}
+
+class _$ProvinceDao extends ProvinceDao {
+  _$ProvinceDao(
+    this.database,
+    this.changeListener,
+  ) : _provinceInsertionAdapter = InsertionAdapter(
+            database,
+            'Province',
+            (Province item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'nationId': item.nationId,
+                  'modified': item.modified
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<Province> _provinceInsertionAdapter;
+
+  @override
+  Future<void> insertProvince(List<Province> provinces) async {
+    await _provinceInsertionAdapter.insertList(
+        provinces, OnConflictStrategy.replace);
+  }
+}
+
+class _$DistrictDao extends DistrictDao {
+  _$DistrictDao(
+    this.database,
+    this.changeListener,
+  ) : _districtInsertionAdapter = InsertionAdapter(
+            database,
+            'District',
+            (District item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'provinceId': item.provinceId,
+                  'modified': item.modified
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<District> _districtInsertionAdapter;
+
+  @override
+  Future<void> insertDistrict(List<District> districts) async {
+    await _districtInsertionAdapter.insertList(
+        districts, OnConflictStrategy.replace);
+  }
+}
+
+class _$WardDao extends WardDao {
+  _$WardDao(
+    this.database,
+    this.changeListener,
+  ) : _wardInsertionAdapter = InsertionAdapter(
+            database,
+            'Ward',
+            (Ward item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'districtId': item.districtId,
+                  'modified': item.modified
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final InsertionAdapter<Ward> _wardInsertionAdapter;
+
+  @override
+  Future<void> insertWard(List<Ward> ward) async {
+    await _wardInsertionAdapter.insertList(ward, OnConflictStrategy.replace);
   }
 }

@@ -21,7 +21,7 @@ class PilotSchedulePdf {
   late String creator;
 
   @JsonKey(name: 'UserModified')
-  late String userModified;
+  late String? userModified;
 
   @JsonKey(name: 'Created')
   late String created;

@@ -1,18 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
+import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
+import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/app/airport.dart';
+import '../model/app/announcement_category.dart';
 import '../model/app/app_language.dart';
 import '../model/app/helpdesk_linhvuc.dart';
 import '../model/app/pilot_schedule_all.dart';
 import '../model/app/pilot_schedule_pdf.dart';
+import '../model/app/province.dart';
 import '../model/app/user.dart';
+import '../model/app/ward.dart';
 part 'api_client.g.dart';
 
 @RestApi(baseUrl: "https://pilot.vuthao.com")
@@ -58,5 +63,20 @@ abstract class ApiClient {
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanPilotSchedulePdf')
   Future<ApiList<PilotSchedulePdf>> getPilotSchedulePdf(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanAnnouncementCategory')
+  Future<ApiList<AnnouncementCategory>> getAnnouncementCategory(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanNation')
+  Future<ApiList<Nation>> getNation(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanProvince')
+  Future<ApiList<Province>> getProvince(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanDistrict')
+  Future<ApiList<District>> getDistrict(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanWard')
+  Future<ApiList<Ward>> getWard(
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
 }

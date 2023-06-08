@@ -392,6 +392,151 @@ class _ApiClient implements ApiClient {
     return value;
   }
 
+  @override
+  Future<ApiList<AnnouncementCategory>> getAnnouncementCategory(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<AnnouncementCategory>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanAnnouncementCategory',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<AnnouncementCategory>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<Nation>> getNation(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<Nation>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanNation',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<Nation>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<Province>> getProvince(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<Province>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanProvince',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<Province>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<District>> getDistrict(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<District>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanDistrict',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<District>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<Ward>> getWard(
+    modified,
+    isFirst,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<Ward>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiPublic.ashx?func=get&bname=BeanWard',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<Ward>.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
