@@ -1,26 +1,146 @@
+import 'package:fcd_flutter/base/alert_dialog.dart';
+import 'package:fcd_flutter/base/constans.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pinput/pinput.dart';
+
+import '../../base/model/app/user.dart';
 
 class LoginOTPScreen extends StatelessWidget {
-  LoginOTPScreen({Key? key}) : super(key: key);
+  const LoginOTPScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String email = (context.read<LoginCubit>().state as LoginOTPState).email;
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: const TextStyle(
+          fontSize: 20,
+          color: Color.fromRGBO(30, 60, 87, 1),
+          fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
+    final submittedPinTheme = defaultPinTheme.copyWith(
+      decoration: defaultPinTheme.decoration?.copyWith(
+        color: const Color.fromRGBO(234, 239, 243, 1),
+      ),
+    );
     return WillPopScope(
-        child: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              BlocProvider.of<NavigationCubit>(context).navigateToMainView();
-            },
-            child: Text("Click"),
-          ),
-        ),
-        onWillPop:()=>handlePopBack(context));
+        child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('asset/images/Background.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Image.asset('asset/images/vna_logo.png'),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                        top: 15, bottom: 15, left: 17, right: 15),
+                    child: Text(
+                      "Please enter OTP code from  email content",
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Pinput(
+                      length: 6,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      obscureText: true,
+                      keyboardType: TextInputType.number,
+                      defaultPinTheme: submittedPinTheme,
+                      focusedPinTheme: submittedPinTheme,
+                      submittedPinTheme: submittedPinTheme,
+                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                      showCursor: true,
+                      onCompleted: (pin) async {
+                        Constanst.api
+                            .getCurrentLoginUser(
+                                Constanst.deviceInfo.toJson().toString(),
+                                "{'Email':'$email','VerifyCode':'$pin'}",
+                                "1",
+                                "1")
+                            .then((value) =>
+                                updateDataLoginAndCurrentUser(value.data,context))
+                            .onError((error, stackTrace) =>
+                                AlertDialogController.instance.showAlert(
+                                    context,
+                                    "Vietnam Airlines",
+                                    "Auth fail, try again!!",
+                                    "Cancel",
+                                    () {}));
+                      },
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                        onPressed: () {
+                          Constanst.api.getOtp(email).then((value) {
+                            AlertDialogController.instance.showAlert(
+                                context,
+                                "Vietnam Airlines",
+                                "We have sent OTP to your email address, please check email to get OTP code. Thank you.",
+                                "Cancel",
+                                () {});
+                          }).onError((error, stackTrace) {
+                            AlertDialogController.instance.showAlert(
+                                context,
+                                "Vietnam Airlines",
+                                "Send fail, try again!!",
+                                "Cancel",
+                                () {});
+                          });
+                        },
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Not have OTP code ?  ",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            Text(
+                              "Resend",
+                              style: TextStyle(color: Color(0xFF00C6C7)),
+                            ),
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            )),
+        onWillPop: () => handlePopBack(context));
   }
+
   Future<bool> handlePopBack(context) async {
     BlocProvider.of<LoginCubit>(context).navigationToLoginMail();
     return false;
+  }
+
+  updateDataLoginAndCurrentUser(currentUser,context) {
+    Constanst.currentUser=currentUser;
+    Constanst.sharedPreferences.setString("email", (context.read<LoginCubit>().state as LoginOTPState).email);
+    BlocProvider.of<NavigationCubit>(context).navigateToMainView();
   }
 }

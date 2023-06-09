@@ -76,7 +76,7 @@ class LoginMailScreen extends StatelessWidget {
                                       context, "Vietnam Airlines",
                                       "We have sent OTP to your email address, please check email to get OTP code. Thank you.",
                                       "Close",(){
-                                    BlocProvider.of<LoginCubit>(context).navigationToLoginOTP();
+                                    BlocProvider.of<LoginCubit>(context).navigationToLoginOTP(emailController.text);
                                   });
                                 }
                                 else {

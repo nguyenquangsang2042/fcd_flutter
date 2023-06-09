@@ -79,4 +79,13 @@ abstract class ApiClient {
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanWard')
   Future<ApiList<Ward>> getWard(
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  
+  @POST('/API/User.ashx?func=otpConfirm')
+  @FormUrlEncoded()
+  Future<ApiObject<User>> getCurrentLoginUser(
+      @Field("deviceInfo") String deviceInfo,
+      @Field("data") String data,
+      @Field("loginType") String loginType,
+      @Field("userTypeLogin") String userTypeLogin,
+      );
 }

@@ -17,4 +17,6 @@ class ApiData extends Status {
     data['data'] = this.data;
     return data;
   }
+
+
 }

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:fcd_flutter/base/api/api_client.dart';
 import 'package:fcd_flutter/base/api/api_controller.dart';
@@ -5,23 +8,46 @@ import 'package:fcd_flutter/base/constans.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/db_variable.dart';
 import 'package:fcd_flutter/base/model/app/settings.dart';
+import 'package:fcd_flutter/base/model/device_info.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
 import 'package:fcd_flutter/screens/navigation_screen/navigation_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base/database/app_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   Constanst.db =
-      await $FloorAppDatabase.databaseBuilder('fcd_database.db').build();
+  await $FloorAppDatabase.databaseBuilder('fcd_database.db').build();
   Constanst.api = ApiClient(Dio());
-  Constanst.apiController= ApiController();
+  Constanst.apiController = ApiController();
   Constanst.apiController.updateMasterData();
+  Constanst.sharedPreferences= await SharedPreferences.getInstance();
+  getDeviceInfo();
   runApp(const MyApp());
+}
+
+Future<void> getDeviceInfo() async {
+  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  if (Platform.isAndroid) {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    Constanst.deviceInfo = DeviceInfo.required(DeviceId: "'${androidInfo.id}'",
+        DevicePushToken: "'${await messaging.getToken()}'",
+        DeviceOS: 1,
+        AppVersion:"'${packageInfo.version}'",
+        DeviceOSVersion: "'${androidInfo.version.release}'",
+        DeviceModel: "'${androidInfo.model}'");
+  } else if (Platform.isIOS) {}
 }
 
 class MyApp extends StatelessWidget {

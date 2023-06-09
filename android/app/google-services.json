@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "317820228591",
+    "firebase_url": "https://vnaschedule.firebaseio.com",
+    "project_id": "vnaschedule",
+    "storage_bucket": "vnaschedule.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317820228591:android:d729cc00e0691e09",
+        "android_client_info": {
+          "package_name": "VNASchedule.Droid.VNASchedule.Droid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317820228591-aoem6fsh90sef05vl9n5g264ben62u9d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFgnQqRBMAtKlSHeC8zwc-endS8-VUG4k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317820228591:android:ccfc79fca0fb5901",
+        "android_client_info": {
+          "package_name": "com.Vuthao.VNASchedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317820228591-aoem6fsh90sef05vl9n5g264ben62u9d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFgnQqRBMAtKlSHeC8zwc-endS8-VUG4k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

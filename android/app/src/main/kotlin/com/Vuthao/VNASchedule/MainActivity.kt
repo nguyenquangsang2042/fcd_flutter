@@ -1,4 +1,4 @@
-package com.example.fcd_flutter
+package com.Vuthao.VNASchedule
 
 import io.flutter.embedding.android.FlutterActivity
 
