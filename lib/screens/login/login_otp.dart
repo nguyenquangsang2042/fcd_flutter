@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../base/model/app/user.dart';
 
 class LoginOTPScreen extends StatelessWidget {
   const LoginOTPScreen({Key? key}) : super(key: key);
@@ -138,7 +137,7 @@ class LoginOTPScreen extends StatelessWidget {
     return false;
   }
 
-  updateDataLoginAndCurrentUser(currentUser,context) {
+  updateDataLoginAndCurrentUser(currentUser,BuildContext context) {
     Constanst.currentUser=currentUser;
     Constanst.sharedPreferences.setString("email", (context.read<LoginCubit>().state as LoginOTPState).email);
     BlocProvider.of<NavigationCubit>(context).navigateToMainView();

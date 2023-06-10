@@ -1,12 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:fcd_flutter/base/alert_dialog.dart';
 import 'package:fcd_flutter/base/api/api_client.dart';
-import 'package:fcd_flutter/base/model/status.dart';
-import 'package:fcd_flutter/screens/login/login_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
-import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../base/exports_base.dart';

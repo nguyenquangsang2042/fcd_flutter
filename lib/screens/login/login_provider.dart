@@ -13,9 +13,9 @@ class LoginProvider extends StatelessWidget {
         bloc: BlocProvider.of<LoginCubit>(context),
         builder: (context, state) {
           if (state is LoginMailState) {
-            return LoginMailScreen();
+            return const LoginMailScreen();
           } else {
-            return LoginOTPScreen();
+            return const LoginOTPScreen();
           }
         });
   }
