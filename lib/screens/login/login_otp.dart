@@ -1,12 +1,12 @@
 import 'package:fcd_flutter/base/alert_dialog.dart';
 import 'package:fcd_flutter/base/constans.dart';
+import 'package:fcd_flutter/base/crypto_controller.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
-
 
 class LoginOTPScreen extends StatelessWidget {
   const LoginOTPScreen({Key? key}) : super(key: key);
@@ -78,8 +78,8 @@ class LoginOTPScreen extends StatelessWidget {
                                 "{'Email':'$email','VerifyCode':'$pin'}",
                                 "1",
                                 "1")
-                            .then((value) =>
-                                updateDataLoginAndCurrentUser(value.data,context))
+                            .then((value) => updateDataLoginAndCurrentUser(
+                                value.data, context, pin))
                             .onError((error, stackTrace) =>
                                 AlertDialogController.instance.showAlert(
                                     context,
@@ -137,9 +137,12 @@ class LoginOTPScreen extends StatelessWidget {
     return false;
   }
 
-  updateDataLoginAndCurrentUser(currentUser,BuildContext context) {
-    Constanst.currentUser=currentUser;
-    Constanst.sharedPreferences.setString("email", (context.read<LoginCubit>().state as LoginOTPState).email);
+  updateDataLoginAndCurrentUser(currentUser, BuildContext context, String pin) {
+    Constanst.currentUser = currentUser;
+    Constanst.sharedPreferences.setString(
+        "email", (context.read<LoginCubit>().state as LoginOTPState).email);
+    String pass = CryptoController.instance.getMd5Hash("$pin#");
+    print("hash code pin $pin:$pass");
     BlocProvider.of<NavigationCubit>(context).navigateToMainView();
   }
 }
