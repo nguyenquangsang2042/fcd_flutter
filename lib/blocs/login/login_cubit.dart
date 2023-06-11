@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginMailState());
+  LoginCubit(LoginState state) : super(state);
   void navigationToLoginMail() => emit(LoginMailState());
   void navigationToLoginOTP(String email) => emit(LoginOTPState(email: email));
 }

@@ -4,6 +4,7 @@ part of 'login_cubit.dart';
 abstract class LoginState {}
 
 class LoginMailState extends LoginState {}
+class LoginLoadingState extends LoginState {}
 class LoginOTPState extends LoginState {
   final String email;
   LoginOTPState({required this.email});

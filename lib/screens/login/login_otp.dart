@@ -143,6 +143,8 @@ class LoginOTPScreen extends StatelessWidget {
         "email", (context.read<LoginCubit>().state as LoginOTPState).email);
     String pass = CryptoController.instance.getMd5Hash("$pin#");
     print("hash code pin $pin:$pass");
+    Constanst.sharedPreferences.setString(
+        "pass", pass);
     BlocProvider.of<NavigationCubit>(context).navigateToMainView();
   }
 }

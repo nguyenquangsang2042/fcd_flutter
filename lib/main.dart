@@ -22,12 +22,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Constanst.db =
-  await $FloorAppDatabase.databaseBuilder('fcd_database.db').build();
+      await $FloorAppDatabase.databaseBuilder('fcd_database.db').build();
   Constanst.api = ApiClient(DioController().dio);
   Constanst.apiController = ApiController();
   Constanst.apiController.updateMasterData();
-  Constanst.sharedPreferences= await SharedPreferences.getInstance();
-  getDeviceInfo();
+  Constanst.sharedPreferences = await SharedPreferences.getInstance();
+  await getDeviceInfo();
   runApp(const MyApp());
 }
 
@@ -37,13 +37,16 @@ Future<void> getDeviceInfo() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    Constanst.deviceInfo = DeviceInfo.required(DeviceId: "'${androidInfo.id}'",
+    Constanst.deviceInfo = DeviceInfo.required(
+        DeviceId: "'${androidInfo.id}'",
         DevicePushToken: "'${await messaging.getToken()}'",
         DeviceOS: 1,
-        AppVersion:"'${packageInfo.version}'",
+        AppVersion: "'${packageInfo.version}'",
         DeviceOSVersion: "'${androidInfo.version.release}'",
         DeviceModel: "'${androidInfo.model}'");
   } else if (Platform.isIOS) {}
+  Constanst.loginName = Constanst.sharedPreferences.getString("email") ?? "";
+  Constanst.loginPass = Constanst.sharedPreferences.getString("pass") ?? "";
 }
 
 class MyApp extends StatelessWidget {
@@ -57,7 +60,10 @@ class MyApp extends StatelessWidget {
           create: (_) => NavigationCubit(),
         ),
         BlocProvider<LoginCubit>(
-          create: (_) => LoginCubit(),
+          create: (_) => LoginCubit(
+              Constanst.loginName.isNotEmpty && Constanst.loginPass.isNotEmpty
+                  ? LoginLoadingState()
+                  : LoginMailState()),
         ),
       ],
       child: MaterialApp(
@@ -66,7 +72,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
             useMaterial3: true,
           ),
-          home: NavigationScreen()),
+          home: const NavigationScreen()),
     );
   }
 }

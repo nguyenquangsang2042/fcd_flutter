@@ -67,7 +67,6 @@ class User{
   final String? rewardDiscipline;
   @JsonKey(name: 'EstimatedFlightTimeInMonth')
   final String? estimatedFlightTimeInMonth;
-  late bool isCurrent;
 
   User(
       this.id,
