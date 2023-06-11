@@ -145,6 +145,6 @@ class LoginOTPScreen extends StatelessWidget {
     print("hash code pin $pin:$pass");
     Constanst.sharedPreferences.setString(
         "pass", pass);
-    BlocProvider.of<NavigationCubit>(context).navigateToMainView();
+    BlocProvider.of<LoginCubit>(context).navigationToLoginLoaiding();
   }
 }
