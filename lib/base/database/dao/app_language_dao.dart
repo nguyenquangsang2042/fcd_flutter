@@ -1,5 +1,4 @@
 
-import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/app_language.dart';
 import 'package:floor/floor.dart';
 

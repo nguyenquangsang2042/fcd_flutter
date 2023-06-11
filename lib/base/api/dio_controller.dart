@@ -1,4 +1,3 @@
-import 'package:alice/alice.dart';
 import 'package:dio/dio.dart';
 
 class DioController {
