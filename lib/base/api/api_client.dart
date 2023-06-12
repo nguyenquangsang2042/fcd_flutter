@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:fcd_flutter/base/constanst.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
+import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
+import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
 import 'package:retrofit/retrofit.dart';
@@ -79,19 +82,14 @@ abstract class ApiClient {
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanWard')
   Future<ApiList<Ward>> getWard(
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiHandler.ashx?func=GetMenuApplication&LanguageId=0')
+  Future<ApiList<MenuApp>> getMenuApp(
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
 
-  @POST('/API/User.ashx?func=otpConfirm')
-  @FormUrlEncoded()
-  Future<ApiObject<User>> getCurrentLoginUser(
-    @Field("deviceInfo") String deviceInfo,
-    @Field("data") String data,
-    @Field("loginType") String loginType,
-    @Field("userTypeLogin") String userTypeLogin,
-  );
+  @GET('/API/ApiHandler.ashx?func=GetInfoListMenuHomeScreen')
+  Future<ApiList<MenuApp>> getMenuHome(@Query('data') String data);
 
-  @POST('/API/User.ashx?func=login&reLogin=1')
-  @FormUrlEncoded()
-  Future<ApiObject<User>> getCurrentUserRelogin(
-    @Field("data") String data,
-  );
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanNotify')
+  Future<ApiList<Notify>> getNotify(@Header('Cookie') String cookieValue,
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
 }

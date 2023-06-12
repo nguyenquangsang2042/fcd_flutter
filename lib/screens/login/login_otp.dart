@@ -1,5 +1,9 @@
 import 'package:fcd_flutter/base/alert_dialog.dart';
-import 'package:fcd_flutter/base/constans.dart';
+import 'package:fcd_flutter/base/api/api_client.dart';
+import 'package:fcd_flutter/base/api/api_controller.dart';
+import 'package:fcd_flutter/base/api/dio_controller.dart';
+import 'package:fcd_flutter/base/api/login_controller.dart';
+import 'package:fcd_flutter/base/constanst.dart';
 import 'package:fcd_flutter/base/crypto_controller.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
@@ -72,13 +76,14 @@ class LoginOTPScreen extends StatelessWidget {
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
                       onCompleted: (pin) async {
-                        Constanst.api
+                        LoginController.instance
                             .getCurrentLoginUser(
                                 Constanst.deviceInfo.toJson().toString(),
                                 "{'Email':'$email','VerifyCode':'$pin'}",
                                 "1",
                                 "1")
-                            .then((value) => updateDataLoginAndCurrentUser(
+                            .then((value) =>
+                            updateDataLoginAndCurrentUser(
                                 value.data, context, pin))
                             .onError((error, stackTrace) =>
                                 AlertDialogController.instance.showAlert(
@@ -141,10 +146,8 @@ class LoginOTPScreen extends StatelessWidget {
     Constanst.currentUser = currentUser;
     Constanst.sharedPreferences.setString(
         "email", (context.read<LoginCubit>().state as LoginOTPState).email);
-    String pass = CryptoController.instance.getMd5Hash("$pin#");
-    print("hash code pin $pin:$pass");
     Constanst.sharedPreferences.setString(
-        "pass", pass);
+        "pass", pin);
     BlocProvider.of<LoginCubit>(context).navigationToLoginLoaiding();
   }
 }

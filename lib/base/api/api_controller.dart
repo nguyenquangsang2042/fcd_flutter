@@ -4,12 +4,14 @@ import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
+import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
 
-import '../constans.dart';
+import '../constanst.dart';
 import '../model/api_list.dart';
 import '../model/app/announcement_category.dart';
 import '../model/app/app_language.dart';
@@ -39,6 +41,7 @@ class ApiController {
     updateProvince();
     updateDistrict();
     updateWard();
+    updateMenuApp();
   }
 
   void updateSetting()async {
@@ -385,6 +388,73 @@ void updateHelpDeskCategories()async {
         Constanst.db.wardDao.insertWard(data.data);
         Constanst.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Ward", data.dateNow));
+      });
+    }
+  }
+   void updateMenuApp()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("MenuApp");
+    if(dbVariable!=null) {
+      Constanst.api.getMenuApp(dbVariable.Value, "0").then((value) {
+        ApiList<MenuApp> data = value;
+        Constanst.db.menuAppDao.insertMenuApp(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("MenuApp", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getMenuApp("", "1").then((value) {
+         ApiList<MenuApp> data = value;
+        Constanst.db.menuAppDao.insertMenuApp(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("MenuApp", data.dateNow));
+      });
+    }
+  }
+
+void updateMenuHome()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("MenuApp");
+    if(dbVariable!=null) {
+      Constanst.api.getMenuApp(dbVariable.Value, "0").then((value) {
+        ApiList<MenuApp> data = value;
+        Constanst.db.menuAppDao.insertMenuApp(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("MenuApp", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getMenuApp("", "1").then((value) {
+         ApiList<MenuApp> data = value;
+        Constanst.db.menuAppDao.insertMenuApp(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("MenuApp", data.dateNow));
+      });
+    }
+  }
+
+
+
+
+
+
+  Future<void> updateNotify()async {
+    DBVariable? dbVariable= await Constanst.db.dbVariableDao.findDBVariableById("Notify");
+    if(dbVariable!=null) {
+      Constanst.api.getNotify(Constanst.sharedPreferences.get('set-cookie').toString(),dbVariable.Value, "0").then((value) {
+        ApiList<Notify> data = value;
+        Constanst.db.notifyDao.insertNotifies(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
+      });
+    }
+    else
+    {
+      Constanst.api.getNotify(Constanst.sharedPreferences.get('set-cookie').toString(),"", "1").then((value) {
+        ApiList<Notify> data = value;
+        Constanst.db.notifyDao.insertNotifies(data.data);
+        Constanst.db.dbVariableDao
+            .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
       });
     }
   }

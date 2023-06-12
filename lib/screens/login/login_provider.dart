@@ -1,6 +1,7 @@
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/screens/login/login_mail.dart';
 import 'package:fcd_flutter/screens/login/login_otp.dart';
+import 'package:fcd_flutter/screens/login/loading_screen.dart';
 import 'package:fcd_flutter/screens/login/relogin_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +18,10 @@ class LoginProvider extends StatelessWidget {
             return const LoginMailScreen();
           } else if (state is LoginOTPState) {
             return const LoginOTPScreen();
+          } else if (state is ReLoginState) {
+            return const ReLoginScreen();
           } else {
-            return ReloginSreen();
+            return const LoadingScreen();
           }
         });
   }

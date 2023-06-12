@@ -6,7 +6,9 @@ import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
+import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/pilot_schedule_all.dart';
 import 'package:fcd_flutter/base/model/app/pilot_schedule_pdf.dart';
 import 'package:fcd_flutter/base/model/app/province.dart';
@@ -70,6 +72,10 @@ class ApiList<T> extends Status {
       return District.fromJson(data);
     }else if (T == Ward) {
       return Ward.fromJson(data);
+    }else if (T == Notify) {
+      return Notify.fromJson(data);
+    }else if (T == MenuApp) {
+      return MenuApp.fromJson(data);
     } else {
       return null;
     }

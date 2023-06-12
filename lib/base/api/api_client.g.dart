@@ -538,60 +538,62 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ApiObject<User>> getCurrentLoginUser(
-    deviceInfo,
-    data,
-    loginType,
-    userTypeLogin,
+  Future<ApiList<MenuApp>> getMenuApp(
+    modified,
+    isFirst,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {
-      'deviceInfo': deviceInfo,
-      'data': data,
-      'loginType': loginType,
-      'userTypeLogin': userTypeLogin,
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
     };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ApiObject<User>>(Options(
-      method: 'POST',
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<MenuApp>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
-      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
-              '/API/User.ashx?func=otpConfirm',
+              '/API/ApiHandler.ashx?func=GetMenuApplication&LanguageId=0',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiObject<User>.fromJson(_result.data!);
+    final value = ApiList<MenuApp>.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ApiObject<User>> getCurrentUserRelogin(data) async {
+  Future<ApiList<Notify>> getNotify(
+    cookieValue,
+    modified,
+    isFirst,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {'data': data};
+    final queryParameters = <String, dynamic>{
+      r'Modified': modified,
+      r'isFirst': isFirst,
+    };
+    final _headers = <String, dynamic>{r'Cookie': cookieValue};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ApiObject<User>>(Options(
-      method: 'POST',
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<Notify>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
-      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
-              '/API/User.ashx?func=login&reLogin=1',
+              '/API/ApiPublic.ashx?func=get&bname=BeanNotify',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiObject<User>.fromJson(_result.data!);
+    final value = ApiList<Notify>.fromJson(_result.data!);
     return value;
   }
 

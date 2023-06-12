@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fcd_flutter/base/api/api_client.dart';
 import 'package:fcd_flutter/base/api/api_controller.dart';
-import 'package:fcd_flutter/base/constans.dart';
+import 'package:fcd_flutter/base/constanst.dart';
 import 'package:fcd_flutter/base/model/device_info.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginCubit>(
           create: (_) => LoginCubit(
               Constanst.loginName.isNotEmpty && Constanst.loginPass.isNotEmpty
-                  ? LoginLoadingState()
+                  ? ReLoginState()
                   : LoginMailState()),
         ),
       ],

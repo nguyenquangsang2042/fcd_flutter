@@ -5,6 +5,8 @@ import 'package:fcd_flutter/base/database/dao/department_dao.dart';
 import 'package:fcd_flutter/base/database/dao/district_dao.dart';
 import 'package:fcd_flutter/base/database/dao/faqs_dao.dart';
 import 'package:fcd_flutter/base/database/dao/help_desk_category_dao.dart';
+import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
+import 'package:fcd_flutter/base/database/dao/menuapp_dao.dart';
 import 'package:fcd_flutter/base/database/dao/nation_dao.dart';
 import 'package:fcd_flutter/base/database/dao/pilot_schedule_all_dao.dart';
 import 'package:fcd_flutter/base/database/dao/settings_dao.dart';
@@ -19,7 +21,10 @@ import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/menu_app.dart';
+import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
+import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/province.dart';
 import 'package:fcd_flutter/base/model/app/settings.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
@@ -36,6 +41,7 @@ import '../model/app/user_ticket_category.dart';
 import 'dao/announcement_category_dao.dart';
 import 'dao/app_language_dao.dart';
 import 'dao/helpdesk_linhvuc_dao.dart';
+import 'dao/notify_dao.dart';
 import 'dao/pilot_schedule_pdf_dao.dart';
 import 'dao/province_dao.dart';
 
@@ -59,7 +65,10 @@ part 'app_database.g.dart'; // the generated code will be there
   Nation,
   Province,
   Ward,
-  District
+  District,
+  Notify,
+  MenuApp,
+  MenuHome
 ])
 abstract class AppDatabase extends FloorDatabase {
   SettingsDao get settingDao;
@@ -81,4 +90,7 @@ abstract class AppDatabase extends FloorDatabase {
   ProvinceDao get provinceDao;
   DistrictDao get districtDao;
   WardDao get wardDao;
+  NotifyDao get notifyDao;
+  MenuAppDao get menuAppDao;
+  MenuHomeDao get menuHomeDao;
 }

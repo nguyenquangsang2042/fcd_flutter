@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fcd_flutter/base/constanst.dart';
 
 class DioController {
   static final DioController _singleton = DioController._internal();
@@ -9,9 +10,12 @@ class DioController {
 
   late Dio _dio;
 
-  Dio get dio => _dio;
+  Dio get dio {
+    return _dio;
+  }
 
   DioController._internal() {
     _dio = Dio();
   }
+//    Constanst.sharedPreferences.setString("set-cookie", _result.headers.value("set-cookie").toString()) => them dong nay tron login va relogin
 }
