@@ -6,6 +6,7 @@ part 'menu_home.g.dart';
 @JsonSerializable()
 @entity
 class MenuHome {
+  @primaryKey
   @JsonKey(name: 'ID')
   late int id;
 
