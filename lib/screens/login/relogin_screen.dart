@@ -30,9 +30,12 @@ class ReLoginScreen extends StatelessWidget {
             "1",
             "1")
         .then((value) => updateDataLoginAndCurrentUser(value.data, context))
-        .onError((error, stackTrace) => AlertDialogController.instance
-            .showAlert(context, "Vietnam Airlines", "Auth fail, try again!!",
-                "Cancel", () {}));
+        .onError((error, stackTrace) =>
+            AlertDialogController.instance.showAlert(
+                context, "Vietnam Airlines", "Auth fail, try again!!", "Cancel",
+                () {
+              BlocProvider.of<LoginCubit>(context).navigationToLoginMail();
+            }));
   }
 
   updateDataLoginAndCurrentUser(currentUser, BuildContext context) {
