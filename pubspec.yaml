@@ -54,7 +54,7 @@ dependencies:
   crypto: ^3.0.3
   pretty_dio_logger: ^1.3.1
   alice: ^0.3.3
-
+  circle_avatar: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -88,6 +88,10 @@ flutter:
     - asset/images/Background.png
     - asset/images/vna_logo.png
     - asset/images/icon_helpdesk.png
+    - asset/images/ic_title_vnairlines.png
+    - asset/images/icon_qrcode.png
+    - asset/images/main_background.png
+    - asset/images/icon_avatar64.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
