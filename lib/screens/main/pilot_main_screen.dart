@@ -70,7 +70,7 @@ class PilotMainScreen extends StatelessWidget {
               height: 250,
               child: BannerScreen(),
             ),
-            RecycleGridScreen(items: ['1', '2', '3', '4', '5', '6', '7'])
+            const Flexible(flex: 1, child: RecycleGridScreen())
           ],
         ),
       ),

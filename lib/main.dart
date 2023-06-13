@@ -20,7 +20,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (Platform.isAndroid) await Firebase.initializeApp();
   Constanst.db =
       await $FloorAppDatabase.databaseBuilder('fcd_database.db').build();
   Constanst.api = ApiClient(DioController().dio);
@@ -34,8 +34,9 @@ Future<void> main() async {
 Future<void> getDeviceInfo() async {
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
   if (Platform.isAndroid) {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     Constanst.deviceInfo = DeviceInfo.required(
         DeviceId: "'${androidInfo.id}'",
@@ -44,7 +45,16 @@ Future<void> getDeviceInfo() async {
         AppVersion: "'${packageInfo.version}'",
         DeviceOSVersion: "'${androidInfo.version.release}'",
         DeviceModel: "'${androidInfo.model}'");
-  } else if (Platform.isIOS) {}
+  } else if (Platform.isIOS) {
+    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+    Constanst.deviceInfo = DeviceInfo.required(
+        DeviceId: "''",
+        DevicePushToken: "''",
+        DeviceOS: 1,
+        AppVersion: "'${packageInfo.version}'",
+        DeviceOSVersion: "''",
+        DeviceModel: "''");
+  }
   Constanst.loginName = Constanst.sharedPreferences.getString("email") ?? "";
   Constanst.loginPass = Constanst.sharedPreferences.getString("pass") ?? "";
 }
