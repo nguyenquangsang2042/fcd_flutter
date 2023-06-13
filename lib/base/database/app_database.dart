@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:fcd_flutter/base/database/dao/airport_dao.dart';
+import 'package:fcd_flutter/base/database/dao/banner_dao.dart';
 import 'package:fcd_flutter/base/database/dao/db_variable_dao.dart';
 import 'package:fcd_flutter/base/database/dao/department_dao.dart';
 import 'package:fcd_flutter/base/database/dao/district_dao.dart';
@@ -16,6 +17,7 @@ import 'package:fcd_flutter/base/database/dao/user_ticket_status_dao.dart';
 import 'package:fcd_flutter/base/database/dao/ward_dao.dart';
 import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/app_language.dart';
+import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/model/app/db_variable.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
@@ -30,6 +32,7 @@ import 'package:fcd_flutter/base/model/app/settings.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
 import 'package:fcd_flutter/base/model/app/ward.dart';
 import 'package:floor/floor.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 import '../model/app/announcement_category.dart';
@@ -68,7 +71,8 @@ part 'app_database.g.dart'; // the generated code will be there
   District,
   Notify,
   MenuApp,
-  MenuHome
+  MenuHome,
+  BeanBanner,
 ])
 abstract class AppDatabase extends FloorDatabase {
   SettingsDao get settingDao;
@@ -93,4 +97,5 @@ abstract class AppDatabase extends FloorDatabase {
   NotifyDao get notifyDao;
   MenuAppDao get menuAppDao;
   MenuHomeDao get menuHomeDao;
+  BannerDao get bannerDao;
 }

@@ -2,11 +2,13 @@ import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
 import 'package:fcd_flutter/base/model/app/app_language.dart';
+import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
+import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/pilot_schedule_all.dart';
@@ -68,14 +70,18 @@ class ApiList<T> extends Status {
       return Nation.fromJson(data);
     } else if (T == Province) {
       return Province.fromJson(data);
-    }else if (T == District) {
+    } else if (T == District) {
       return District.fromJson(data);
-    }else if (T == Ward) {
+    } else if (T == Ward) {
       return Ward.fromJson(data);
-    }else if (T == Notify) {
+    } else if (T == Notify) {
       return Notify.fromJson(data);
-    }else if (T == MenuApp) {
+    } else if (T == MenuApp) {
       return MenuApp.fromJson(data);
+    } else if (T == MenuHome) {
+      return MenuHome.fromJson(data);
+    } else if (T == BeanBanner) {
+      return BeanBanner.fromJson(data);
     } else {
       return null;
     }

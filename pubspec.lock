@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  circle_avatar:
+    dependency: "direct main"
+    description:
+      name: circle_avatar
+      sha256: "18bd16a716635940c997a6857795f613e7d05f122ad81420a0bcaf82031f8a1b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   clock:
     dependency: transitive
     description:

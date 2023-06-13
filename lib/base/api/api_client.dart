@@ -1,15 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
+import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
+import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
+import 'package:flutter/material.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/app/airport.dart';
@@ -87,7 +91,10 @@ abstract class ApiClient {
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
 
   @GET('/API/ApiHandler.ashx?func=GetInfoListMenuHomeScreen')
-  Future<ApiList<MenuApp>> getMenuHome(@Query('data') String data);
+  Future<ApiList<MenuHome>> getMenuHome(@Query('data') String data);
+
+  @GET('/API/ApiLibrary.ashx?func=GetBanner')
+  Future<ApiList<BeanBanner>> getBanner(@Header('Cookie') String cookieValue);
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanNotify')
   Future<ApiList<Notify>> getNotify(@Header('Cookie') String cookieValue,

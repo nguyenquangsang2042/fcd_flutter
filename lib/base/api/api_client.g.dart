@@ -567,6 +567,53 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<ApiList<MenuHome>> getMenuHome(data) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'data': data};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiList<MenuHome>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiHandler.ashx?func=GetInfoListMenuHomeScreen',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<MenuHome>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiList<BeanBanner>> getBanner(cookieValue) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Cookie': cookieValue};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiList<BeanBanner>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/API/ApiLibrary.ashx?func=GetBanner',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiList<BeanBanner>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ApiList<Notify>> getNotify(
     cookieValue,
     modified,
