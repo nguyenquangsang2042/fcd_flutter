@@ -949,7 +949,7 @@ class _$MenuHomeDao extends MenuHomeDao {
   _$MenuHomeDao(
     this.database,
     this.changeListener,
-  )   : _queryAdapter = QueryAdapter(database),
+  )   : _queryAdapter = QueryAdapter(database, changeListener),
         _menuHomeInsertionAdapter = InsertionAdapter(
             database,
             'MenuHome',
@@ -961,7 +961,8 @@ class _$MenuHomeDao extends MenuHomeDao {
                   'url': item.url,
                   'index': item.index,
                   'indexIpad': item.indexIpad
-                });
+                },
+            changeListener);
 
   final sqflite.DatabaseExecutor database;
 
@@ -974,6 +975,21 @@ class _$MenuHomeDao extends MenuHomeDao {
   @override
   Future<void> deleteAll() async {
     await _queryAdapter.queryNoReturn('Delete From MenuHome');
+  }
+
+  @override
+  Stream<List<MenuHome>?> getAll() {
+    return _queryAdapter.queryListStream('Select * From MenuHome',
+        mapper: (Map<String, Object?> row) => MenuHome(
+            row['id'] as int,
+            row['title'] as String,
+            row['status'] as int,
+            row['key'] as String,
+            row['url'] as String,
+            row['index'] as int,
+            row['indexIpad'] as int),
+        queryableName: 'MenuHome',
+        isView: false);
   }
 
   @override

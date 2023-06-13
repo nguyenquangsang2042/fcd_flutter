@@ -55,6 +55,7 @@ dependencies:
   pretty_dio_logger: ^1.3.1
   alice: ^0.3.3
   circle_avatar: ^1.0.0
+  responsive_grid_list: ^1.3.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -92,6 +93,18 @@ flutter:
     - asset/images/icon_qrcode.png
     - asset/images/main_background.png
     - asset/images/icon_avatar64.png
+    - asset/images/icon_shield2.png
+    - asset/images/ic_news.png
+    - asset/images/icon_lisence30.png
+    - asset/images/icon_plane30Gray.png
+    - asset/images/icon_ticket_booking30.png
+    - asset/images/icon_training.png
+    - asset/images/icon_payroll.png
+    - asset/images/icon_library30.png
+    - asset/images/icon_user2.png
+    - asset/images/icon_FAQs.png
+    - asset/images/icon_report.png
+    - asset/images/ic_menu_application.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -1,6 +1,8 @@
 import 'package:fcd_flutter/base/constanst.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
+import 'package:fcd_flutter/screens/main/banner_screen.dart';
+import 'package:fcd_flutter/screens/main/recycle_grid_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -53,7 +55,7 @@ class PilotMainScreen extends StatelessWidget {
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: EdgeInsets.only(left: 15),
+                    padding: const EdgeInsets.only(left: 15),
                     child: ClipOval(
                       child: Container(
                         width: 40.0,
@@ -64,27 +66,11 @@ class PilotMainScreen extends StatelessWidget {
                     ),
                   )),
             ),
-            SizedBox(
-              height: 200,
-              child: StreamBuilder(
-                stream: Constanst.db.bannerDao.findAll(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return PageView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ImageWithCookie(
-                          imageUrl:
-                              '${Constanst.baseURL}${snapshot.data![index].filePath}',
-                        );
-                      },
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-              ),
-            )
+            const SizedBox(
+              height: 250,
+              child: BannerScreen(),
+            ),
+            RecycleGridScreen(items: ['1', '2', '3', '4', '5', '6', '7'])
           ],
         ),
       ),

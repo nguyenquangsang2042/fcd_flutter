@@ -9,4 +9,6 @@ abstract class MenuHomeDao {
   Future<void> insertMenuHome(List<MenuHome> menuHomes);
   @Query('Delete From MenuHome')
   Future<void> deleteAll();
+  @Query('Select * From MenuHome')
+  Stream<List<MenuHome>?> getAll();
 }
