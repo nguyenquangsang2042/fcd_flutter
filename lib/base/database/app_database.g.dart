@@ -882,7 +882,8 @@ class _$NotifyDao extends NotifyDao {
   _$NotifyDao(
     this.database,
     this.changeListener,
-  ) : _notifyInsertionAdapter = InsertionAdapter(
+  )   : _queryAdapter = QueryAdapter(database, changeListener),
+        _notifyInsertionAdapter = InsertionAdapter(
             database,
             'Notify',
             (Notify item) => <String, Object?>{
@@ -915,13 +916,63 @@ class _$NotifyDao extends NotifyDao {
                   'iconPath': item.iconPath,
                   'isSurveyPoll': item.isSurveyPoll,
                   'searCol': item.searCol
-                });
+                },
+            changeListener);
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
 
+  final QueryAdapter _queryAdapter;
+
   final InsertionAdapter<Notify> _notifyInsertionAdapter;
+
+  @override
+  Stream<List<Notify>> getListNotifyWithAnnounceCategory(
+    List<String> beanAnnounceID,
+    String keyNews,
+  ) {
+    const offset = 2;
+    final _sqliteVariablesForBeanAnnounceID = Iterable<String>.generate(
+        beanAnnounceID.length, (i) => '?${i + offset}').join(',');
+    return _queryAdapter.queryListStream(
+        'SELECT * FROM Notify WHERE ANStatus <> -1 AND AnnounCategoryId in (' +
+            _sqliteVariablesForBeanAnnounceID +
+            ') AND AnnounCategoryId <> ?1 ORDER BY Created DESC',
+        mapper: (Map<String, Object?> row) => Notify(
+            row['id'] as String,
+            row['userId'] as String,
+            row['content'] as String,
+            row['resourceCategoryId'] as int,
+            row['resourceSubCategoryId'] as int,
+            row['announcementId'] as int,
+            row['link'] as String?,
+            row['icon'] as String?,
+            (row['flgRead'] as int) != 0,
+            row['sendTime'] as String?,
+            row['readTime'] as String?,
+            (row['flgConfirm'] as int) != 0,
+            row['flgConfirmed'] as int,
+            (row['flgReply'] as int) != 0,
+            (row['flgReplied'] as int) != 0,
+            row['replyTime'] as String?,
+            row['replyContent'] as String?,
+            (row['flgImmediately'] as int) != 0,
+            (row['showPopup'] as int) != 0,
+            row['actionTime'] as String?,
+            row['modified'] as String,
+            row['created'] as String,
+            (row['flgSurvey'] as int) != 0,
+            row['title'] as String?,
+            row['anStatus'] as int,
+            row['announCategoryId'] as int,
+            row['iconPath'] as String?,
+            row['isSurveyPoll'] as int,
+            row['searCol'] as String),
+        arguments: [keyNews, ...beanAnnounceID],
+        queryableName: 'Notify',
+        isView: false);
+  }
 
   @override
   Future<void> insertNotifies(List<Notify> notify) async {

@@ -1,11 +1,12 @@
 import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/screens/notification/news_screen.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
 
   late List<String> defaultSafety;
-  late String keyNews;
+  String keyNew ='';
   late String beanAnnounceID;
 
   @override
@@ -15,7 +16,7 @@ class NotificationScreen extends StatelessWidget {
         builder: (context, snapshot) {
           return Scaffold(
             appBar: AppBar(
-              leading: Container(
+              leading: SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
@@ -30,11 +31,11 @@ class NotificationScreen extends StatelessWidget {
                   },
                 ),
               ),
-              title: Text(
+              title: const Text(
                 'Safety',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
-              backgroundColor: Color(0xFF006784),
+              backgroundColor: const Color(0xFF006784),
               centerTitle: true,
               actions: [
                 Container(
@@ -96,7 +97,31 @@ class NotificationScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
+                Expanded(flex: 1,child: StreamBuilder(
+                    stream: Constanst.db.notifyDao
+                        .getListNotifyWithAnnounceCategory(
+                        defaultSafety, keyNew),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        return ListView.builder(
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) {
+                              return InkResponse(child: Container(height: 50,child: ListTile(
+                                title: Text(snapshot.data![index].content),
+                              ),),onTap: (){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NewsScreen(notify: snapshot.data![index])));
+                              },);
+                            });
+                      } else {
+                        return Container(
+                          child: Center(child: Text("Không có dữ liệu"),),
+                        );
+                      }
+                    }),)
               ],
             ),
           );
@@ -115,7 +140,7 @@ class NotificationScreen extends StatelessWidget {
         .onError((error, stackTrace) => debugPrint(error.toString()));
     await Constanst.db.settingDao
         .findSettingByKey("NEWS_CATEGORY_ID")
-        .then((value) => keyNews = value!.VALUE.toString());
+        .then((value) => keyNew = value!.VALUE.toString());
 
     beanAnnounceID = "'${defaultSafety.join("','")}'";
   }
