@@ -17,3 +17,4 @@ samples, guidance on mobile development, and a full API reference.
 
 https://pilotuat.vuthao.com/API/ApiLibrary.ashx?func=GetBanner&&enc=RSA
 
+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
