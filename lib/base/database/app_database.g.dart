@@ -300,7 +300,8 @@ class _$SettingsDao extends SettingsDao {
   _$SettingsDao(
     this.database,
     this.changeListener,
-  ) : _settingInsertionAdapter = InsertionAdapter(
+  )   : _queryAdapter = QueryAdapter(database),
+        _settingInsertionAdapter = InsertionAdapter(
             database,
             'Setting',
             (Setting item) => <String, Object?>{
@@ -315,7 +316,21 @@ class _$SettingsDao extends SettingsDao {
 
   final StreamController<String> changeListener;
 
+  final QueryAdapter _queryAdapter;
+
   final InsertionAdapter<Setting> _settingInsertionAdapter;
+
+  @override
+  Future<Setting?> findSettingByKey(String key) async {
+    return _queryAdapter.query('SELECT * FROM Setting WHERE [KEY] = ?1',
+        mapper: (Map<String, Object?> row) => Setting(
+            row['KEY'] as String,
+            row['VALUE'] as String,
+            row['DESC'] as String?,
+            row['DEVICE'] as int,
+            row['Modified'] as String),
+        arguments: [key]);
+  }
 
   @override
   Future<void> insertSettings(List<Setting> settings) async {

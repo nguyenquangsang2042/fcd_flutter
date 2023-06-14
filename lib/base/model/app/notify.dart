@@ -93,6 +93,7 @@ class Notify {
 
   @JsonKey(name: 'SearCol')
   late String searCol;
+  
 
   Notify(
       this.id,

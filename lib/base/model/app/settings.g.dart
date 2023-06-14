@@ -6,12 +6,13 @@ part of 'settings.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Setting _$SettingFromJson(Map<String, dynamic> json) => Setting()
-  ..KEY = json['KEY'] as String
-  ..VALUE = json['VALUE'] as String
-  ..DESC = json['DESC'] as String?
-  ..DEVICE = json['DEVICE'] as int
-  ..Modified = json['Modified'] as String;
+Setting _$SettingFromJson(Map<String, dynamic> json) => Setting(
+      json['KEY'] as String,
+      json['VALUE'] as String,
+      json['DESC'] as String?,
+      json['DEVICE'] as int,
+      json['Modified'] as String,
+    );
 
 Map<String, dynamic> _$SettingToJson(Setting instance) => <String, dynamic>{
       'KEY': instance.KEY,

@@ -13,7 +13,8 @@ class Setting
   late int  DEVICE ;
   late String  Modified ;
 
-  Setting();
+  Setting(this.KEY, this.VALUE, this.DESC, this.DEVICE, this.Modified);
+
   factory Setting.fromJson(Map<String, dynamic> json) => _$SettingFromJson(json);
   Map<String, dynamic> toJson() => _$SettingToJson(this);
 }

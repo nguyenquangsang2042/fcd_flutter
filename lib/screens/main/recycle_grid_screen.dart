@@ -3,6 +3,8 @@ import 'package:fcd_flutter/screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
+import 'main_controller.dart';
+
 class RecycleGridScreen extends StatelessWidget {
   const RecycleGridScreen({Key? key}) : super(key: key);
 
@@ -24,7 +26,7 @@ class RecycleGridScreen extends StatelessWidget {
               maxItemsPerRow:
                   5, // The maximum items to show in a single row. Can be useful on large screens
               listViewBuilderOptions:
-                  ListViewBuilderOptions(), // Options that are getting passed to the ListView.builder() function
+                  ListViewBuilderOptions(controller: MainController.instance.scrollController), // Options that are getting passed to the ListView.builder() function
               children: snapshot.data!
                   .map((e) => InkResponse(
                         onTap: () {
