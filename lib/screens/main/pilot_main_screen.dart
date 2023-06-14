@@ -33,7 +33,7 @@ class PilotMainScreen extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.centerRight,
                     child: SizedBox(
-                        child: Image.asset('asset/images/icon_qrcode.png'),
+                        child: Image.asset('asset/images/icon_qrcode.png',),
                         height: 35,
                         width: 35)),
               )
