@@ -43,33 +43,36 @@ class PilotMainScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+            Wrap(children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
                 ),
-              ),
-              height: 50,
-              child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: ClipOval(
-                      child: Container(
-                        width: 40.0,
-                        height: 40.0,
-                        decoration: const BoxDecoration(color: Colors.white),
-                        child: Image.asset('asset/images/icon_avatar64.png'),
+                height: 50,
+                width: 50,
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: ClipOval(
+                        child: Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: Image.asset('asset/images/icon_avatar64.png'),
+                        ),
                       ),
-                    ),
-                  )),
-            ),
-            const SizedBox(
-              height: 250,
-              child: BannerScreen(),
-            ),
+                    )),
+              ),
+              const SizedBox(
+                height: 250,
+                child: BannerScreen(),
+              ),
+            ],),
             const Flexible(flex: 1, child: RecycleGridScreen())
           ],
         ),
