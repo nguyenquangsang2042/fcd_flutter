@@ -99,39 +99,56 @@ class NotificationScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 1,width: ,)
                 Expanded(
                   flex: 1,
-                  child: StreamBuilder(
+                  child: RefreshIndicator(
+                    onRefresh: ()async{
+                      Constanst.apiController.updateNation();
+                    }, child: StreamBuilder(
                       stream: Constanst.db.notifyDao
                           .getListNotifyWithAnnounceCategory(
-                              defaultSafety, keyNew),
+                          defaultSafety, keyNew),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data != null) {
                           return ListView.builder(
                               itemCount: snapshot.data?.length,
                               itemBuilder: (context, index) {
-                                return InkResponse(
+                                return Container(child: InkResponse(
                                   child: Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 7,
-                                        right: 7,
-                                        top: 5,
-                                        bottom: 5),
+                                        left: 7, right: 7, top: 5, bottom: 5),
                                     child: ListTile(
-                                      subtitle: Text(
-                                          snapshot.data![index].content),
                                       leading: SizedBox(
                                         height: 50,
                                         width: 50,
                                         child: ImageWithCookie(
                                             imageUrl:
-                                                '${Constanst.baseURL}${snapshot.data![index].iconPath!}',
+                                            '${Constanst.baseURL}${snapshot.data![index].iconPath!}',
                                             errImage:
-                                                'asset/images/logo_vna120.png'),
+                                            'asset/images/logo_vna120.png'),
                                       ),
                                       title:
+                                      Text(snapshot.data![index].content),
+                                      subtitle: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
                                           Text(snapshot.data![index].content),
+                                          Row(children: [
+                                            Expanded(child: Text(snapshot.data![index].content),flex: 8,),
+                                            Expanded(child:Row(children: [
+                                              if(snapshot.data![index].flgSurvey)
+                                                Expanded(child: SizedBox(height: 15,width: 15,child: Image.asset('asset/images/icon_reply.png'),),flex: 1,),
+                                              if(snapshot.data![index].flgReply &&!snapshot.data![index].flgReplied)
+                                                Expanded(child: SizedBox(height: 15,width: 15,child: Image.asset('asset/images/icon_answer.png'),),flex: 1,),
+                                              if(snapshot.data![index].flgConfirm)
+                                                Expanded(child: SizedBox(height: 15,width: 15,child: Image.asset('asset/images/icon_confirm.png'),),flex: 1,),
+                                              if(snapshot.data![index].flgImmediately)
+                                                Expanded(child:SizedBox(height: 15,width: 15,child:  Image.asset('asset/images/icon_flaghigh.png'),),flex: 1,),
+                                            ],),flex: 2,),
+                                          ],)
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   onTap: () {
@@ -139,13 +156,13 @@ class NotificationScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => NewsScreen(
-                                                  notify: snapshot.data![index],
-                                                  safetyID: defaultSafety[0],
-                                                  qualificationID:
-                                                      defaultSafety[1],
-                                                )));
+                                              notify: snapshot.data![index],
+                                              safetyID: defaultSafety[0],
+                                              qualificationID:
+                                              defaultSafety[1],
+                                            )));
                                   },
-                                );
+                                ),color: index%2!=0?Colors.white:Colors.blueGrey.shade50,);
                               });
                         } else {
                           return const Center(
@@ -153,6 +170,7 @@ class NotificationScreen extends StatelessWidget {
                           );
                         }
                       }),
+                  ),
                 )
               ],
             ),

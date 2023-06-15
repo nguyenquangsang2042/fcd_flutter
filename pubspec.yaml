@@ -111,6 +111,10 @@ flutter:
     - asset/images/icon_sort_descending.png
     - asset/images/icon_search26.png
     - asset/images/logo_vna120.png
+    - asset/images/icon_reply.png
+    - asset/images/icon_answer.png
+    - asset/images/icon_confirm.png
+    - asset/images/icon_flaghigh.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
