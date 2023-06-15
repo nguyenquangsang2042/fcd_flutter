@@ -17,6 +17,7 @@ class BannerScreen extends StatelessWidget {
                         return ImageWithCookie(
                           imageUrl:
                               '${Constanst.baseURL}${snapshot.data![index].filePath}',
+                          errImage: 'asset/images/main_background.png',
                         );
                       },
                     );

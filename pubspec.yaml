@@ -110,6 +110,7 @@ flutter:
     - asset/images/icon_filter.png
     - asset/images/icon_sort_descending.png
     - asset/images/icon_search26.png
+    - asset/images/logo_vna120.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

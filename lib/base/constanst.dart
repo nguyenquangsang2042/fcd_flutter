@@ -15,4 +15,5 @@ class Constanst {
   static late String loginName;
   static late String loginPass;
   static String baseURL='https://pilot.vuthao.com';
+  static String baseDomain='pilot.vuthao.com';
 }

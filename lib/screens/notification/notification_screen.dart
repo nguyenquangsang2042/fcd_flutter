@@ -1,4 +1,5 @@
 import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/notification/news_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,7 @@ class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
 
   late List<String> defaultSafety;
-  String keyNew ='';
+  String keyNew = '';
   late String beanAnnounceID;
 
   @override
@@ -98,30 +99,61 @@ class NotificationScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(flex: 1,child: StreamBuilder(
-                    stream: Constanst.db.notifyDao
-                        .getListNotifyWithAnnounceCategory(
-                        defaultSafety, keyNew),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data != null) {
-                        return ListView.builder(
-                            itemCount: snapshot.data?.length,
-                            itemBuilder: (context, index) {
-                              return InkResponse(child: Container(height: 50,child: ListTile(
-                                title: Text(snapshot.data![index].content),
-                              ),),onTap: (){
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => NewsScreen(notify: snapshot.data![index])));
-                              },);
-                            });
-                      } else {
-                        return Container(
-                          child: Center(child: Text("Không có dữ liệu"),),
-                        );
-                      }
-                    }),)
+                SizedBox(height: 1,width: ,)
+                Expanded(
+                  flex: 1,
+                  child: StreamBuilder(
+                      stream: Constanst.db.notifyDao
+                          .getListNotifyWithAnnounceCategory(
+                              defaultSafety, keyNew),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          return ListView.builder(
+                              itemCount: snapshot.data?.length,
+                              itemBuilder: (context, index) {
+                                return InkResponse(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 7,
+                                        right: 7,
+                                        top: 5,
+                                        bottom: 5),
+                                    child: ListTile(
+                                      subtitle: Text(
+                                          snapshot.data![index].content),
+                                      leading: SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: ImageWithCookie(
+                                            imageUrl:
+                                                '${Constanst.baseURL}${snapshot.data![index].iconPath!}',
+                                            errImage:
+                                                'asset/images/logo_vna120.png'),
+                                      ),
+                                      title:
+                                          Text(snapshot.data![index].content),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => NewsScreen(
+                                                  notify: snapshot.data![index],
+                                                  safetyID: defaultSafety[0],
+                                                  qualificationID:
+                                                      defaultSafety[1],
+                                                )));
+                                  },
+                                );
+                              });
+                        } else {
+                          return const Center(
+                            child: Text("Không có dữ liệu"),
+                          );
+                        }
+                      }),
+                )
               ],
             ),
           );

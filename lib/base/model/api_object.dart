@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fcd_flutter/base/model/status.dart';
 
 import 'app/airport.dart';
@@ -23,8 +25,9 @@ class ApiObject<T> extends Status {
 
   ApiObject();
 
-  ApiObject.fromJson(Map<String, dynamic> json) {
-    data = redirectFormat(json['data']) as T;
+  ApiObject.fromJson(Map<String, dynamic> jsonstr) {
+    data = redirectFormat(jsonstr['data']) as T;
+
   }
 
   Map<String, dynamic> toJson() {
@@ -32,7 +35,7 @@ class ApiObject<T> extends Status {
     data['data'] = this.data;
     return data;
   }
-  Object? redirectFormat(Map<String, dynamic> data) {
+  Object? redirectFormat(dynamic data) {
     if (T == Setting) {
       return Setting.fromJson(data);
     } else if (T == User) {
@@ -68,7 +71,7 @@ class ApiObject<T> extends Status {
     }else if (T == Ward) {
       return Ward.fromJson(data);
     } else {
-      return null;
+      return data as T;
     }
   }
 }
