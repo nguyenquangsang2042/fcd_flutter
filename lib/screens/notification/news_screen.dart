@@ -1,7 +1,10 @@
 import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/download_file.dart';
+import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:path/path.dart';
 
 class NewsScreen extends StatelessWidget {
   NewsScreen(
@@ -60,8 +63,30 @@ class NewsScreen extends StatelessWidget {
                     }
                   }
                   return InAppWebView(
-                    shouldOverrideUrlLoading: (controller,navigationAction)async{
-                      return NavigationActionPolicy.ALLOW;
+                    onLoadStart: (controll, url) async {
+                      await controll.goBack();
+                      if (url.toString().contains("tel")) {
+                        await controll.goBack();
+                        await Functions.instance.launchCustomUrl(
+                            url.toString().split(":")[0],
+                            url.toString().split(":")[1]);
+                      } else if (url
+                              .toString()
+                              .toLowerCase()
+                              .endsWith('.doc') ||
+                          url.toString().toLowerCase().endsWith('.docx') ||
+                          url.toString().toLowerCase().endsWith('.pdf') ||
+                          url.toString().toLowerCase().endsWith('.xls') ||
+                          url.toString().toLowerCase().endsWith('.xlsx') ||
+                          url.toString().toLowerCase().endsWith('.ppt') ||
+                          url.toString().toLowerCase().endsWith('.pptx') ||
+                          url.toString().toLowerCase().endsWith('.jpg') ||
+                          url.toString().toLowerCase().endsWith('.png') ||
+                          url.toString().toLowerCase().endsWith('.gif') ||
+                          url.toString().toLowerCase().endsWith('.txt')) {
+                        await controll.stopLoading();
+                        await DownloadFile.downloadFile(context, url.toString(), basename(url.toString()));
+                      }
                     },
                     initialUrlRequest:
                         URLRequest(url: Uri.parse('${Constanst.baseURL}$url')),

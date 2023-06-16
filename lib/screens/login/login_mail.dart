@@ -111,7 +111,7 @@ class LoginMailScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           TextButton(
-                            onPressed: () => _launchUrl('tel', '0966443324'),
+                            onPressed: () => Functions.instance.launchCustomUrl('tel', '0966443324'),
                             child: const Text(
                               "0966443324",
                               style:
@@ -120,7 +120,7 @@ class LoginMailScreen extends StatelessWidget {
                           ),
                           const Text("/"),
                           TextButton(
-                            onPressed: () => _launchUrl('tel', '0966443324'),
+                            onPressed: () => Functions.instance.launchCustomUrl('tel', '0966443324'),
                             child: const Text(
                               "0966443324",
                               style:
@@ -138,13 +138,5 @@ class LoginMailScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _launchUrl(_type, _url) async {
-    final Uri smsLaunchUri = Uri(
-      scheme: _type,
-      path: _url,
-    );
-    if (!await launchUrl(smsLaunchUri)) {
-      throw Exception('Could not launch $_url');
-    }
-  }
+
 }

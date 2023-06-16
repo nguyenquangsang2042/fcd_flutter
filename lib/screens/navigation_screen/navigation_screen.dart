@@ -16,7 +16,7 @@ class NavigationScreen extends StatelessWidget {
           if (state == NavigationView.login) {
             return const LoginProvider();
           } else if (state == NavigationView.main) {
-            return const PilotMainScreen();
+            return PilotMainScreen();
           }
           return const SizedBox.shrink();
         },

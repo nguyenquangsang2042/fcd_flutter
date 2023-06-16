@@ -1,3 +1,4 @@
+import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/constanst.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
@@ -8,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class PilotMainScreen extends StatelessWidget {
-  const PilotMainScreen({Key? key}) : super(key: key);
-
+  PilotMainScreen({Key? key}) : super(key: key);
+  ValueNotifier<bool> isRefresh = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     MainController.instance.wightBanner.value =
@@ -33,7 +34,9 @@ class PilotMainScreen extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.centerRight,
                     child: SizedBox(
-                        child: Image.asset('asset/images/icon_qrcode.png',),
+                        child: Image.asset(
+                          'asset/images/icon_qrcode.png',
+                        ),
                         height: 35,
                         width: 35)),
               )
@@ -151,7 +154,22 @@ class PilotMainScreen extends StatelessWidget {
                     );
                   }
                 }),
-            const Flexible(flex: 1, child: RecycleGridScreen())
+            Flexible(
+                flex: 1,
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: isRefresh,
+                  builder: (_, value, __) {
+                    return DeclarativeRefreshIndicator(
+                        child: RecycleGridScreen(),
+                        refreshing: value,
+                        onRefresh: () {
+                          isRefresh.value = true;
+                          Constanst.apiController.updateMasterData();
+                          Future.delayed(Duration(seconds: 3))
+                              .then((value) => isRefresh.value = false);
+                        });
+                  },
+                ))
           ],
         ),
       ),
