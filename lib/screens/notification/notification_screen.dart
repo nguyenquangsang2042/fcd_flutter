@@ -1,8 +1,8 @@
+import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/constanst.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/notification/news_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
@@ -10,8 +10,7 @@ class NotificationScreen extends StatelessWidget {
   late List<String> defaultSafety;
   String keyNew = '';
   late String beanAnnounceID;
-  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey();
-
+  ValueNotifier<bool> isRefreshing = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -103,147 +102,155 @@ class NotificationScreen extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 1,
-                  child: LiquidPullToRefresh(
-                    height: 100,
-                    color: const Color(0xFF006784),
-                    showChildOpacityTransition: true,
-                    onRefresh: () async {
-                      Constanst.apiController.updateNotify();
-                    },
-                    child: StreamBuilder(
-                        stream: Constanst.db.notifyDao
-                            .getListNotifyWithAnnounceCategory(
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: isRefreshing,
+                    builder: (context,value,_){
+                      return DeclarativeRefreshIndicator(
+                        refreshing: value,
+                        color: const Color(0xFF006784),
+                        onRefresh: () async {
+                          isRefreshing.value=true;
+                          Constanst.apiController.updateNotify();
+                          Future.delayed(Duration(seconds: 3)).then((value) => {
+                            isRefreshing.value=false
+                          });
+                        },
+                        child: StreamBuilder(
+                            stream: Constanst.db.notifyDao
+                                .getListNotifyWithAnnounceCategory(
                                 defaultSafety, keyNew),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            return ListView.builder(
-                                itemCount: snapshot.data?.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    color: index % 2 != 0
-                                        ? Colors.white
-                                        : Colors.blueGrey.shade50,
-                                    child: InkResponse(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 7,
-                                            right: 7,
-                                            top: 5,
-                                            bottom: 5),
-                                        child: ListTile(
-                                          leading: SizedBox(
-                                            height: 50,
-                                            width: 50,
-                                            child: ImageWithCookie(
-                                                imageUrl:
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData && snapshot.data != null) {
+                                return ListView.builder(
+                                    itemCount: snapshot.data?.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        color: index % 2 != 0
+                                            ? Colors.white
+                                            : Colors.blueGrey.shade50,
+                                        child: InkResponse(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 7,
+                                                right: 7,
+                                                top: 5,
+                                                bottom: 5),
+                                            child: ListTile(
+                                              leading: SizedBox(
+                                                height: 50,
+                                                width: 50,
+                                                child: ImageWithCookie(
+                                                    imageUrl:
                                                     '${Constanst.baseURL}${snapshot.data![index].iconPath!}',
-                                                errImage:
+                                                    errImage:
                                                     'asset/images/logo_vna120.png'),
-                                          ),
-                                          title: Text(
-                                              snapshot.data![index].content),
-                                          subtitle: Column(
-                                            crossAxisAlignment:
+                                              ),
+                                              title: Text(
+                                                  snapshot.data![index].content),
+                                              subtitle: Column(
+                                                crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            mainAxisAlignment:
+                                                mainAxisAlignment:
                                                 MainAxisAlignment.start,
-                                            children: [
-                                              Text(snapshot
-                                                  .data![index].content),
-                                              Row(
                                                 children: [
-                                                  Expanded(
-                                                    flex: 8,
-                                                    child: Text(snapshot
-                                                        .data![index].content),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Row(
-                                                      children: [
-                                                        if (snapshot
-                                                            .data![index]
-                                                            .flgSurvey)
-                                                          Expanded(
-                                                            flex: 1,
-                                                            child: SizedBox(
-                                                              height: 15,
-                                                              width: 15,
-                                                              child: Image.asset(
-                                                                  'asset/images/icon_reply.png'),
-                                                            ),
-                                                          ),
-                                                        if (snapshot
+                                                  Text(snapshot
+                                                      .data![index].content),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 8,
+                                                        child: Text(snapshot
+                                                            .data![index].content),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Row(
+                                                          children: [
+                                                            if (snapshot
+                                                                .data![index]
+                                                                .flgSurvey)
+                                                              Expanded(
+                                                                flex: 1,
+                                                                child: SizedBox(
+                                                                  height: 15,
+                                                                  width: 15,
+                                                                  child: Image.asset(
+                                                                      'asset/images/icon_reply.png'),
+                                                                ),
+                                                              ),
+                                                            if (snapshot
                                                                 .data![index]
                                                                 .flgReply &&
-                                                            !snapshot
+                                                                !snapshot
+                                                                    .data![index]
+                                                                    .flgReplied)
+                                                              Expanded(
+                                                                flex: 1,
+                                                                child: SizedBox(
+                                                                  height: 15,
+                                                                  width: 15,
+                                                                  child: Image.asset(
+                                                                      'asset/images/icon_answer.png'),
+                                                                ),
+                                                              ),
+                                                            if (snapshot
                                                                 .data![index]
-                                                                .flgReplied)
-                                                          Expanded(
-                                                            flex: 1,
-                                                            child: SizedBox(
-                                                              height: 15,
-                                                              width: 15,
-                                                              child: Image.asset(
-                                                                  'asset/images/icon_answer.png'),
-                                                            ),
-                                                          ),
-                                                        if (snapshot
-                                                            .data![index]
-                                                            .flgConfirm)
-                                                          Expanded(
-                                                            flex: 1,
-                                                            child: SizedBox(
-                                                              height: 15,
-                                                              width: 15,
-                                                              child: Image.asset(
-                                                                  'asset/images/icon_confirm.png'),
-                                                            ),
-                                                          ),
-                                                        if (snapshot
-                                                            .data![index]
-                                                            .flgImmediately)
-                                                          Expanded(
-                                                            flex: 1,
-                                                            child: SizedBox(
-                                                              height: 15,
-                                                              width: 15,
-                                                              child: Image.asset(
-                                                                  'asset/images/icon_flaghigh.png'),
-                                                            ),
-                                                          ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                                .flgConfirm)
+                                                              Expanded(
+                                                                flex: 1,
+                                                                child: SizedBox(
+                                                                  height: 15,
+                                                                  width: 15,
+                                                                  child: Image.asset(
+                                                                      'asset/images/icon_confirm.png'),
+                                                                ),
+                                                              ),
+                                                            if (snapshot
+                                                                .data![index]
+                                                                .flgImmediately)
+                                                              Expanded(
+                                                                flex: 1,
+                                                                child: SizedBox(
+                                                                  height: 15,
+                                                                  width: 15,
+                                                                  child: Image.asset(
+                                                                      'asset/images/icon_flaghigh.png'),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
                                                 ],
-                                              )
-                                            ],
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    NewsScreen(
-                                                      notify:
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NewsScreen(
+                                                          notify:
                                                           snapshot.data![index],
-                                                      safetyID:
+                                                          safetyID:
                                                           defaultSafety[0],
-                                                      qualificationID:
+                                                          qualificationID:
                                                           defaultSafety[1],
-                                                    )));
-                                      },
-                                    ),
-                                  );
-                                });
-                          } else {
-                            return const Center(
-                              child: Text("Không có dữ liệu"),
-                            );
-                          }
-                        }),
+                                                        )));
+                                          },
+                                        ),
+                                      );
+                                    });
+                              } else {
+                                return const Center(
+                                  child: Text("Không có dữ liệu"),
+                                );
+                              }
+                            }),
+                      );
+                    },
                   ),
                 )
               ],
