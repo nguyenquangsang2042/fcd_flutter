@@ -19,7 +19,6 @@ class NewsScreen extends StatelessWidget {
   String url = '';
   @override
   Widget build(BuildContext context) {
-    CookieManager _cookieManager = CookieManager.instance();
     return FutureBuilder(
       future:
           Constanst.db.settingDao.findSettingByKey("NOTIFICATION_REQUIE_LOGIN"),
@@ -35,20 +34,6 @@ class NewsScreen extends StatelessWidget {
                 if (loginKey.hasData &&
                     loginKey.data != null &&
                     loginKey.data!.data != null) {
-                  _cookieManager.setCookie(
-                    url: Uri.parse(Constanst.baseURL),
-                    name: Constanst.sharedPreferences
-                        .get('set-cookie')
-                        .toString()
-                        .substring(0, 17),
-                    value: Constanst.sharedPreferences
-                        .get('set-cookie')
-                        .toString()
-                        .split(";")[0]
-                        .substring(18),
-                    domain: Constanst.baseDomain,
-                    isSecure: true,
-                  );
                   if (notify.announCategoryId == 7) {
                     url =
                         "/frontend/NewDetail.aspx?IID=${notify.announcementId}&UserID=${notify.userId}&IsDlg=0&FlgRead=1&autoid=${loginKey.data!.data}";
@@ -63,13 +48,41 @@ class NewsScreen extends StatelessWidget {
                     }
                   }
                   return InAppWebView(
+                    shouldOverrideUrlLoading: (controler,navigationAction)async
+                    {
+                      if (url.toString().contains("tel")) {
+                        Functions.instance.launchCustomUrl(
+                            url.toString().split(":")[0],
+                            url.toString().split(":")[1]);
+                        return NavigationActionPolicy.CANCEL;
+
+                      } else if (url
+                          .toString()
+                          .toLowerCase()
+                          .endsWith('.doc') ||
+                          url.toString().toLowerCase().endsWith('.docx') ||
+                          url.toString().toLowerCase().endsWith('.pdf') ||
+                          url.toString().toLowerCase().endsWith('.xls') ||
+                          url.toString().toLowerCase().endsWith('.xlsx') ||
+                          url.toString().toLowerCase().endsWith('.ppt') ||
+                          url.toString().toLowerCase().endsWith('.pptx') ||
+                          url.toString().toLowerCase().endsWith('.jpg') ||
+                          url.toString().toLowerCase().endsWith('.png') ||
+                          url.toString().toLowerCase().endsWith('.gif') ||
+                          url.toString().toLowerCase().endsWith('.txt')) {
+                         DownloadFile.downloadFile(
+                            context, url.toString(), basename(url.toString()));
+                         return NavigationActionPolicy.CANCEL;
+                      }
+                      return NavigationActionPolicy.ALLOW;
+                    },
                     onLoadStart: (controll, url) async {
                       await controll.goBack();
                       if (url.toString().contains("tel")) {
-                        await controll.goBack();
                         await Functions.instance.launchCustomUrl(
                             url.toString().split(":")[0],
                             url.toString().split(":")[1]);
+
                       } else if (url
                               .toString()
                               .toLowerCase()
@@ -84,8 +97,8 @@ class NewsScreen extends StatelessWidget {
                           url.toString().toLowerCase().endsWith('.png') ||
                           url.toString().toLowerCase().endsWith('.gif') ||
                           url.toString().toLowerCase().endsWith('.txt')) {
-                        await controll.stopLoading();
-                        await DownloadFile.downloadFile(context, url.toString(), basename(url.toString()));
+                        await DownloadFile.downloadFile(
+                            context, url.toString(), basename(url.toString()));
                       }
                     },
                     initialUrlRequest:

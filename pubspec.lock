@@ -721,7 +721,7 @@ packages:
     source: hosted
     version: "2.1.7"
   permission_handler:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: permission_handler
       sha256: "1b6b3e73f0bcbc856548bbdfb1c33084a401c4f143e220629a9055233d76c331"
