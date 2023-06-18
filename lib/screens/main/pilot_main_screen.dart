@@ -144,11 +144,14 @@ class PilotMainScreen extends StatelessWidget {
                                 ),
                               )),
                         ),
-                        SizedBox(
-                          width: value.toDouble(),
-                          height: MainController.instance.heightBanner.value
-                              .toDouble(),
-                          child: const BannerScreen(),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: SizedBox(
+                            width: value.toDouble(),
+                            height: MainController.instance.heightBanner.value
+                                .toDouble(),
+                            child: const BannerScreen(),
+                          ),
                         )
                       ],
                     );
