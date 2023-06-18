@@ -14,6 +14,8 @@ class Constanst {
   static late SharedPreferences sharedPreferences;
   static late String loginName;
   static late String loginPass;
-  static String baseURL='https://pilot.vuthao.com';
-  static String baseDomain='pilot.vuthao.com';
+  // static String baseURL='https://pilot.vuthao.com';
+  // static String baseDomain='pilot.vuthao.com';
+  static String baseURL='https://pilotuat.vuthao.com';
+  static String baseDomain='pilotuat.vuthao.com';
 }

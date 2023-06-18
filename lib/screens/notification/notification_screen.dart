@@ -177,7 +177,7 @@ class NotificationScreen extends StatelessWidget {
                                     .iconPath!}',
                                 errImage: 'asset/images/logo_vna120.png'),
                           ),
-                          title: Text(snapshot.data![index].content),
+                          title: Text(snapshot.data![index].title!=null?snapshot.data![index].title!:snapshot.data![index].content),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -187,7 +187,7 @@ class NotificationScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     flex: 8,
-                                    child: Text(snapshot.data![index].content),
+                                    child: Text(snapshot.data![index].sendTime!=null?snapshot.data![index].sendTime!:""),
                                   ),
                                   Expanded(
                                     flex: 2,
@@ -245,14 +245,13 @@ class NotificationScreen extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
+                        print(defaultSafety);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
                                     NewsScreen(
                                       notify: snapshot.data![index],
-                                      safetyID: defaultSafety[0],
-                                      qualificationID: defaultSafety[1],
                                     )));
                       },
                     ),

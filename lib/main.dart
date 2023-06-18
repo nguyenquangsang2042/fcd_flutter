@@ -19,15 +19,21 @@ import 'base/api/dio_controller.dart';
 import 'base/database/app_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'base/my_http_overide.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid) await Firebase.initializeApp();
+  if (Platform.isAndroid) {
+    await Firebase.initializeApp();
+  }
   Constanst.db =
       await $FloorAppDatabase.databaseBuilder('fcd_database.db').build();
   Constanst.api = ApiClient(DioController().dio);
   Constanst.apiController = ApiController();
   Constanst.apiController.updateMasterData();
   Constanst.sharedPreferences = await SharedPreferences.getInstance();
+  HttpOverrides.global = MyHttpOverrides();
+
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
 

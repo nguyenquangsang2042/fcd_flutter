@@ -28,7 +28,7 @@ import '../model/app/ward.dart';
 
 part 'api_client.g.dart';
 
-@RestApi(baseUrl: "https://pilot.vuthao.com")
+@RestApi(baseUrl: "https://pilotuat.vuthao.com")
 abstract class ApiClient {
   factory ApiClient(Dio dio) = _ApiClient;
 
