@@ -20,7 +20,7 @@ class LoadingScreen extends StatelessWidget {
   }
 
   Future<void> getDynamicData(BuildContext context) async {
-    await Constanst.apiController.updateNotify();
+    Constanst.apiController.updateNotify();
     await Constanst.apiController.updateMenuHome();
     await Constanst.apiController.updateBanner();
     BlocProvider.of<NavigationCubit>(context).navigateToMainView();

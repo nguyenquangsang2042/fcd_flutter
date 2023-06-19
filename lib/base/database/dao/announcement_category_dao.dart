@@ -7,4 +7,6 @@ import '../../model/app/announcement_category.dart';
 abstract class AnnouncementCategoryDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertAnnouncementCategories(List<AnnouncementCategory> announcementCategories);
+  @Query('SELECT * FROM AnnouncementCategory WHERE ID IN (:lstId) ')
+  Stream<List<AnnouncementCategory>> getAnnouncementCategoryInListID(List<String> lstId);
 }

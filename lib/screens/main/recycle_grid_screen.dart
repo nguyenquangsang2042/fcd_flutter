@@ -36,7 +36,7 @@ class RecycleGridScreen extends StatelessWidget {
                                   builder: (context) => redirectToView(e.key)));
                         },
                         child: Container(
-                          height: 110,
+                          height: 115,
                           decoration: BoxDecoration(
                             color: const Color(0xFF00485C),
                             borderRadius: BorderRadius.circular(10),
@@ -51,7 +51,7 @@ class RecycleGridScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(
                                     height: 50,
-                                    width: 70,
+                                    width: 80,
                                     child: Image.asset(
                                         'asset/images/${pathImage(e.key)}.png'),
                                   ),
@@ -60,6 +60,7 @@ class RecycleGridScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     e.title,
+                                    textAlign: TextAlign.center,
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,

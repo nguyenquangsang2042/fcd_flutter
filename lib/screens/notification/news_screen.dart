@@ -49,15 +49,27 @@ class NewsScreen extends StatelessWidget {
                       return ServerTrustAuthResponse(
                           action: ServerTrustAuthResponseAction.PROCEED);
                     },
-                    onLoadStart: (controll, url) async {
+                    initialOptions: InAppWebViewGroupOptions(
+                      crossPlatform: InAppWebViewOptions(
+                        // Set JavaScriptEnabled true
+                        javaScriptEnabled: true,
+                        useShouldOverrideUrlLoading: true
+
+                      ),
+                    ),
+                    shouldOverrideUrlLoading: (controller, navigationAction) async{
+                      String url=navigationAction.request.url.toString();
                       if (url.toString().contains("tel")) {
+                        await controller.goBack();
                         await Functions.instance.launchCustomUrl(
                             url.toString().split(":")[0],
                             url.toString().split(":")[1]);
+                        return NavigationActionPolicy.CANCEL;
+
                       } else if (url
-                              .toString()
-                              .toLowerCase()
-                              .endsWith('.doc') ||
+                          .toString()
+                          .toLowerCase()
+                          .endsWith('.doc') ||
                           url.toString().toLowerCase().endsWith('.docx') ||
                           url.toString().toLowerCase().endsWith('.pdf') ||
                           url.toString().toLowerCase().endsWith('.xls') ||
@@ -68,10 +80,15 @@ class NewsScreen extends StatelessWidget {
                           url.toString().toLowerCase().endsWith('.png') ||
                           url.toString().toLowerCase().endsWith('.gif') ||
                           url.toString().toLowerCase().endsWith('.txt')) {
+                        await controller.goBack();
                         await DownloadFile.downloadFile(
                             context, url.toString(), basename(url.toString()));
+                        return NavigationActionPolicy.CANCEL;
+
                       }
+                      return NavigationActionPolicy.ALLOW;
                     },
+
                     initialUrlRequest:
                         URLRequest(url: Uri.parse('${Constanst.baseURL}$url')),
                   );
