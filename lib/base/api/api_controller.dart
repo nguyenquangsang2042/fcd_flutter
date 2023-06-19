@@ -415,7 +415,7 @@ class ApiController {
     }
   }
 
-  void updateMenuHome() async {
+  Future<void> updateMenuHome() async {
     DBVariable? dbVariable =
         await Constanst.db.dbVariableDao.findDBVariableById("MenuHome");
     if (dbVariable != null) {
@@ -431,45 +431,36 @@ class ApiController {
     });
   }
 
-  void updateBanner() async {
+  Future<void> updateBanner() async {
     DBVariable? dbVariable =
         await Constanst.db.dbVariableDao.findDBVariableById("Banner");
     if (dbVariable != null) {
       await Constanst.db.bannerDao.deleteAll();
     }
-    Constanst.api
-        .getBanner(Constanst.sharedPreferences.get('set-cookie').toString())
-        .then((value) {
-      ApiList<BeanBanner> data = value;
-      Constanst.db.bannerDao.insertBanners(data.data);
-      Constanst.db.dbVariableDao
-          .insertDBVariable(DBVariable.haveParams("Banner", data.dateNow));
-    });
+    ApiList<BeanBanner> data = await Constanst.api
+        .getBanner(Constanst.sharedPreferences.get('set-cookie').toString());
+    await Constanst.db.bannerDao.insertBanners(data.data);
+    Constanst.db.dbVariableDao
+        .insertDBVariable(DBVariable.haveParams("Banner", data.dateNow));
   }
 
   Future<void> updateNotify() async {
     DBVariable? dbVariable =
         await Constanst.db.dbVariableDao.findDBVariableById("Notify");
     if (dbVariable != null) {
-      Constanst.api
-          .getNotify(Constanst.sharedPreferences.get('set-cookie').toString(),
-              dbVariable.Value, "0")
-          .then((value) {
-        ApiList<Notify> data = value;
-        Constanst.db.notifyDao.insertNotifies(data.data);
-        Constanst.db.dbVariableDao
-            .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
-      });
+      ApiList<Notify> data = await Constanst.api.getNotify(
+          Constanst.sharedPreferences.get('set-cookie').toString(),
+          dbVariable.Value,
+          "0");
+      await Constanst.db.notifyDao.insertNotifies(data.data);
+      Constanst.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
     } else {
-      Constanst.api
-          .getNotify(
-              Constanst.sharedPreferences.get('set-cookie').toString(), "", "1")
-          .then((value) {
-        ApiList<Notify> data = value;
-        Constanst.db.notifyDao.insertNotifies(data.data);
-        Constanst.db.dbVariableDao
-            .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
-      });
+      ApiList<Notify> data = await Constanst.api.getNotify(
+          Constanst.sharedPreferences.get('set-cookie').toString(), "", "1");
+      await Constanst.db.notifyDao.insertNotifies(data.data);
+      Constanst.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
     }
   }
 }

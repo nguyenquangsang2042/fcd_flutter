@@ -187,7 +187,7 @@ class NotificationScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     flex: 8,
-                                    child: Text(snapshot.data![index].sendTime!=null?snapshot.data![index].sendTime!:""),
+                                    child: Text(snapshot.data![index].created),
                                   ),
                                   Expanded(
                                     flex: 2,
@@ -283,10 +283,9 @@ class NotificationScreen extends StatelessWidget {
         .findSettingByKey("NEWS_CATEGORY_ID")
         .then((value) => keyNew = value!.VALUE.toString());
     streamList= ValueNotifier(Constanst.db.notifyDao
-        .getListNotHaveKeywordFilterTypeOrder01(
+        .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
         defaultSafety,
-        keyNew,
-        'Created DESC '));
+        keyNew));
   }
 
   Stream<List<Notify>> setStreamGetData()  {
@@ -295,51 +294,45 @@ class NotificationScreen extends StatelessWidget {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
         switch (sortType.value) {
           case "unread":
-            return Constanst.db.notifyDao.getListHaveKeywordFilterType01(
-                keyNew, keyWord.value, defaultSafety, 'FlgRead,Created DESC ');
+            return Constanst.db.notifyDao.getListHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
+                keyNew, keyWord.value, defaultSafety);
           case "emergency":
-            return Constanst.db.notifyDao.getListHaveKeywordFilterType01(
+            return Constanst.db.notifyDao.getListHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
                 keyNew,
                 keyWord.value,
-                defaultSafety,
-                'flgImmediately DESC ,Created DESC ');
+                defaultSafety);
           case "confirm":
-            return Constanst.db.notifyDao.getListHaveKeywordFilterType01(
+            return Constanst.db.notifyDao.getListHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                 keyNew,
                 keyWord.value,
-                defaultSafety,
-                'flgConfirm DESC, flgConfirmed   ,Created DESC  ');
+                defaultSafety);
           default:
-            return Constanst.db.notifyDao.getListHaveKeywordFilterType01(
+            return Constanst.db.notifyDao.getListHaveKeywordFilterType01ORDER_BY_Created_DESC(
                 keyNew,
                 keyWord.value,
-                defaultSafety,
-                'Created DESC ');
+                defaultSafety);
         }
       }
       else {
         switch (sortType.value) {
           case "unread":
-            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01(
-                keyNew, keyWord.value, defaultSafety, 'FlgRead,Created DESC ');
+            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
+                keyNew, keyWord.value, defaultSafety);
           case "emergency":
-            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01(
+            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
                 keyNew,
                 keyWord.value,
-                defaultSafety,
-                'flgImmediately DESC ,Created DESC ');
+                defaultSafety);
           case "confirm":
-            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01(
+            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                 keyNew,
                 keyWord.value,
-                defaultSafety,
-                'flgConfirm DESC, flgConfirmed   ,Created DESC  ');
+                defaultSafety);
           default:
-            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01(
+            return Constanst.db.notifyDao.getListHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
                 keyNew,
                 keyWord.value,
-                defaultSafety,
-                'Created DESC ');
+                defaultSafety);
         }
       }
     }
@@ -347,49 +340,44 @@ class NotificationScreen extends StatelessWidget {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
         switch (sortType.value) {
           case "unread":
-            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01(
-                keyNew, defaultSafety, 'FlgRead,Created DESC ');
+            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
+                keyNew, defaultSafety);
           case "emergency":
-            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01(
+            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
                 keyNew,
-                defaultSafety,
-                'flgImmediately DESC ,Created DESC ');
+                defaultSafety
+                );
           case "confirm":
-            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01(
+            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                 keyNew,
-                defaultSafety,
-                'flgConfirm DESC, flgConfirmed   ,Created DESC  ');
+                defaultSafety);
           default:
-            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01(
+            return Constanst.db.notifyDao.getListNotHaveKeywordFilterType01ORDER_BY_Created_DESC(
                 keyNew,
-                defaultSafety,
-                'Created DESC ');
+                defaultSafety);
         }
       }
       else {
         switch (sortType.value) {
           case "unread":
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01(
-                defaultSafety, keyNew, 'FlgRead,Created DESC ');
+                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
+                defaultSafety, keyNew);
           case "emergency":
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01(
+                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
                 defaultSafety,
-                keyNew,
-                'flgImmediately DESC ,Created DESC ');
+                keyNew);
           case "confirm":
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01(
+                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                 defaultSafety,
-                keyNew,
-                'flgConfirm DESC, flgConfirmed   ,Created DESC  ');
+                keyNew);
           default:
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01(
+                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
                 defaultSafety,
-                keyNew,
-                'Created DESC ');
+                keyNew);
         }
       }
     }

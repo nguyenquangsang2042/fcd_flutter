@@ -7,12 +7,11 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:path/path.dart';
 
 class NewsScreen extends StatelessWidget {
-  NewsScreen(
-      {super.key,
-      required this.notify});
+  NewsScreen({super.key, required this.notify});
 
   Notify notify;
   String url = '';
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -45,18 +44,16 @@ class NewsScreen extends StatelessWidget {
                   }
 
                   return InAppWebView(
-
-                    onReceivedServerTrustAuthRequest: (controller, challenge) async {
-                      return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
+                    onReceivedServerTrustAuthRequest:
+                        (controller, challenge) async {
+                      return ServerTrustAuthResponse(
+                          action: ServerTrustAuthResponseAction.PROCEED);
                     },
                     onLoadStart: (controll, url) async {
-                      controll.clearCache();
-                      await controll.goBack();
                       if (url.toString().contains("tel")) {
                         await Functions.instance.launchCustomUrl(
                             url.toString().split(":")[0],
                             url.toString().split(":")[1]);
-
                       } else if (url
                               .toString()
                               .toLowerCase()
