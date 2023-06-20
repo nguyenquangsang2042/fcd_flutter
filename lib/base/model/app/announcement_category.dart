@@ -53,6 +53,8 @@ class AnnouncementCategory {
   @JsonKey(name: 'Orders')
   late int orders;
 
+  AnnouncementCategory.none(this.id, this.title);
+
   AnnouncementCategory(
       this.id,
       this.title,

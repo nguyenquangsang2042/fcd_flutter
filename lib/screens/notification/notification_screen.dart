@@ -11,7 +11,7 @@ import 'package:multi_value_listenable_builder/multi_value_listenable_builder.da
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
 
-  late List<String> defaultSafety;
+  ValueNotifier<List<String>> defaultSafety = ValueNotifier([]);
   String keyNew = '';
   ValueNotifier<bool> isRefreshing = ValueNotifier(false);
   ValueNotifier<bool> isSafety = ValueNotifier(true);
@@ -23,8 +23,12 @@ class NotificationScreen extends StatelessWidget {
   String SAFETY_CATEGORY_ID = "";
   String QUALIFICATION_CATEGORY_ID = "";
   ValueNotifier<bool> isShowFilter = ValueNotifier(false);
+  ValueNotifier<bool> isShowIconFilter = ValueNotifier(true);
   ValueNotifier<bool> isShowSort = ValueNotifier(false);
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
+  late List<AnnouncementCategory> listFilter;
+  int _groupValue = 0;
+  TextEditingController contollerSearch=TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -56,22 +60,29 @@ class NotificationScreen extends StatelessWidget {
               centerTitle: true,
               actions: [
                 //buildPopupFilter(),
-                Container(
-                  width: 50,
-                  height: 50,
-                  child: IconButton(
-                    icon: Image.asset(
-                      'asset/images/icon_filter.png',
-                      color: Colors.white,
-                      height: 20,
-                      width: 40,
-                    ),
-                    onPressed: () {
-                      isShowFilter.value = !isShowFilter.value;
-                      isShowSearch.value = false;
-                      isShowSort.value = false;
-                    },
-                  ),
+                ValueListenableBuilder(
+                  valueListenable: isShowIconFilter,
+                  builder: (context, value, child) {
+                    return Visibility(
+                        visible: value,
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          child: IconButton(
+                            icon: Image.asset(
+                              'asset/images/icon_filter.png',
+                              color: Colors.white,
+                              height: 20,
+                              width: 40,
+                            ),
+                            onPressed: () {
+                              isShowFilter.value = !isShowFilter.value;
+                              isShowSearch.value = false;
+                              isShowSort.value = false;
+                            },
+                          ),
+                        ));
+                  },
                 ),
                 Container(
                   width: 50,
@@ -102,6 +113,10 @@ class NotificationScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       isShowSearch.value = !isShowSearch.value;
+                      if (!isShowSearch.value) {
+                        keyWord.value = "";
+                        streamList.value = setStreamGetData();
+                      }
                       isShowSort.value = false;
                       isShowFilter.value = false;
                     },
@@ -112,13 +127,11 @@ class NotificationScreen extends StatelessWidget {
             body: Column(
               children: [
                 MultiValueListenableBuilder(
-                  valueListenables: [isShowFilter, isShowSearch, isShowSort],
+                  valueListenables: [isShowFilter, isShowSort, defaultSafety],
                   builder: (BuildContext context, List<dynamic> values,
                       Widget? child) {
                     if (isShowFilter.value) {
                       return buildPopupFilter();
-                    } else if (isShowSearch.value) {
-                      return Text("Search");
                     } else if (isShowSort.value) {
                       return Text("isShowSort");
                     } else
@@ -129,11 +142,9 @@ class NotificationScreen extends StatelessWidget {
                   },
                 ),
                 MultiValueListenableBuilder(
-                    valueListenables: [isShowFilter, isShowSearch, isShowSort],
+                    valueListenables: [isShowFilter, isShowSort],
                     builder: (context, values, child) {
-                      if (!isShowSort.value &&
-                          !isShowFilter.value &&
-                          !isShowSearch.value) {
+                      if (!isShowSort.value && !isShowFilter.value) {
                         return Container(
                           width: MediaQuery.of(context).size.width,
                           child: Row(
@@ -143,7 +154,7 @@ class NotificationScreen extends StatelessWidget {
                                 child: TextButton(
                                     onPressed: () async {
                                       isSafety.value = true;
-
+                                      isShowIconFilter.value = true;
                                       Setting? SAFETY_CATEGORY_ID =
                                           await Constanst.db.settingDao
                                               .findSettingByKey(
@@ -152,7 +163,7 @@ class NotificationScreen extends StatelessWidget {
                                           await Constanst.db.settingDao
                                               .findSettingByKey(
                                                   "QUALIFICATION_CATEGORY_ID");
-                                      defaultSafety = [
+                                      defaultSafety.value = [
                                         SAFETY_CATEGORY_ID!.VALUE,
                                         QUALIFICATION_CATEGORY_ID!.VALUE
                                       ];
@@ -164,8 +175,9 @@ class NotificationScreen extends StatelessWidget {
                                 flex: 1,
                                 child: TextButton(
                                     onPressed: () {
+                                      isShowIconFilter.value = false;
                                       isSafety.value = false;
-                                      defaultSafety = ["3"];
+                                      defaultSafety.value = ["3"];
                                       streamList.value = setStreamGetData();
                                     },
                                     child: Text('Operation')),
@@ -180,10 +192,23 @@ class NotificationScreen extends StatelessWidget {
                         );
                       }
                     }),
+                ValueListenableBuilder(
+                  valueListenable: isShowSearch,
+                  builder: (context, value, child) {
+                    return Visibility(
+                        visible: value,
+                        child: buildTextSearch());
+                  },
+                ),
                 Expanded(
                   flex: 1,
                   child: MultiValueListenableBuilder(
-                    valueListenables: [isRefreshing, isSafety, streamList],
+                    valueListenables: [
+                      isRefreshing,
+                      isSafety,
+                      streamList,
+                      defaultSafety
+                    ],
                     builder: (context, value, _) {
                       return DeclarativeRefreshIndicator(
                         refreshing: isRefreshing.value,
@@ -205,6 +230,40 @@ class NotificationScreen extends StatelessWidget {
         });
   }
 
+  Widget buildTextSearch() {
+    contollerSearch= TextEditingController(text: keyWord.value);
+    return Container(
+      padding: EdgeInsets.all(5.0),
+      color: Colors.grey.shade400,
+      child: TextField(
+        controller: contollerSearch,
+        onChanged: (value) {
+          keyWord.value = value;
+          streamList.value = setStreamGetData();
+        },
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+          hintText: "Search",
+          prefixIcon: Icon(Icons.search),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: ()  {
+              keyWord.value="";
+              contollerSearch.clear();
+              streamList.value = setStreamGetData();
+            }, // Replace with delete functionality
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6.0),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
   buildPopupFilter() {
     return StreamBuilder(
       stream: Constanst.db.announcementCategoryDao
@@ -212,21 +271,51 @@ class NotificationScreen extends StatelessWidget {
               [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          int _groupValue= snapshot.data!.first.id;
-          print("data count : ${snapshot.data!.length}");
+          listFilter = [AnnouncementCategory.none(0, "All")];
+          listFilter.addAll(snapshot.data!);
           return Column(
-            children: snapshot.data!
-                .map((e) => ListTile(
-                      title: Text("${e!.title}"),
-              leading: Radio(
-                value: e.id, groupValue: _groupValue, onChanged: (int? value) {  },
-              ),
+            children: listFilter
+                .map((e) => InkResponse(
+                      onTap: () {
+                        if (e.id == 0) {
+                          defaultSafety.value = [
+                            SAFETY_CATEGORY_ID,
+                            QUALIFICATION_CATEGORY_ID
+                          ];
+                        } else {
+                          defaultSafety.value = [e.id.toString()];
+                        }
+                        streamList.value = setStreamGetData();
+                        _groupValue = e.id;
+                        isShowFilter.value = false;
+                      },
+                      child: ListTile(
+                        title: Text("${e!.title}"),
+                        leading: Radio(
+                          value: e.id,
+                          groupValue: _groupValue,
+                          onChanged: (int? value) async {
+                            if (value == 0) {
+                              defaultSafety.value = [
+                                SAFETY_CATEGORY_ID,
+                                QUALIFICATION_CATEGORY_ID
+                              ];
+                            } else {
+                              defaultSafety.value = [value.toString()];
+                            }
+                            streamList.value = setStreamGetData();
+                            _groupValue = value!;
+                            isShowFilter.value = false;
+                          },
+                        ),
+                      ),
                     ))
                 .toList(),
           );
         } else {
-          return Container(
-            child: Text("dang tai du lieu"),
+          return const SizedBox(
+            height: 0,
+            width: 0,
           );
         }
       },
@@ -353,7 +442,7 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Future<void> setDefaultSafety() async {
-    defaultSafety = [];
+    defaultSafety.value = [];
     Setting? value;
     value =
         await Constanst.db.settingDao.findSettingByKey("SAFETY_CATEGORY_ID");
@@ -361,13 +450,13 @@ class NotificationScreen extends StatelessWidget {
     value = await Constanst.db.settingDao
         .findSettingByKey("QUALIFICATION_CATEGORY_ID");
     QUALIFICATION_CATEGORY_ID = value == null ? "" : value.VALUE;
-    defaultSafety = [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID];
+    defaultSafety.value = [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID];
     await Constanst.db.settingDao
         .findSettingByKey("NEWS_CATEGORY_ID")
         .then((value) => keyNew = value!.VALUE.toString());
     streamList = ValueNotifier(Constanst.db.notifyDao
         .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
-            defaultSafety, keyNew));
+            defaultSafety.value, keyNew));
   }
 
   Stream<List<Notify>> setStreamGetData() {
@@ -377,38 +466,38 @@ class NotificationScreen extends StatelessWidget {
           case "unread":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "emergency":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "confirm":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
           default:
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
         }
       } else {
         switch (sortType.value) {
           case "unread":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "emergency":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "confirm":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
           default:
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
-                    keyNew, keyWord.value, defaultSafety);
+                    keyNew, "%${keyWord.value}%", defaultSafety.value);
         }
       }
     } else {
@@ -417,38 +506,38 @@ class NotificationScreen extends StatelessWidget {
           case "unread":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
-                    keyNew, defaultSafety);
+                    keyNew, defaultSafety.value);
           case "emergency":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    keyNew, defaultSafety);
+                    keyNew, defaultSafety.value);
           case "confirm":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    keyNew, defaultSafety);
+                    keyNew, defaultSafety.value);
           default:
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_Created_DESC(
-                    keyNew, defaultSafety);
+                    keyNew, defaultSafety.value);
         }
       } else {
         switch (sortType.value) {
           case "unread":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
-                    defaultSafety, keyNew);
+                    defaultSafety.value, keyNew);
           case "emergency":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    defaultSafety, keyNew);
+                    defaultSafety.value, keyNew);
           case "confirm":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    defaultSafety, keyNew);
+                    defaultSafety.value, keyNew);
           default:
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
-                    defaultSafety, keyNew);
+                    defaultSafety.value, keyNew);
         }
       }
     }
