@@ -77,7 +77,7 @@ class NotificationScreen extends StatelessWidget {
                             onPressed: () {
                               isShowSearch.value = false;
                               isShowSort.value = false;
-                              showPopupFilter(context);
+                              _showPopup(context);
                             },
                           ),
                         ));
@@ -285,6 +285,38 @@ class NotificationScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+  void _showPopup(BuildContext context) async {
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(0.0, kToolbarHeight, 0.0, 0.0),
+      items: <PopupMenuEntry>[
+        PopupMenuItem(
+          value: 1,
+          enabled: false,
+          child: Container(
+            width: MediaQuery.of(context).size.width - 16.0, // subtracting 16.0 to account for padding
+            child: Text("Option 1"),
+          ),
+        ),
+        PopupMenuItem(
+          value: 2,
+          enabled: false,
+          child: Container(
+            width: MediaQuery.of(context).size.width - 16.0, // subtracting 16.0 to account for padding
+            child: Text("Option 2"),
+          ),
+        ),
+        PopupMenuItem(
+          value: 3,
+          enabled: false,
+          child: Container(
+            width: MediaQuery.of(context).size.width - 16.0, // subtracting 16.0 to account for padding
+            child: Text("Option 3"),
+          ),
+        ),
+      ],
     );
   }
   void showPopupFilter(BuildContext context) {
