@@ -59,7 +59,6 @@ class NotificationScreen extends StatelessWidget {
               backgroundColor: const Color(0xFF006784),
               centerTitle: true,
               actions: [
-                //buildPopupFilter(),
                 ValueListenableBuilder(
                   valueListenable: isShowIconFilter,
                   builder: (context, value, child) {
@@ -133,7 +132,8 @@ class NotificationScreen extends StatelessWidget {
                     if (isShowFilter.value) {
                       return buildPopupFilter();
                     } else if (isShowSort.value) {
-                      return Text("isShowSort");
+                      List<String> sortType=[];
+                      return Container();
                     } else
                       return SizedBox(
                         height: 0,
