@@ -290,7 +290,7 @@ class NotificationScreen extends StatelessWidget {
   void _showPopup(BuildContext context) async {
     await showMenu(
       context: context,
-      position: RelativeRect.fromLTRB(0.0, kToolbarHeight, 0.0, 0.0),
+      position: RelativeRect.fromLTRB(0.0, 90, 0.0, 0.0),
       items: <PopupMenuEntry>[
         PopupMenuItem(
           value: 1,
@@ -312,7 +312,7 @@ class NotificationScreen extends StatelessWidget {
           value: 3,
           enabled: false,
           child: Container(
-            width: MediaQuery.of(context).size.width - 16.0, // subtracting 16.0 to account for padding
+            width: MediaQuery.of(context).size.width ,// subtracting 16.0 to account for padding
             child: Text("Option 3"),
           ),
         ),
