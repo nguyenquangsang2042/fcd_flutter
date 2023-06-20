@@ -8,13 +8,12 @@ import 'package:fcd_flutter/screens/notification/news_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 
-class NotificationScreen extends StatelessWidget {
-  NotificationScreen({super.key});
+class AdminNoticeScreen extends StatelessWidget {
+  AdminNoticeScreen({super.key});
 
   ValueNotifier<List<String>> defaultSafety = ValueNotifier([]);
   String keyNew = '';
   ValueNotifier<bool> isRefreshing = ValueNotifier(false);
-  ValueNotifier<bool> isSafety = ValueNotifier(true);
   ValueNotifier<String> sortType = ValueNotifier("");
   ValueNotifier<String> filterType = ValueNotifier("");
   ValueNotifier<String> keyWord = ValueNotifier("");
@@ -22,13 +21,14 @@ class NotificationScreen extends StatelessWidget {
       ValueNotifier(Stream.fromIterable([]));
   String SAFETY_CATEGORY_ID = "";
   String QUALIFICATION_CATEGORY_ID = "";
+  List<String> trainingNotify = ["1000", "1010", "5", "0", "3"];
   ValueNotifier<bool> isShowIconFilter = ValueNotifier(true);
   ValueNotifier<bool> isShowSort = ValueNotifier(false);
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
   late List<AnnouncementCategory> listFilter;
   int _groupValue = 0;
-  String _groupValueSort="Date";
-  TextEditingController contollerSearch=TextEditingController(text: '');
+  String _groupValueSort = "Date";
+  TextEditingController contollerSearch = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class NotificationScreen extends StatelessWidget {
                 ),
               ),
               title: const Text(
-                'Safety',
+                'Notice',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
               backgroundColor: const Color(0xFF006784),
@@ -75,8 +75,6 @@ class NotificationScreen extends StatelessWidget {
                               width: 40,
                             ),
                             onPressed: () {
-                              isShowSearch.value = false;
-                              isShowSort.value = false;
                               showPopupFilter(context);
                             },
                           ),
@@ -124,86 +122,29 @@ class NotificationScreen extends StatelessWidget {
             body: Column(
               children: [
                 MultiValueListenableBuilder(
-                  valueListenables: [ isShowSort, defaultSafety],
+                  valueListenables: [isShowSort, defaultSafety],
                   builder: (BuildContext context, List<dynamic> values,
                       Widget? child) {
-                     if (isShowSort.value) {
+                    if (isShowSort.value) {
                       return buildSortType();
-                    } else
-                      return SizedBox(
+                    } else {
+                      return const SizedBox(
                         height: 0,
                         width: 0,
                       );
+                    }
                   },
                 ),
-                MultiValueListenableBuilder(
-                    valueListenables: [ isShowSort,isSafety],
-                    builder: (context, values, child) {
-                      if (!isShowSort.value ) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: TextButton(
-                                    onPressed: () async {
-                                      isSafety.value = true;
-                                      isShowIconFilter.value = true;
-                                      Setting? SAFETY_CATEGORY_ID =
-                                          await Constanst.db.settingDao
-                                              .findSettingByKey(
-                                                  "SAFETY_CATEGORY_ID");
-                                      Setting? QUALIFICATION_CATEGORY_ID =
-                                          await Constanst.db.settingDao
-                                              .findSettingByKey(
-                                                  "QUALIFICATION_CATEGORY_ID");
-                                      defaultSafety.value = [
-                                        SAFETY_CATEGORY_ID!.VALUE,
-                                        QUALIFICATION_CATEGORY_ID!.VALUE
-                                      ];
-                                      streamList.value = setStreamGetData();
-                                    },
-                                    child: Text('Safety',style: TextStyle(color: isSafety.value?Color(0xFFDBA40D):Color(0xFFAAAAAA)),)),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: TextButton(
-                                    onPressed: () {
-                                      isShowIconFilter.value = false;
-                                      isSafety.value = false;
-                                      defaultSafety.value = ["3"];
-                                      streamList.value = setStreamGetData();
-                                    },
-                                    child: Text('Operation',style: TextStyle(color: !isSafety.value?Color(0xFFDBA40D):Color(0xFFAAAAAA)),)),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return SizedBox(
-                          height: 0,
-                          width: 0,
-                        );
-                      }
-                    }),
                 ValueListenableBuilder(
                   valueListenable: isShowSearch,
                   builder: (context, value, child) {
-                    return Visibility(
-                        visible: value,
-                        child: buildTextSearch());
+                    return Visibility(visible: value, child: buildTextSearch());
                   },
                 ),
                 Expanded(
                   flex: 1,
                   child: MultiValueListenableBuilder(
-                    valueListenables: [
-                      isRefreshing,
-                      isSafety,
-                      streamList,
-                      defaultSafety
-                    ],
+                    valueListenables: [isRefreshing, streamList, defaultSafety],
                     builder: (context, value, _) {
                       return DeclarativeRefreshIndicator(
                         refreshing: isRefreshing.value,
@@ -226,36 +167,36 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Column buildSortType() {
-    List<String> lstSortType=["Date","Unread","Emergency","Confirm"];
+    List<String> lstSortType = ["Date", "Unread", "Emergency", "Confirm"];
     return Column(
       children: lstSortType
           .map((e) => InkResponse(
-        onTap: () {
-          sortType.value=e;
-          streamList.value = setStreamGetData();
-          _groupValueSort = e;
-          isShowSort.value = false;
-        },
-        child: ListTile(
-          title: Text(e),
-          leading: Radio(
-            value: e,
-            groupValue: _groupValueSort,
-            onChanged: (value) {
-              sortType.value=e;
-              streamList.value = setStreamGetData();
-              _groupValueSort = e;
-              isShowSort.value = false;
-            },
-          ),
-        ),
-      ))
+                onTap: () {
+                  sortType.value = e;
+                  streamList.value = setStreamGetData();
+                  _groupValueSort = e;
+                  isShowSort.value = false;
+                },
+                child: ListTile(
+                  title: Text(e),
+                  leading: Radio(
+                    value: e,
+                    groupValue: _groupValueSort,
+                    onChanged: (value) {
+                      sortType.value = e;
+                      streamList.value = setStreamGetData();
+                      _groupValueSort = e;
+                      isShowSort.value = false;
+                    },
+                  ),
+                ),
+              ))
           .toList(),
     );
   }
 
   Widget buildTextSearch() {
-    contollerSearch= TextEditingController(text: keyWord.value);
+    contollerSearch = TextEditingController(text: keyWord.value);
     return Container(
       padding: EdgeInsets.all(5.0),
       color: Colors.grey.shade400,
@@ -270,11 +211,11 @@ class NotificationScreen extends StatelessWidget {
           fillColor: Colors.white,
           contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
           hintText: "Search",
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: const Icon(Icons.search),
           suffixIcon: IconButton(
-            icon: Icon(Icons.cancel),
-            onPressed: ()  {
-              keyWord.value="";
+            icon: const Icon(Icons.cancel),
+            onPressed: () {
+              keyWord.value = "";
               contollerSearch.clear();
               streamList.value = setStreamGetData();
             }, // Replace with delete functionality
@@ -287,61 +228,16 @@ class NotificationScreen extends StatelessWidget {
       ),
     );
   }
-  void showPopupFilter(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => Dialog(
-
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color(0xFF006784),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(child: Text(
-                  "Filter type",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),),
-              ),
-            ),
-            const Divider(
-              color: Colors.grey,
-              height: 1,
-            ),
-            SizedBox(
-              height: null,
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: buildPopupFilter(),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
   buildPopupFilter() {
+    if (!trainingNotify.contains(SAFETY_CATEGORY_ID) &&
+        !trainingNotify.contains(QUALIFICATION_CATEGORY_ID)) {
+      trainingNotify.add(SAFETY_CATEGORY_ID);
+      trainingNotify.add(QUALIFICATION_CATEGORY_ID);
+    }
     return StreamBuilder(
       stream: Constanst.db.announcementCategoryDao
-          .getAnnouncementCategoryInListID(
-              [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]),
+          .getAnnouncementCategoryNotInListID(trainingNotify),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           listFilter = [AnnouncementCategory.none(0, "All")];
@@ -532,6 +428,56 @@ class NotificationScreen extends StatelessWidget {
             defaultSafety.value, keyNew));
   }
 
+  void showPopupFilter(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Color(0xFF006784),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Center(child: Text(
+                  "Filter type",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),),
+              ),
+            ),
+            const Divider(
+              color: Colors.grey,
+              height: 1,
+            ),
+            Container(
+              height: 300,
+              child: Expanded(
+                child: SingleChildScrollView(
+                  child: buildPopupFilter(),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Stream<List<Notify>> setStreamGetData() {
     if (keyWord.value.isNotEmpty) {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
@@ -615,4 +561,48 @@ class NotificationScreen extends StatelessWidget {
       }
     }
   }
+}
+
+class CurvedAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final double height;
+  final Widget title;
+
+  CurvedAppBar({required this.height, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        height: height,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              decoration: ShapeDecoration(
+                shape: BeveledRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                ),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF3366FF),
+                    Color(0xFF00CCFF),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+            ),
+            Center(
+              child: title,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(height);
 }

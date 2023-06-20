@@ -9,4 +9,6 @@ abstract class AnnouncementCategoryDao {
   Future<void> insertAnnouncementCategories(List<AnnouncementCategory> announcementCategories);
   @Query('SELECT * FROM AnnouncementCategory WHERE ID IN (:lstId) ')
   Stream<List<AnnouncementCategory>> getAnnouncementCategoryInListID(List<String> lstId);
+  @Query('SELECT * FROM AnnouncementCategory WHERE ID NOT IN (:lstId) ORDER BY Orders')
+  Stream<List<AnnouncementCategory>> getAnnouncementCategoryNotInListID(List<String> lstId);
 }
