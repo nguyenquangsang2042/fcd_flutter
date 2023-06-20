@@ -28,6 +28,7 @@ class NotificationScreen extends StatelessWidget {
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
   late List<AnnouncementCategory> listFilter;
   int _groupValue = 0;
+  String _groupValueSort="Date";
   TextEditingController contollerSearch=TextEditingController(text: '');
 
   @override
@@ -132,8 +133,7 @@ class NotificationScreen extends StatelessWidget {
                     if (isShowFilter.value) {
                       return buildPopupFilter();
                     } else if (isShowSort.value) {
-                      List<String> sortType=[];
-                      return Container();
+                      return buildSortType();
                     } else
                       return SizedBox(
                         height: 0,
@@ -142,7 +142,7 @@ class NotificationScreen extends StatelessWidget {
                   },
                 ),
                 MultiValueListenableBuilder(
-                    valueListenables: [isShowFilter, isShowSort],
+                    valueListenables: [isShowFilter, isShowSort,isSafety],
                     builder: (context, values, child) {
                       if (!isShowSort.value && !isShowFilter.value) {
                         return Container(
@@ -169,7 +169,7 @@ class NotificationScreen extends StatelessWidget {
                                       ];
                                       streamList.value = setStreamGetData();
                                     },
-                                    child: Text('Safety')),
+                                    child: Text('Safety',style: TextStyle(color: isSafety.value?Color(0xFFDBA40D):Color(0xFFAAAAAA)),)),
                               ),
                               Expanded(
                                 flex: 1,
@@ -180,7 +180,7 @@ class NotificationScreen extends StatelessWidget {
                                       defaultSafety.value = ["3"];
                                       streamList.value = setStreamGetData();
                                     },
-                                    child: Text('Operation')),
+                                    child: Text('Operation',style: TextStyle(color: !isSafety.value?Color(0xFFDBA40D):Color(0xFFAAAAAA)),)),
                               ),
                             ],
                           ),
@@ -228,6 +228,35 @@ class NotificationScreen extends StatelessWidget {
             ),
           );
         });
+  }
+
+  Column buildSortType() {
+    List<String> lstSortType=["Date","Unread","Emergency","Confirm"];
+    return Column(
+      children: lstSortType
+          .map((e) => InkResponse(
+        onTap: () {
+          sortType.value=e;
+          streamList.value = setStreamGetData();
+          _groupValueSort = e;
+          isShowSort.value = false;
+        },
+        child: ListTile(
+          title: Text(e),
+          leading: Radio(
+            value: e,
+            groupValue: _groupValueSort,
+            onChanged: (value) {
+              sortType.value=e;
+              streamList.value = setStreamGetData();
+              _groupValueSort = e;
+              isShowSort.value = false;
+            },
+          ),
+        ),
+      ))
+          .toList(),
+    );
   }
 
   Widget buildTextSearch() {
@@ -462,7 +491,7 @@ class NotificationScreen extends StatelessWidget {
   Stream<List<Notify>> setStreamGetData() {
     if (keyWord.value.isNotEmpty) {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
-        switch (sortType.value) {
+        switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
@@ -481,7 +510,7 @@ class NotificationScreen extends StatelessWidget {
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
         }
       } else {
-        switch (sortType.value) {
+        switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
@@ -502,7 +531,7 @@ class NotificationScreen extends StatelessWidget {
       }
     } else {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
-        switch (sortType.value) {
+        switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
@@ -521,7 +550,7 @@ class NotificationScreen extends StatelessWidget {
                     keyNew, defaultSafety.value);
         }
       } else {
-        switch (sortType.value) {
+        switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
