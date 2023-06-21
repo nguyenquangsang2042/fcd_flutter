@@ -498,8 +498,8 @@ class NotificationScreen extends StatelessWidget {
         .findSettingByKey("NEWS_CATEGORY_ID")
         .then((value) => keyNew = value!.VALUE.toString());
     streamList = ValueNotifier(Constanst.db.notifyDao
-        .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
-            defaultSafety.value, keyNew));
+        .getListNotHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
+        keyNew,defaultSafety.value));
   }
 
   Stream<List<Notify>> setStreamGetData() {

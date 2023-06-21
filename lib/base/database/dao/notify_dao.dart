@@ -84,4 +84,44 @@ abstract class NotifyDao {
       'SELECT * FROM Notify WHERE ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID)  AND AnnounCategoryId <> :keyNews  ORDER BY Created DESC ')
   Stream<List<Notify>> getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
       List<String> beanAnnounceID, String keyNews);
+
+
+  @Query('SELECT * FROM Notify NOLOCK WHERE  SearCol  LIKE :keyWord AND ANStatus <> -1 AND AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY Created DESC ')
+  Stream<List<Notify>> caseDefaultSwitch1(String keyWord,List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE  SearCol  LIKE :keyWord AND ANStatus <> -1 AND AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY FlgRead,Created DESC')
+  Stream<List<Notify>> caseUnreadSwitch1(String keyWord,List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE  SearCol  LIKE  :keyWord AND ANStatus <> -1 AND AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY flgImmediately DESC ,Created')
+  Stream<List<Notify>> caseEmergencySwitch1(String keyWord,List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE  SearCol  LIKE :keyWord AND ANStatus <> -1 AND AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY flgConfirm DESC, flgConfirmed   ,Created DESC')
+  Stream<List<Notify>> caseConfirmSwitch1(String keyWord,List<String> beanAnnounceID);
+
+
+
+  @Query('SELECT * FROM Notify NOLOCK WHERE SearCol  LIKE :keyWord AND ANStatus <> -1  AND AnnounCategoryId IN (:beanAnnounceID) ORDER BY Created')
+  Stream<List<Notify>> caseDefaultSwitch2(String keyWord,List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE  SearCol  LIKE :keyWord AND ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID)  ORDER BY FlgRead,Created DESC')
+  Stream<List<Notify>> caseUnreadSwitch2(String keyWord,List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE  SearCol  LIKE :keyWord AND ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID) ORDER BY flgImmediately DESC ,Created DESC')
+  Stream<List<Notify>> caseEmergencySwitch2(String keyWord,List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE  SearCol  LIKE :keyWord AND ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID) ORDER BY   flgConfirm DESC, flgConfirmed   ,Created DESC')
+  Stream<List<Notify>> caseConfirmSwitch2(String keyWord,List<String> beanAnnounceID);
+
+
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY Created DESC')
+  Stream<List<Notify>> caseDefaultSwitch3(List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY FlgRead,Created DESC ')
+  Stream<List<Notify>> caseUnreadSwitch3(List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY flgImmediately DESC ,Created DESC ')
+  Stream<List<Notify>> caseEmergencySwitch3(List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND  AnnounCategoryId NOT IN (:beanAnnounceID) ORDER BY  flgConfirm DESC, flgConfirmed   ,Created DESC ')
+  Stream<List<Notify>> caseConfirmSwitch3(List<String> beanAnnounceID);
+
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID)  ORDER BY Created DESC ')
+  Stream<List<Notify>> caseDefaultSwitch4(List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID)  ORDER BY FlgRead,Created DESC ')
+  Stream<List<Notify>> caseUnreadSwitch4(List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID) ORDER BY flgImmediately DESC ,Created DESC ')
+  Stream<List<Notify>> caseEmergencySwitch4(List<String> beanAnnounceID);
+  @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID) ORDER BY  flgConfirm DESC, flgConfirmed   ,Created DESC ')
+  Stream<List<Notify>> caseConfirmSwitch4(List<String> beanAnnounceID);
 }

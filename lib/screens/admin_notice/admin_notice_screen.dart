@@ -129,11 +129,7 @@ class AdminNoticeScreen extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: MultiValueListenableBuilder(
-                    valueListenables: [
-                      isRefreshing,
-                      streamList,
-                      defaultSafety
-                    ],
+                    valueListenables: [isRefreshing, streamList, defaultSafety],
                     builder: (context, value, _) {
                       return DeclarativeRefreshIndicator(
                         refreshing: isRefreshing.value,
@@ -339,7 +335,7 @@ class AdminNoticeScreen extends StatelessWidget {
                             width: 50,
                             child: ImageWithCookie(
                                 imageUrl:
-                                    '${Constanst.baseURL}${snapshot.data![index].iconPath!}',
+                                    '${Constanst.baseURL}${snapshot.data![index].iconPath}',
                                 errImage: 'asset/images/logo_vna120.png'),
                           ),
                           title: Text(snapshot.data![index].title != null
@@ -449,8 +445,8 @@ class AdminNoticeScreen extends StatelessWidget {
         .findSettingByKey("NEWS_CATEGORY_ID")
         .then((value) => keyNew = value!.VALUE.toString());
     streamList = ValueNotifier(Constanst.db.notifyDao
-        .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
-            defaultSafety.value, keyNew));
+        .caseDefaultSwitch3(
+            defaultSafety.value));
   }
 
   Stream<List<Notify>> setStreamGetData() {
@@ -459,39 +455,29 @@ class AdminNoticeScreen extends StatelessWidget {
         switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
-                .getListHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+                .caseUnreadSwitch1("%${keyWord.value}%", defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao
-                .getListHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+            return Constanst.db.notifyDao.caseEmergencySwitch1("%${keyWord.value}%", defaultSafety.value);
           case "confirm":
             return Constanst.db.notifyDao
-                .getListHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+                .caseConfirmSwitch1("%${keyWord.value}%", defaultSafety.value);
           default:
             return Constanst.db.notifyDao
-                .getListHaveKeywordFilterType01ORDER_BY_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+                .caseDefaultSwitch1("%${keyWord.value}%", defaultSafety.value);
         }
       } else {
         switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
-                .getListHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+                .caseUnreadSwitch2("%${keyWord.value}%", defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao
-                .getListHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+            return Constanst.db.notifyDao.caseEmergencySwitch2("%${keyWord.value}%", defaultSafety.value);
           case "confirm":
             return Constanst.db.notifyDao
-                .getListHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+                .caseConfirmSwitch2("%${keyWord.value}%", defaultSafety.value);
           default:
             return Constanst.db.notifyDao
-                .getListHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
-                    keyNew, "%${keyWord.value}%", defaultSafety.value);
+                .caseDefaultSwitch2("%${keyWord.value}%", defaultSafety.value);
         }
       }
     } else {
@@ -499,39 +485,29 @@ class AdminNoticeScreen extends StatelessWidget {
         switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
-                    keyNew, defaultSafety.value);
+                .caseUnreadSwitch3(defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    keyNew, defaultSafety.value);
+            return Constanst.db.notifyDao.caseEmergencySwitch3(defaultSafety.value);
           case "confirm":
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    keyNew, defaultSafety.value);
+                .caseConfirmSwitch3(defaultSafety.value);
           default:
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterType01ORDER_BY_Created_DESC(
-                    keyNew, defaultSafety.value);
+                .caseDefaultSwitch3(defaultSafety.value);
         }
       } else {
         switch (sortType.value.toLowerCase()) {
           case "unread":
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
-                    defaultSafety.value, keyNew);
+                .caseUnreadSwitch4(defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
-                    defaultSafety.value, keyNew);
+            return Constanst.db.notifyDao.caseEmergencySwitch4(defaultSafety.value);
           case "confirm":
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
-                    defaultSafety.value, keyNew);
+                .caseConfirmSwitch4(defaultSafety.value);
           default:
             return Constanst.db.notifyDao
-                .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
-                    defaultSafety.value, keyNew);
+                .caseDefaultSwitch4(defaultSafety.value);
         }
       }
     }
