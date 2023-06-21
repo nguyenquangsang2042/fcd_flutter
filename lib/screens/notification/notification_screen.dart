@@ -77,7 +77,7 @@ class NotificationScreen extends StatelessWidget {
                             onPressed: () {
                               isShowSearch.value = false;
                               isShowSort.value = false;
-                              _showPopup(context);
+                              _showPopupFilter(context);
                             },
                           ),
                         ));
@@ -298,7 +298,7 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
-  void _showPopup(BuildContext context) async {
+  void _showPopupFilter(BuildContext context) async {
     Constanst.db.announcementCategoryDao.getAnnouncementCategoryInListID(
         [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]).listen((event) {
       listFilter = [];
