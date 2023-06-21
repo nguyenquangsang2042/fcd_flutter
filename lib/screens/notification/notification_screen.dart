@@ -76,7 +76,39 @@ class NotificationScreen extends StatelessWidget {
                             onPressed: () {
                               isShowSearch.value = false;
                               isShowSort.value = false;
-                              _showPopup(context);
+                              //_showPopup(context);
+                              final RenderBox button = context.findRenderObject() as RenderBox;
+                              final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+                              final RelativeRect position = RelativeRect.fromRect(
+                                Rect.fromPoints(
+                                  button.localToGlobal(Offset.zero, ancestor: overlay),
+                                  button.localToGlobal(button.size.bottomLeft(Offset.zero), ancestor: overlay),
+                                ),
+                                Offset.zero & overlay.size,
+                              );
+
+                              showMenu(
+                                context: context,
+                                position: position,
+                                items: [
+                                  PopupMenuItem(
+                                    child: Text('Option 1'),
+                                    value: 1,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Option 2'),
+                                    value: 2,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Option 3'),
+                                    value: 3,
+                                  ),
+                                ],
+                              ).then((result) {
+                                if (result != null) {
+                                  // Handle the selected value here
+                                }
+                              });
                             },
                           ),
                         ));
@@ -290,49 +322,48 @@ class NotificationScreen extends StatelessWidget {
     Constanst.db.announcementCategoryDao
         .getAnnouncementCategoryInListID(
         [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]).listen((event) {
+      listFilter=[];
+      listFilter.add(AnnouncementCategory.none(0, "All"));
+      listFilter.addAll(event);
       showMenu(
         context: context,
         position: RelativeRect.fromLTRB(0.0, 90, 0.0, 0.0),
-        items: event.map((e) => PopupMenuItem(
-            child: Column(
-          children: event
-              .map((e) => InkResponse(
-            onTap: () {
-              if (e.id == 0) {
-                defaultSafety.value = [
-                  SAFETY_CATEGORY_ID,
-                  QUALIFICATION_CATEGORY_ID
-                ];
-              } else {
-                defaultSafety.value = [e.id.toString()];
-              }
-              streamList.value = setStreamGetData();
-              _groupValue = e.id;
-              Navigator.of(context).pop();
-            },
-            child: ListTile(
-              title: Text("${e!.title}"),
-              leading: Radio(
-                value: e.id,
-                groupValue: _groupValue,
-                onChanged: (int? value) async {
-                  if (value == 0) {
-                    defaultSafety.value = [
-                      SAFETY_CATEGORY_ID,
-                      QUALIFICATION_CATEGORY_ID
-                    ];
-                  } else {
-                    defaultSafety.value = [value.toString()];
-                  }
-                  streamList.value = setStreamGetData();
-                  _groupValue = value!;
-                  Navigator.of(context).pop();
-                },
+        items: listFilter.map((e) => PopupMenuItem(
+            child: InkResponse(
+              onTap: () {
+                if (e.id == 0) {
+                  defaultSafety.value = [
+                    SAFETY_CATEGORY_ID,
+                    QUALIFICATION_CATEGORY_ID
+                  ];
+                } else {
+                  defaultSafety.value = [e.id.toString()];
+                }
+                streamList.value = setStreamGetData();
+                _groupValue = e.id;
+                Navigator.of(context).pop();
+              },
+              child: ListTile(
+                title: Text("${e!.title}"),
+                leading: Radio(
+                  value: e.id,
+                  groupValue: _groupValue,
+                  onChanged: (int? value) async {
+                    if (value == 0) {
+                      defaultSafety.value = [
+                        SAFETY_CATEGORY_ID,
+                        QUALIFICATION_CATEGORY_ID
+                      ];
+                    } else {
+                      defaultSafety.value = [value.toString()];
+                    }
+                    streamList.value = setStreamGetData();
+                    _groupValue = value!;
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
-            ),
-          ))
-              .toList(),
-        ))).toList(),
+            ))).toList(),
       );
     });
   }
