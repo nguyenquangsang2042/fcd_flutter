@@ -7,7 +7,6 @@ import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/notification/news_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
-
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
 
@@ -288,6 +287,64 @@ class NotificationScreen extends StatelessWidget {
     );
   }
   void _showPopup(BuildContext context) async {
+    StreamBuilder(
+      stream: Constanst.db.announcementCategoryDao
+          .getAnnouncementCategoryInListID(
+          [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          listFilter = [AnnouncementCategory.none(0, "All")];
+          listFilter.addAll(snapshot.data!);
+          return Column(
+            children: listFilter
+                .map((e) => InkResponse(
+              onTap: () {
+                if (e.id == 0) {
+                  defaultSafety.value = [
+                    SAFETY_CATEGORY_ID,
+                    QUALIFICATION_CATEGORY_ID
+                  ];
+                } else {
+                  defaultSafety.value = [e.id.toString()];
+                }
+                streamList.value = setStreamGetData();
+                _groupValue = e.id;
+                Navigator.of(context).pop();
+              },
+              child: ListTile(
+                title: Text("${e!.title}"),
+                leading: Radio(
+                  value: e.id,
+                  groupValue: _groupValue,
+                  onChanged: (int? value) async {
+                    if (value == 0) {
+                      defaultSafety.value = [
+                        SAFETY_CATEGORY_ID,
+                        QUALIFICATION_CATEGORY_ID
+                      ];
+                    } else {
+                      defaultSafety.value = [value.toString()];
+                    }
+                    streamList.value = setStreamGetData();
+                    _groupValue = value!;
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ))
+                .toList(),
+          );
+        } else {
+          return const SizedBox(
+            height: 0,
+            width: 0,
+          );
+        }
+      },
+    )
+    Constanst.db.announcementCategoryDao
+        .getAnnouncementCategoryInListID(
+        [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID])
     await showMenu(
       context: context,
       position: RelativeRect.fromLTRB(0.0, 90, 0.0, 0.0),
@@ -319,113 +376,8 @@ class NotificationScreen extends StatelessWidget {
       ],
     );
   }
-  void showPopupFilter(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => Dialog(
 
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color(0xFF006784),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(child: Text(
-                  "Filter type",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),),
-              ),
-            ),
-            const Divider(
-              color: Colors.grey,
-              height: 1,
-            ),
-            SizedBox(
-              height: null,
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: buildPopupFilter(),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
-  buildPopupFilter() {
-    return StreamBuilder(
-      stream: Constanst.db.announcementCategoryDao
-          .getAnnouncementCategoryInListID(
-              [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          listFilter = [AnnouncementCategory.none(0, "All")];
-          listFilter.addAll(snapshot.data!);
-          return Column(
-            children: listFilter
-                .map((e) => InkResponse(
-                      onTap: () {
-                        if (e.id == 0) {
-                          defaultSafety.value = [
-                            SAFETY_CATEGORY_ID,
-                            QUALIFICATION_CATEGORY_ID
-                          ];
-                        } else {
-                          defaultSafety.value = [e.id.toString()];
-                        }
-                        streamList.value = setStreamGetData();
-                        _groupValue = e.id;
-                        Navigator.of(context).pop();
-                      },
-                      child: ListTile(
-                        title: Text("${e!.title}"),
-                        leading: Radio(
-                          value: e.id,
-                          groupValue: _groupValue,
-                          onChanged: (int? value) async {
-                            if (value == 0) {
-                              defaultSafety.value = [
-                                SAFETY_CATEGORY_ID,
-                                QUALIFICATION_CATEGORY_ID
-                              ];
-                            } else {
-                              defaultSafety.value = [value.toString()];
-                            }
-                            streamList.value = setStreamGetData();
-                            _groupValue = value!;
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-                    ))
-                .toList(),
-          );
-        } else {
-          return const SizedBox(
-            height: 0,
-            width: 0,
-          );
-        }
-      },
-    );
-  }
 
   StreamBuilder<List<Notify>> ListSafety() {
     return StreamBuilder(
