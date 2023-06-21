@@ -287,94 +287,54 @@ class NotificationScreen extends StatelessWidget {
     );
   }
   void _showPopup(BuildContext context) async {
-    StreamBuilder(
-      stream: Constanst.db.announcementCategoryDao
-          .getAnnouncementCategoryInListID(
-          [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          listFilter = [AnnouncementCategory.none(0, "All")];
-          listFilter.addAll(snapshot.data!);
-          return Column(
-            children: listFilter
-                .map((e) => InkResponse(
-              onTap: () {
-                if (e.id == 0) {
-                  defaultSafety.value = [
-                    SAFETY_CATEGORY_ID,
-                    QUALIFICATION_CATEGORY_ID
-                  ];
-                } else {
-                  defaultSafety.value = [e.id.toString()];
-                }
-                streamList.value = setStreamGetData();
-                _groupValue = e.id;
-                Navigator.of(context).pop();
-              },
-              child: ListTile(
-                title: Text("${e!.title}"),
-                leading: Radio(
-                  value: e.id,
-                  groupValue: _groupValue,
-                  onChanged: (int? value) async {
-                    if (value == 0) {
-                      defaultSafety.value = [
-                        SAFETY_CATEGORY_ID,
-                        QUALIFICATION_CATEGORY_ID
-                      ];
-                    } else {
-                      defaultSafety.value = [value.toString()];
-                    }
-                    streamList.value = setStreamGetData();
-                    _groupValue = value!;
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-            ))
-                .toList(),
-          );
-        } else {
-          return const SizedBox(
-            height: 0,
-            width: 0,
-          );
-        }
-      },
-    )
     Constanst.db.announcementCategoryDao
         .getAnnouncementCategoryInListID(
-        [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID])
-    await showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(0.0, 90, 0.0, 0.0),
-      items: <PopupMenuEntry>[
-        PopupMenuItem(
-          value: 1,
-          enabled: false,
-          child: Container(
-            width: MediaQuery.of(context).size.width - 16.0, // subtracting 16.0 to account for padding
-            child: Text("Option 1"),
-          ),
-        ),
-        PopupMenuItem(
-          value: 2,
-          enabled: false,
-          child: Container(
-            width: MediaQuery.of(context).size.width - 16.0, // subtracting 16.0 to account for padding
-            child: Text("Option 2"),
-          ),
-        ),
-        PopupMenuItem(
-          value: 3,
-          enabled: false,
-          child: Container(
-            width: MediaQuery.of(context).size.width ,// subtracting 16.0 to account for padding
-            child: Text("Option 3"),
-          ),
-        ),
-      ],
-    );
+        [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]).listen((event) {
+      showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(0.0, 90, 0.0, 0.0),
+        items: event.map((e) => PopupMenuItem(
+            child: Column(
+          children: event
+              .map((e) => InkResponse(
+            onTap: () {
+              if (e.id == 0) {
+                defaultSafety.value = [
+                  SAFETY_CATEGORY_ID,
+                  QUALIFICATION_CATEGORY_ID
+                ];
+              } else {
+                defaultSafety.value = [e.id.toString()];
+              }
+              streamList.value = setStreamGetData();
+              _groupValue = e.id;
+              Navigator.of(context).pop();
+            },
+            child: ListTile(
+              title: Text("${e!.title}"),
+              leading: Radio(
+                value: e.id,
+                groupValue: _groupValue,
+                onChanged: (int? value) async {
+                  if (value == 0) {
+                    defaultSafety.value = [
+                      SAFETY_CATEGORY_ID,
+                      QUALIFICATION_CATEGORY_ID
+                    ];
+                  } else {
+                    defaultSafety.value = [value.toString()];
+                  }
+                  streamList.value = setStreamGetData();
+                  _groupValue = value!;
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ))
+              .toList(),
+        ))).toList(),
+      );
+    });
   }
 
 
