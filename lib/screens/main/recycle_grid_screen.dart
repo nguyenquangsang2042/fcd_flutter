@@ -3,6 +3,7 @@ import 'package:fcd_flutter/screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
+import '../admin_notice/admin_notice_screen.dart';
 import 'main_controller.dart';
 
 class RecycleGridScreen extends StatelessWidget {
@@ -116,7 +117,7 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Safety':
         return NotificationScreen();
       case 'News':
-        return "AdminNoticeScreen()";
+        return AdminNoticeScreen();
       case 'Licence':
         return 'icon_lisence30';
       case 'Schedule':
