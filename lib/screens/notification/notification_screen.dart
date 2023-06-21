@@ -7,6 +7,7 @@ import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/notification/news_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
+
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
 
@@ -26,8 +27,8 @@ class NotificationScreen extends StatelessWidget {
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
   late List<AnnouncementCategory> listFilter;
   int _groupValue = 0;
-  String _groupValueSort="Date";
-  TextEditingController contollerSearch=TextEditingController(text: '');
+  String _groupValueSort = "Date";
+  TextEditingController contollerSearch = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -76,39 +77,7 @@ class NotificationScreen extends StatelessWidget {
                             onPressed: () {
                               isShowSearch.value = false;
                               isShowSort.value = false;
-                              //_showPopup(context);
-                              final RenderBox button = context.findRenderObject() as RenderBox;
-                              final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-                              final RelativeRect position = RelativeRect.fromRect(
-                                Rect.fromPoints(
-                                  button.localToGlobal(Offset.zero, ancestor: overlay),
-                                  button.localToGlobal(button.size.bottomLeft(Offset.zero), ancestor: overlay),
-                                ),
-                                Offset.zero & overlay.size,
-                              );
-
-                              showMenu(
-                                context: context,
-                                position: position,
-                                items: [
-                                  PopupMenuItem(
-                                    child: Text('Option 1'),
-                                    value: 1,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('Option 2'),
-                                    value: 2,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('Option 3'),
-                                    value: 3,
-                                  ),
-                                ],
-                              ).then((result) {
-                                if (result != null) {
-                                  // Handle the selected value here
-                                }
-                              });
+                              _showPopup(context);
                             },
                           ),
                         ));
@@ -155,10 +124,10 @@ class NotificationScreen extends StatelessWidget {
             body: Column(
               children: [
                 MultiValueListenableBuilder(
-                  valueListenables: [ isShowSort, defaultSafety],
+                  valueListenables: [isShowSort, defaultSafety],
                   builder: (BuildContext context, List<dynamic> values,
                       Widget? child) {
-                     if (isShowSort.value) {
+                    if (isShowSort.value) {
                       return buildSortType();
                     } else
                       return SizedBox(
@@ -168,9 +137,9 @@ class NotificationScreen extends StatelessWidget {
                   },
                 ),
                 MultiValueListenableBuilder(
-                    valueListenables: [ isShowSort,isSafety],
+                    valueListenables: [isShowSort, isSafety],
                     builder: (context, values, child) {
-                      if (!isShowSort.value ) {
+                      if (!isShowSort.value) {
                         return Container(
                           width: MediaQuery.of(context).size.width,
                           child: Row(
@@ -195,7 +164,13 @@ class NotificationScreen extends StatelessWidget {
                                       ];
                                       streamList.value = setStreamGetData();
                                     },
-                                    child: Text('Safety',style: TextStyle(color: isSafety.value?Color(0xFFDBA40D):Color(0xFFAAAAAA)),)),
+                                    child: Text(
+                                      'Safety',
+                                      style: TextStyle(
+                                          color: isSafety.value
+                                              ? Color(0xFFDBA40D)
+                                              : Color(0xFFAAAAAA)),
+                                    )),
                               ),
                               Expanded(
                                 flex: 1,
@@ -206,7 +181,13 @@ class NotificationScreen extends StatelessWidget {
                                       defaultSafety.value = ["3"];
                                       streamList.value = setStreamGetData();
                                     },
-                                    child: Text('Operation',style: TextStyle(color: !isSafety.value?Color(0xFFDBA40D):Color(0xFFAAAAAA)),)),
+                                    child: Text(
+                                      'Operation',
+                                      style: TextStyle(
+                                          color: !isSafety.value
+                                              ? Color(0xFFDBA40D)
+                                              : Color(0xFFAAAAAA)),
+                                    )),
                               ),
                             ],
                           ),
@@ -221,9 +202,7 @@ class NotificationScreen extends StatelessWidget {
                 ValueListenableBuilder(
                   valueListenable: isShowSearch,
                   builder: (context, value, child) {
-                    return Visibility(
-                        visible: value,
-                        child: buildTextSearch());
+                    return Visibility(visible: value, child: buildTextSearch());
                   },
                 ),
                 Expanded(
@@ -257,36 +236,36 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Column buildSortType() {
-    List<String> lstSortType=["Date","Unread","Emergency","Confirm"];
+    List<String> lstSortType = ["Date", "Unread", "Emergency", "Confirm"];
     return Column(
       children: lstSortType
           .map((e) => InkResponse(
-        onTap: () {
-          sortType.value=e;
-          streamList.value = setStreamGetData();
-          _groupValueSort = e;
-          isShowSort.value = false;
-        },
-        child: ListTile(
-          title: Text(e),
-          leading: Radio(
-            value: e,
-            groupValue: _groupValueSort,
-            onChanged: (value) {
-              sortType.value=e;
-              streamList.value = setStreamGetData();
-              _groupValueSort = e;
-              isShowSort.value = false;
-            },
-          ),
-        ),
-      ))
+                onTap: () {
+                  sortType.value = e;
+                  streamList.value = setStreamGetData();
+                  _groupValueSort = e;
+                  isShowSort.value = false;
+                },
+                child: ListTile(
+                  title: Text(e),
+                  leading: Radio(
+                    value: e,
+                    groupValue: _groupValueSort,
+                    onChanged: (value) {
+                      sortType.value = e;
+                      streamList.value = setStreamGetData();
+                      _groupValueSort = e;
+                      isShowSort.value = false;
+                    },
+                  ),
+                ),
+              ))
           .toList(),
     );
   }
 
   Widget buildTextSearch() {
-    contollerSearch= TextEditingController(text: keyWord.value);
+    contollerSearch = TextEditingController(text: keyWord.value);
     return Container(
       padding: EdgeInsets.all(5.0),
       color: Colors.grey.shade400,
@@ -304,8 +283,8 @@ class NotificationScreen extends StatelessWidget {
           prefixIcon: Icon(Icons.search),
           suffixIcon: IconButton(
             icon: Icon(Icons.cancel),
-            onPressed: ()  {
-              keyWord.value="";
+            onPressed: () {
+              keyWord.value = "";
               contollerSearch.clear();
               streamList.value = setStreamGetData();
             }, // Replace with delete functionality
@@ -318,57 +297,62 @@ class NotificationScreen extends StatelessWidget {
       ),
     );
   }
+
   void _showPopup(BuildContext context) async {
-    Constanst.db.announcementCategoryDao
-        .getAnnouncementCategoryInListID(
+    Constanst.db.announcementCategoryDao.getAnnouncementCategoryInListID(
         [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]).listen((event) {
-      listFilter=[];
+      listFilter = [];
       listFilter.add(AnnouncementCategory.none(0, "All"));
       listFilter.addAll(event);
-      showMenu(
-        context: context,
-        position: RelativeRect.fromLTRB(0.0, 90, 0.0, 0.0),
-        items: listFilter.map((e) => PopupMenuItem(
-            child: InkResponse(
-              onTap: () {
-                if (e.id == 0) {
-                  defaultSafety.value = [
-                    SAFETY_CATEGORY_ID,
-                    QUALIFICATION_CATEGORY_ID
-                  ];
-                } else {
-                  defaultSafety.value = [e.id.toString()];
-                }
-                streamList.value = setStreamGetData();
-                _groupValue = e.id;
-                Navigator.of(context).pop();
-              },
-              child: ListTile(
-                title: Text("${e!.title}"),
-                leading: Radio(
-                  value: e.id,
-                  groupValue: _groupValue,
-                  onChanged: (int? value) async {
-                    if (value == 0) {
-                      defaultSafety.value = [
-                        SAFETY_CATEGORY_ID,
-                        QUALIFICATION_CATEGORY_ID
-                      ];
-                    } else {
-                      defaultSafety.value = [value.toString()];
-                    }
-                    streamList.value = setStreamGetData();
-                    _groupValue = value!;
-                    Navigator.of(context).pop();
-                  },
-                ),
+      showDialog(
+          context: context,
+          builder: (_) {
+            return Container(
+              height: null,
+              margin: EdgeInsets.only(top: 55),
+              child:Column(
+                children: [
+                  ListView.builder(
+                      shrinkWrap:true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: listFilter.length,
+                      itemBuilder: (_,index){
+                        return  Material(child: InkResponse(child: ListTile(
+                          title: Text("${listFilter[index]!.title}"),
+                          leading: Radio(value: listFilter[index].id, groupValue: _groupValue, onChanged: (value) {
+                            Navigator.of(context).pop();
+                            if (value == 0) {
+                              defaultSafety.value = [
+                                SAFETY_CATEGORY_ID,
+                                QUALIFICATION_CATEGORY_ID
+                              ];
+                            } else {
+                              defaultSafety.value = [value.toString()];
+                            }
+                            streamList.value = setStreamGetData();
+                            _groupValue = value!;
+                          },),
+                        ),onTap: () {
+                          Navigator.of(context).pop();
+                          if (listFilter[index].id == 0) {
+                            defaultSafety.value = [
+                              SAFETY_CATEGORY_ID,
+                              QUALIFICATION_CATEGORY_ID
+                            ];
+                          } else {
+                            defaultSafety.value = [listFilter[index].id .toString()];
+                          }
+                          streamList.value = setStreamGetData();
+                          _groupValue = listFilter[index].id ;
+                        },),);
+                      }),
+                  Expanded(child: Container(),flex: 1,)
+                ],
               ),
-            ))).toList(),
-      );
+            );
+          });
     });
   }
-
-
 
   StreamBuilder<List<Notify>> ListSafety() {
     return StreamBuilder(
