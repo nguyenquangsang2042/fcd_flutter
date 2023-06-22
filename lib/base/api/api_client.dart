@@ -13,7 +13,6 @@ import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
-import 'package:flutter/material.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/app/airport.dart';

@@ -15,7 +15,7 @@ class AdminNoticeScreen extends StatelessWidget {
   String keyNew = '';
   ValueNotifier<bool> isRefreshing = ValueNotifier(false);
   ValueNotifier<String> sortType = ValueNotifier("");
-  ValueNotifier<String> filterType = ValueNotifier("");
+  ValueNotifier<String> filterType = ValueNotifier("0");
   ValueNotifier<String> keyWord = ValueNotifier("");
   ValueNotifier<Stream<List<Notify>>> streamList =
       ValueNotifier(Stream.fromIterable([]));
@@ -226,6 +226,8 @@ class AdminNoticeScreen extends StatelessWidget {
                                         SAFETY_CATEGORY_ID,
                                         QUALIFICATION_CATEGORY_ID
                                       ];
+                                      defaultSafety.value.addAll(trainingNotify);
+
                                     } else {
                                       defaultSafety.value = [value.toString()];
                                     }
@@ -241,6 +243,8 @@ class AdminNoticeScreen extends StatelessWidget {
                                     SAFETY_CATEGORY_ID,
                                     QUALIFICATION_CATEGORY_ID
                                   ];
+                                  defaultSafety.value.addAll(trainingNotify);
+
                                 } else {
                                   defaultSafety.value = [
                                     listFilter[index].id.toString()
@@ -338,14 +342,14 @@ class AdminNoticeScreen extends StatelessWidget {
                                     '${Constanst.baseURL}${snapshot.data![index].iconPath}',
                                 errImage: 'asset/images/logo_vna120.png'),
                           ),
-                          title: Text(snapshot.data![index].title != null
-                              ? snapshot.data![index].title!
-                              : snapshot.data![index].content),
+                          title: Text(snapshot.data![index].announCategoryId==7
+                              ? "News"
+                              : snapshot.data![index].title!=null?snapshot.data![index].title!:""),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(snapshot.data![index].content),
+                              Text(snapshot.data![index].announCategoryId==7?snapshot.data![index].title!:snapshot.data![index].content),
                               Row(
                                 children: [
                                   Expanded(
@@ -444,6 +448,7 @@ class AdminNoticeScreen extends StatelessWidget {
     await Constanst.db.settingDao
         .findSettingByKey("NEWS_CATEGORY_ID")
         .then((value) => keyNew = value!.VALUE.toString());
+    defaultSafety.value.addAll(trainingNotify);
     streamList = ValueNotifier(Constanst.db.notifyDao
         .caseDefaultSwitch3(
             defaultSafety.value));
