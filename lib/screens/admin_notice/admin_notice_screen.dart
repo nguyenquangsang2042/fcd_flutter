@@ -354,7 +354,7 @@ class AdminNoticeScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     flex: 8,
-                                    child: Text(snapshot.data![index].created),
+                                    child: Text(Functions.instance.formatDateString(snapshot.data![index].created, Constanst.formatDateddmmyyy)),
                                   ),
                                   Expanded(
                                     flex: 2,

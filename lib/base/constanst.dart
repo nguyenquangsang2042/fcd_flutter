@@ -18,4 +18,5 @@ class Constanst {
    //static String baseDomain='pilot.vuthao.com';
   static String baseURL='https://pilotuat.vuthao.com';
   static String baseDomain='pilotuat.vuthao.com';
+  static String formatDateddmmyyy='dd/MM/yyyy';
 }

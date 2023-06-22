@@ -64,6 +64,7 @@ dependencies:
   permission_handler: ^10.3.0
   flutter_inappwebview: ^5.7.2+3
   multi_value_listenable_builder: ^0.0.2
+  intl: ^0.18.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
