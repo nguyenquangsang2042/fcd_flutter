@@ -7,6 +7,7 @@ import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
+import 'package:fcd_flutter/base/model/app/licence.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
@@ -82,6 +83,11 @@ abstract class ApiClient {
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanPilotSchedulePdf')
   Future<ApiList<PilotSchedulePdf>> getPilotSchedulePdf(
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
+
+  @GET('/API/User.ashx?func=GetListUserLicense')
+  Future<ApiList<License>> getUserLicense(
+      @Header('Cookie') String cookieValue,
+      @Query("uid") String uid);
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanAnnouncementCategory')
   Future<ApiList<AnnouncementCategory>> getAnnouncementCategory(

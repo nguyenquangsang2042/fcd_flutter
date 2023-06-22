@@ -7,6 +7,7 @@ import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/licence.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
@@ -82,6 +83,8 @@ class ApiList<T> extends Status {
       return MenuHome.fromJson(data);
     } else if (T == BeanBanner) {
       return BeanBanner.fromJson(data);
+    }else if (T == License) {
+      return License.fromJson(data);
     } else {
       return null;
     }

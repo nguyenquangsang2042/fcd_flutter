@@ -5,6 +5,7 @@ import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/licence.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
@@ -443,7 +444,6 @@ class ApiController {
     Constanst.db.dbVariableDao
         .insertDBVariable(DBVariable.haveParams("Banner", data.dateNow));
   }
-
   Future<void> updateNotify() async {
     DBVariable? dbVariable =
         await Constanst.db.dbVariableDao.findDBVariableById("Notify");
@@ -463,4 +463,18 @@ class ApiController {
           .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
     }
   }
+
+  Future<void> updateLicence() async {
+    DBVariable? dbVariable =
+    await Constanst.db.dbVariableDao.findDBVariableById("Licence");
+    if (dbVariable != null) {
+      await Constanst.db.licenceDao.deleteAll();
+    }
+    ApiList<License> data = await Constanst.api
+        .getUserLicense(Constanst.sharedPreferences.get('set-cookie').toString(),Constanst.currentUser.id);
+    await Constanst.db.licenceDao.insertLicenses(data.data);
+    Constanst.db.dbVariableDao
+        .insertDBVariable(DBVariable.haveParams("Licence", data.dateNow));
+  }
+
 }

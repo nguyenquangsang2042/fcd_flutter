@@ -6,6 +6,7 @@ import 'package:fcd_flutter/base/database/dao/department_dao.dart';
 import 'package:fcd_flutter/base/database/dao/district_dao.dart';
 import 'package:fcd_flutter/base/database/dao/faqs_dao.dart';
 import 'package:fcd_flutter/base/database/dao/help_desk_category_dao.dart';
+import 'package:fcd_flutter/base/database/dao/licence_dao.dart';
 import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
 import 'package:fcd_flutter/base/database/dao/menuapp_dao.dart';
 import 'package:fcd_flutter/base/database/dao/nation_dao.dart';
@@ -23,6 +24,7 @@ import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
+import 'package:fcd_flutter/base/model/app/licence.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
@@ -73,6 +75,7 @@ part 'app_database.g.dart'; // the generated code will be there
   MenuApp,
   MenuHome,
   BeanBanner,
+  License
 ])
 abstract class AppDatabase extends FloorDatabase {
   SettingsDao get settingDao;
@@ -98,4 +101,5 @@ abstract class AppDatabase extends FloorDatabase {
   MenuAppDao get menuAppDao;
   MenuHomeDao get menuHomeDao;
   BannerDao get bannerDao;
+  LicenceDao get licenceDao;
 }
