@@ -6,67 +6,67 @@ part 'user.g.dart';
 class User{
   @primaryKey
   @JsonKey(name: 'ID')
-  final String id;
+  late String id;
   @JsonKey(name: 'Code')
-  final String? code;
+  late String? code;
   @JsonKey(name: 'Code2')
-  final String? code2;
+  late String? code2;
   @JsonKey(name: 'Code3')
-  final String? code3;
+  late String? code3;
   @JsonKey(name: 'FullName')
-  final String? fullName;
+  late String? fullName;
   @JsonKey(name: 'FullNameNoAccent')
-  final String? fullNameNoAccent;
+  late String? fullNameNoAccent;
   @JsonKey(name: 'Alias')
-  final String? alias;
+  late String? alias;
   @JsonKey(name: 'Gender')
-  final bool gender;
+  late bool gender;
   @JsonKey(name: 'Birthplace')
-  final String? birthplace;
+  late String? birthplace;
   @JsonKey(name: 'Mobile')
-  final String? mobile;
+  late String? mobile;
   @JsonKey(name: 'Email')
-  final String? email;
+  late String? email;
   @JsonKey(name: 'Avatar')
-  final String? avatar;
+  late String? avatar;
   @JsonKey(name: 'EmailNoDomain')
-  final String? emailNoDomain;
+  late String? emailNoDomain;
   @JsonKey(name: 'Department')
-  final int department;
+  late int department;
   @JsonKey(name: 'DepartmentName')
-  final String? departmentName;
+  late String? departmentName;
   @JsonKey(name: 'Position')
-  final int position;
+  late int position;
   @JsonKey(name: 'PositionName')
-  final String? positionName;
+  late String? positionName;
   @JsonKey(name: 'Modified')
-  final String? modified;
+  late String? modified;
   @JsonKey(name: 'Nationality')
-  final String? nationality;
+  late String? nationality;
   @JsonKey(name: 'WorkingPattern')
-  final String? workingPattern;
+  late String? workingPattern;
   @JsonKey(name: 'Status')
-  final int status;
+  late int status;
   @JsonKey(name: 'SpecialContent')
-  final String? specialContent;
+  late String? specialContent;
   @JsonKey(name: 'Birthday')
-  final String? birthday;
+  late String? birthday;
   @JsonKey(name: 'Address')
-  final String? address;
+  late String? address;
   @JsonKey(name: 'IdentityNum')
-  final String? identityNumber;
+  late String? identityNumber;
   @JsonKey(name: 'NgayVaoDang')
-  final String? ngayVaoDang;
+  late String? ngayVaoDang;
   @JsonKey(name: 'StartDateWork')
-  final String? startDateWork;
+  late String? startDateWork;
   @JsonKey(name: 'Base')
-  final String? base;
+  late String? base;
   @JsonKey(name: 'IDNumber')
-  final String? idNumber;
+  late String? idNumber;
   @JsonKey(name: 'RewardDiscipline')
-  final String? rewardDiscipline;
+  late String? rewardDiscipline;
   @JsonKey(name: 'EstimatedFlightTimeInMonth')
-  final String? estimatedFlightTimeInMonth;
+  late String? estimatedFlightTimeInMonth;
 
   User(
       this.id,
@@ -100,6 +100,10 @@ class User{
       this.idNumber,
       this.rewardDiscipline,
       this.estimatedFlightTimeInMonth);
+
+
+  User.none();
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
