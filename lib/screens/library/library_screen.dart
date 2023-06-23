@@ -115,7 +115,7 @@ class LibraryScreen extends StatelessWidget {
                     }
                   } else {
                     return Container(
-                      child: CircularProgressIndicator(),
+                      child: Center(child: CircularProgressIndicator(),),
                     );
                   }
                 },
