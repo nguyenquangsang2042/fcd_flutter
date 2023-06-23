@@ -52,7 +52,6 @@ class AnnouncementCategory {
 
   @JsonKey(name: 'Orders')
   late int orders;
-  AnnouncementCategory.none(this.id, this.title);
   AnnouncementCategory(
       this.id,
       this.title,
@@ -70,6 +69,7 @@ class AnnouncementCategory {
       this.modified,
       this.created,
       this.orders);
+  AnnouncementCategory.none(this.id, this.title);
 
   factory AnnouncementCategory.fromJson(Map<String, dynamic> json) => _$AnnouncementCategoryFromJson(json);
 

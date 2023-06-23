@@ -21,25 +21,28 @@ class DownloadFile {
     String dir = (await getApplicationSupportDirectory()).path;
     String filePath = '$dir/$fileName';
     File file = File(filePath);
-    try {
-      Loader.show(context,progressIndicator:CircularProgressIndicator(),);
-      Dio dio = Dio();
-      Response response = await dio.get(
-        url,
-        onReceiveProgress: showDownloadProgress,
-        options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-            validateStatus: (status) {
-              return status! < 500;
-            }),
-      );
-      var raf = file.openSync(mode: FileMode.write);
-      // response.data is List<int> type
-      raf.writeFromSync(response.data);
-      await raf.close();
-    } catch (e) {
-      print(e);
+    if (!(await file.exists()))
+    {
+      try {
+        Loader.show(context,progressIndicator:CircularProgressIndicator(),);
+        Dio dio = Dio();
+        Response response = await dio.get(
+          url,
+          onReceiveProgress: showDownloadProgress,
+          options: Options(
+              responseType: ResponseType.bytes,
+              followRedirects: false,
+              validateStatus: (status) {
+                return status! < 500;
+              }),
+        );
+        var raf = file.openSync(mode: FileMode.write);
+        // response.data is List<int> type
+        raf.writeFromSync(response.data);
+        await raf.close();
+      } catch (e) {
+        print(e);
+      }
     }
 
     if (await file.exists()) {

@@ -123,7 +123,7 @@ class NotificationScreen extends StatelessWidget {
                 ValueListenableBuilder(
                     valueListenable: isSafety,
                     builder: (context, values, child) {
-                      return Container(
+                      return SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Row(
                           children: [
