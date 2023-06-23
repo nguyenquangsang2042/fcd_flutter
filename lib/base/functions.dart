@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as p;
+
 class Functions {
   static final Functions _singleton = Functions._internal();
 
@@ -35,6 +37,57 @@ class Functions {
     DateTime dateTime = DateTime.parse(dateString);
     String formattedDate = DateFormat(formatReturn).format(dateTime);
     return formattedDate;
+  }
+  Icon getFileIcon(String fileType) {
+    switch (fileType.toLowerCase()) {
+      case '.pdf':
+        return Icon(Icons.picture_as_pdf);
+      case '.doc':
+      case '.docx':
+        return Icon(Icons.description);
+      case '.xls':
+      case '.xlsx':
+        return Icon(Icons.grid_on);
+      case '.png':
+      case '.jpg':
+      case '.jpeg':
+        return Icon(Icons.image);
+      default:
+        return Icon(Icons.folder);
+    }
+  }
+  bool isWordDocument(String fileName) {
+    return p.extension(fileName) == '.doc' ||
+        p.extension(fileName) == '.docx';
+  }
+
+  bool isExcelSpreadsheet(String fileName) {
+    return p.extension(fileName) == '.xls' ||
+        p.extension(fileName) == '.xlsx';
+  }
+
+  bool isPowerPointPresentation(String fileName) {
+    return p.extension(fileName) == '.ppt' ||
+        p.extension(fileName) == '.pptx';
+  }
+
+  bool isPDF(String fileName) {
+    return p.extension(fileName) == '.pdf';
+  }
+
+  bool isSupportedFileType(String fileName) {
+    final extension = p.extension(fileName);
+    return extension == '.doc' ||
+        extension == '.docx' ||
+        extension == '.xls' ||
+        extension == '.xlsx' ||
+        extension == '.ppt' ||
+        extension == '.pptx' ||
+        extension == '.pdf' ||
+        extension == '.png' ||
+        extension == '.jpg' ||
+        extension == '.jpeg' ||
+        extension == '.gif';
   }
 
 }

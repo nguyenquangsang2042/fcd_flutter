@@ -13,8 +13,6 @@ import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
-import 'package:flutter/material.dart';
-
 import '../constanst.dart';
 import '../model/api_list.dart';
 import '../model/app/announcement_category.dart';
@@ -416,6 +414,16 @@ class ApiController {
     }
   }
 
+
+
+
+  Future<void> updateAllDynamicData()async {
+    updateMenuHome();
+    updateBanner();
+    updateNotify();
+    updateLicence();
+  }
+
   Future<void> updateMenuHome() async {
     DBVariable? dbVariable =
         await Constanst.db.dbVariableDao.findDBVariableById("MenuHome");
@@ -433,11 +441,6 @@ class ApiController {
   }
 
   Future<void> updateBanner() async {
-    DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Banner");
-    if (dbVariable != null) {
-      await Constanst.db.bannerDao.deleteAll();
-    }
     ApiList<BeanBanner> data = await Constanst.api
         .getBanner(Constanst.sharedPreferences.get('set-cookie').toString());
     await Constanst.db.bannerDao.insertBanners(data.data);

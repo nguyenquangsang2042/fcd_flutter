@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base/api/dio_controller.dart';
@@ -33,7 +34,6 @@ Future<void> main() async {
   Constanst.apiController.updateMasterData();
   Constanst.sharedPreferences = await SharedPreferences.getInstance();
   HttpOverrides.global = MyHttpOverrides();
-
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
 
@@ -57,6 +57,7 @@ Future<void> main() async {
   }
   await getDeviceInfo();
   runApp(const MyApp());
+
 }
 
 Future<void> getDeviceInfo() async {

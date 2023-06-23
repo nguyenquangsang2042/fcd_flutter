@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fcd_flutter/base/constanst.dart';
 import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
+import 'package:fcd_flutter/base/model/app/bean_library.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
@@ -86,8 +87,7 @@ abstract class ApiClient {
 
   @GET('/API/User.ashx?func=GetListUserLicense')
   Future<ApiList<License>> getUserLicense(
-      @Header('Cookie') String cookieValue,
-      @Query("uid") String uid);
+      @Header('Cookie') String cookieValue, @Query("uid") String uid);
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanAnnouncementCategory')
   Future<ApiList<AnnouncementCategory>> getAnnouncementCategory(
@@ -124,5 +124,10 @@ abstract class ApiClient {
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
 
   @POST('/API/User.ashx?func=mobileAutoLoginWeb')
-  Future<ApiObject<String?>> mobileAutoLoginWeb(@Header('Cookie') String cookieValue,@Field('uid') String uid);
+  Future<ApiObject<String?>> mobileAutoLoginWeb(
+      @Header('Cookie') String cookieValue, @Field('uid') String uid);
+
+  @GET('/API/ApiLibrary.ashx?func=GetFolderItem')
+  Future<ApiList<BeanLibrary>> getLibraryByID(
+      @Header('Cookie') String cookieValue, @Query('fid') int fid);
 }
