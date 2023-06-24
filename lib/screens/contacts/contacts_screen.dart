@@ -4,6 +4,7 @@ import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/widgets/circle_image_cookie.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
@@ -13,7 +14,7 @@ class ContactScreen extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(context),
       body: FutureBuilder(
-        future: Future.delayed(Duration(milliseconds: 500)),
+        future: Future.delayed(Duration(milliseconds: 350)),
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.done)
             {
@@ -59,7 +60,10 @@ class ContactScreen extends StatelessWidget {
                         return Expanded(
                             child: Container(
                               child: Center(
-                                child: CircularProgressIndicator(),
+                                child: SpinKitRing(
+                                  color: Color(0xFF006784),
+                                  size: 50.0,
+                                )
                               ),
                             ));
                       }
@@ -73,7 +77,10 @@ class ContactScreen extends StatelessWidget {
               return Expanded(
                   child: Container(
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: SpinKitRing(
+                        color: Color(0xFF006784),
+                        size: 50.0,
+                      )
                     ),
                   ));
             }
