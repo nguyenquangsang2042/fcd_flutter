@@ -11,4 +11,7 @@ abstract class LibraryDao {
 
   @Query("Select * from BeanLibrary where parentFolderCode = :idParent")
   Future<List<BeanLibrary>> getLibraryByParentFolderCode (int idParent);
+
+  @Query('Delete from BeanLibrary where id = :id')
+  Future<void> deleteLibraryByID(int id);
 }
