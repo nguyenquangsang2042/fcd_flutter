@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/download_file.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/bean_library.dart';
@@ -10,6 +10,8 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../base/widgets/connectivity_widget.dart';
 
 class LibraryScreen extends StatelessWidget {
   LibraryScreen({Key? key}) : super(key: key);
@@ -59,23 +61,7 @@ class LibraryScreen extends StatelessWidget {
             backgroundColor: const Color(0xFF006784),
             centerTitle: true,
           ),
-          body: StreamBuilder(
-            stream: Connectivity().onConnectivityChanged,
-            builder: (context, connection) {
-              if(connection.data!=null && connection.data != ConnectivityResult.none)
-              {
-                return buildOnlineList();
-              }
-              else
-              {
-                List<String> temp=[];
-                temp.addAll(titleAppBar.value);
-                temp.first='${titleAppBar.value.first} Offline Mode';
-                titleAppBar.value=temp;
-                return buildOfflineMode();
-              }
-            },
-          ),
+          body: ConnectivityWidget(offlineWidget:buildOfflineMode() , onlineWidget: buildOnlineList(),),
         ),
         onWillPop: () => canBack(context));
   }
@@ -85,7 +71,7 @@ class LibraryScreen extends StatelessWidget {
                 valueListenables: [currentFolder],
                 builder: (context, values, child) {
                   return FutureBuilder(
-                    future:Constanst.db.libraryDao.getLibraryByParentFolderCode(currentFolder.value.last),
+                    future:Constants.db.libraryDao.getLibraryByParentFolderCode(currentFolder.value.last),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.data != null && snapshot.data!.isNotEmpty) {
@@ -124,8 +110,8 @@ class LibraryScreen extends StatelessWidget {
                       valueListenables: [currentFolder],
                       builder: (context, values, child) {
                         return FutureBuilder(
-                          future: Constanst.api.getLibraryByID(
-                              Constanst.sharedPreferences.get('set-cookie').toString(),
+                          future: Constants.api.getLibraryByID(
+                              Constants.sharedPreferences.get('set-cookie').toString(),
                               currentFolder.value.last),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.done) {
@@ -179,7 +165,7 @@ class LibraryScreen extends StatelessWidget {
                                                   '${item.name}${item.fileType}')) {
                                                 DownloadFile.downloadFile(
                                                     context,
-                                                    '${Constanst.baseURL}${item.path}',
+                                                    '${Constants.baseURL}${item.path}',
                                                     '${item.name}${item.fileType}');
                                                 String dir = (await getApplicationSupportDirectory()).path;
                                                 String filePath = '$dir/${item.name}${item.fileType}';
@@ -195,7 +181,7 @@ class LibraryScreen extends StatelessWidget {
                                                 newList.add(item.name);
                                                 titleAppBar.value = newList;
                                               }
-                                              Constanst.db.libraryDao.insertLibrary(item);
+                                              Constants.db.libraryDao.insertLibrary(item);
 
                                             },
                                           );

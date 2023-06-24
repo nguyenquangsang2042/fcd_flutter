@@ -1,5 +1,5 @@
 import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
@@ -135,12 +135,12 @@ class NotificationScreen extends StatelessWidget {
                                     isSafety.value = true;
                                     isShowIconFilter.value = true;
                                     Setting? SAFETY_CATEGORY_ID =
-                                        await Constanst
+                                        await Constants
                                             .db.settingDao
                                             .findSettingByKey(
                                                 "SAFETY_CATEGORY_ID");
                                     Setting? QUALIFICATION_CATEGORY_ID =
-                                        await Constanst.db.settingDao
+                                        await Constants.db.settingDao
                                             .findSettingByKey(
                                                 "QUALIFICATION_CATEGORY_ID");
                                     defaultSafety.value = [
@@ -199,7 +199,7 @@ class NotificationScreen extends StatelessWidget {
                         color: const Color(0xFF006784),
                         onRefresh: () async {
                           isRefreshing.value = true;
-                          Constanst.apiController.updateNotify();
+                          Constants.apiController.updateNotify();
                           Future.delayed(Duration(seconds: 3))
                               .then((value) => {isRefreshing.value = false});
                         },
@@ -249,7 +249,7 @@ class NotificationScreen extends StatelessWidget {
   }
 
   void _showPopupFilter(BuildContext context) async {
-    Constanst.db.announcementCategoryDao.getAnnouncementCategoryInListID(
+    Constants.db.announcementCategoryDao.getAnnouncementCategoryInListID(
         [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID]).listen((event) {
       listFilter = [];
       listFilter.add(AnnouncementCategory.none(0, "All"));
@@ -389,7 +389,7 @@ class NotificationScreen extends StatelessWidget {
                             width: 50,
                             child: ImageWithCookie(
                                 imageUrl:
-                                    '${Constanst.baseURL}${snapshot.data![index].iconPath!}',
+                                    '${Constants.baseURL}${snapshot.data![index].iconPath!}',
                                 errImage: 'asset/images/logo_vna120.png'),
                           ),
                           title: Text(snapshot.data![index].title != null
@@ -404,7 +404,7 @@ class NotificationScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     flex: 8,
-                                    child: Text(Functions.instance.formatDateString(snapshot.data![index].created, Constanst.formatDateddmmyyy)),
+                                    child: Text(Functions.instance.formatDateString(snapshot.data![index].created, Constants.formatDateddmmyyy)),
                                   ),
                                   Expanded(
                                     flex: 2,
@@ -489,16 +489,16 @@ class NotificationScreen extends StatelessWidget {
     defaultSafety.value = [];
     Setting? value;
     value =
-        await Constanst.db.settingDao.findSettingByKey("SAFETY_CATEGORY_ID");
+        await Constants.db.settingDao.findSettingByKey("SAFETY_CATEGORY_ID");
     SAFETY_CATEGORY_ID = value == null ? "" : value.VALUE;
-    value = await Constanst.db.settingDao
+    value = await Constants.db.settingDao
         .findSettingByKey("QUALIFICATION_CATEGORY_ID");
     QUALIFICATION_CATEGORY_ID = value == null ? "" : value.VALUE;
     defaultSafety.value = [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID];
-    await Constanst.db.settingDao
+    await Constants.db.settingDao
         .findSettingByKey("NEWS_CATEGORY_ID")
         .then((value) => keyNew = value!.VALUE.toString());
-    streamList = ValueNotifier(Constanst.db.notifyDao
+    streamList = ValueNotifier(Constants.db.notifyDao
         .getListNotHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
         keyNew,defaultSafety.value));
   }
@@ -508,38 +508,38 @@ class NotificationScreen extends StatelessWidget {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterType01ORDER_BY_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
         }
       } else {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
                     keyNew, "%${keyWord.value}%", defaultSafety.value);
         }
@@ -548,38 +548,38 @@ class NotificationScreen extends StatelessWidget {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_FlgRead_Created_DESC(
                     keyNew, defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_flgImmediately_DESC_Created_DESC(
                     keyNew, defaultSafety.value);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                     keyNew, defaultSafety.value);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterType01ORDER_BY_Created_DESC(
                     keyNew, defaultSafety.value);
         }
       } else {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_FlgRead_Created_DESC(
                     defaultSafety.value, keyNew);
           case "emergency":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgImmediately_DESC_Created_DESC(
                     defaultSafety.value, keyNew);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_flgConfirm_DESC_flgConfirmed_Created_DESC(
                     defaultSafety.value, keyNew);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .getListNotHaveKeywordFilterTypeOrder01ORDER_BY_Created_DESC(
                     defaultSafety.value, keyNew);
         }

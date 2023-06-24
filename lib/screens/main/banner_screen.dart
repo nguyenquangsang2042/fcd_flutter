@@ -1,4 +1,4 @@
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +8,7 @@ class BannerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-                stream: Constanst.db.bannerDao.findAll(),
+                stream: Constants.db.bannerDao.findAll(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return PageView.builder(
@@ -16,7 +16,7 @@ class BannerScreen extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return ImageWithCookie(
                           imageUrl:
-                              '${Constanst.baseURL}${snapshot.data![index].filePath}',
+                              '${Constants.baseURL}${snapshot.data![index].filePath}',
                           errImage: 'asset/images/main_background.png',
                         );
                       },

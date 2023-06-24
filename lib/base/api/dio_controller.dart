@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 
 class DioController {
   static final DioController _singleton = DioController._internal();

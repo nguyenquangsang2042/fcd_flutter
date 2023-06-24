@@ -1,5 +1,5 @@
 import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
@@ -136,7 +136,7 @@ class AdminNoticeScreen extends StatelessWidget {
                         color: const Color(0xFF006784),
                         onRefresh: () async {
                           isRefreshing.value = true;
-                          Constanst.apiController.updateNotify();
+                          Constants.apiController.updateNotify();
                           Future.delayed(Duration(seconds: 3))
                               .then((value) => {isRefreshing.value = false});
                         },
@@ -192,7 +192,7 @@ class AdminNoticeScreen extends StatelessWidget {
     if (!trainingNotify.contains(QUALIFICATION_CATEGORY_ID)) {
       trainingNotify.add(QUALIFICATION_CATEGORY_ID);
     }
-    Constanst.db.announcementCategoryDao
+    Constants.db.announcementCategoryDao
         .getAnnouncementCategoryNotInListID(trainingNotify)
         .listen((event) {
       listFilter = [];
@@ -339,7 +339,7 @@ class AdminNoticeScreen extends StatelessWidget {
                             width: 50,
                             child: ImageWithCookie(
                                 imageUrl:
-                                    '${Constanst.baseURL}${snapshot.data![index].iconPath}',
+                                    '${Constants.baseURL}${snapshot.data![index].iconPath}',
                                 errImage: 'asset/images/logo_vna120.png'),
                           ),
                           title: Text(snapshot.data![index].announCategoryId==7
@@ -354,7 +354,7 @@ class AdminNoticeScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     flex: 8,
-                                    child: Text(Functions.instance.formatDateString(snapshot.data![index].created, Constanst.formatDateddmmyyy)),
+                                    child: Text(Functions.instance.formatDateString(snapshot.data![index].created, Constants.formatDateddmmyyy)),
                                   ),
                                   Expanded(
                                     flex: 2,
@@ -439,17 +439,17 @@ class AdminNoticeScreen extends StatelessWidget {
     defaultSafety.value = [];
     Setting? value;
     value =
-        await Constanst.db.settingDao.findSettingByKey("SAFETY_CATEGORY_ID");
+        await Constants.db.settingDao.findSettingByKey("SAFETY_CATEGORY_ID");
     SAFETY_CATEGORY_ID = value == null ? "" : value.VALUE;
-    value = await Constanst.db.settingDao
+    value = await Constants.db.settingDao
         .findSettingByKey("QUALIFICATION_CATEGORY_ID");
     QUALIFICATION_CATEGORY_ID = value == null ? "" : value.VALUE;
     defaultSafety.value = [SAFETY_CATEGORY_ID, QUALIFICATION_CATEGORY_ID];
-    await Constanst.db.settingDao
+    await Constants.db.settingDao
         .findSettingByKey("NEWS_CATEGORY_ID")
         .then((value) => keyNew = value!.VALUE.toString());
     defaultSafety.value.addAll(trainingNotify);
-    streamList = ValueNotifier(Constanst.db.notifyDao
+    streamList = ValueNotifier(Constants.db.notifyDao
         .caseDefaultSwitch3(
             defaultSafety.value));
   }
@@ -459,29 +459,29 @@ class AdminNoticeScreen extends StatelessWidget {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseUnreadSwitch1("%${keyWord.value}%", defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao.caseEmergencySwitch1("%${keyWord.value}%", defaultSafety.value);
+            return Constants.db.notifyDao.caseEmergencySwitch1("%${keyWord.value}%", defaultSafety.value);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseConfirmSwitch1("%${keyWord.value}%", defaultSafety.value);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseDefaultSwitch1("%${keyWord.value}%", defaultSafety.value);
         }
       } else {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseUnreadSwitch2("%${keyWord.value}%", defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao.caseEmergencySwitch2("%${keyWord.value}%", defaultSafety.value);
+            return Constants.db.notifyDao.caseEmergencySwitch2("%${keyWord.value}%", defaultSafety.value);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseConfirmSwitch2("%${keyWord.value}%", defaultSafety.value);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseDefaultSwitch2("%${keyWord.value}%", defaultSafety.value);
         }
       }
@@ -489,29 +489,29 @@ class AdminNoticeScreen extends StatelessWidget {
       if (filterType.value.contains("0") || filterType.value.contains("-1")) {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseUnreadSwitch3(defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao.caseEmergencySwitch3(defaultSafety.value);
+            return Constants.db.notifyDao.caseEmergencySwitch3(defaultSafety.value);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseConfirmSwitch3(defaultSafety.value);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseDefaultSwitch3(defaultSafety.value);
         }
       } else {
         switch (sortType.value.toLowerCase()) {
           case "unread":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseUnreadSwitch4(defaultSafety.value);
           case "emergency":
-            return Constanst.db.notifyDao.caseEmergencySwitch4(defaultSafety.value);
+            return Constants.db.notifyDao.caseEmergencySwitch4(defaultSafety.value);
           case "confirm":
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseConfirmSwitch4(defaultSafety.value);
           default:
-            return Constanst.db.notifyDao
+            return Constants.db.notifyDao
                 .caseDefaultSwitch4(defaultSafety.value);
         }
       }

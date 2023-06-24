@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/bean_library.dart';

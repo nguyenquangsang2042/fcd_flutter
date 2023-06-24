@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fcd_flutter/base/api/dio_controller.dart';
 
-import '../constanst.dart';
+import '../constants.dart';
 import '../model/api_object.dart';
 import '../model/app/user.dart';
 
@@ -42,9 +42,9 @@ class LoginController
       queryParameters: queryParameters,
       data: _data,
     )
-        .copyWith(baseUrl: Constanst.baseURL)));
+        .copyWith(baseUrl: Constants.baseURL)));
     final value = ApiObject<User>.fromJson(_result.data!);
-    Constanst.sharedPreferences.setString("set-cookie", _result.headers.value("set-cookie").toString());
+    Constants.sharedPreferences.setString("set-cookie", _result.headers.value("set-cookie").toString());
     return value;
   }
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

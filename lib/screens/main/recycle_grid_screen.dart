@@ -1,4 +1,4 @@
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/screens/library/library_screen.dart';
 import 'package:fcd_flutter/screens/licence/licence_screen.dart';
 import 'package:fcd_flutter/screens/notification/notification_screen.dart';
@@ -14,7 +14,7 @@ class RecycleGridScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Constanst.db.menuHomeDao.getAll(),
+      stream: Constants.db.menuHomeDao.getAll(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ResponsiveGridList(

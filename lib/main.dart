@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fcd_flutter/base/api/api_client.dart';
 import 'package:fcd_flutter/base/api/api_controller.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/model/device_info.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
@@ -27,12 +27,12 @@ Future<void> main() async {
   if (Platform.isAndroid) {
     await Firebase.initializeApp();
   }
-  Constanst.db =
+  Constants.db =
       await $FloorAppDatabase.databaseBuilder('fcd_database.db').build();
-  Constanst.api = ApiClient(DioController().dio);
-  Constanst.apiController = ApiController();
-  Constanst.apiController.updateMasterData();
-  Constanst.sharedPreferences = await SharedPreferences.getInstance();
+  Constants.api = ApiClient(DioController().dio);
+  Constants.apiController = ApiController();
+  Constants.apiController.updateMasterData();
+  Constants.sharedPreferences = await SharedPreferences.getInstance();
   HttpOverrides.global = MyHttpOverrides();
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
@@ -67,7 +67,7 @@ Future<void> getDeviceInfo() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    Constanst.deviceInfo = DeviceInfo.required(
+    Constants.deviceInfo = DeviceInfo.required(
         DeviceId: "'${androidInfo.id}'",
         DevicePushToken: "'${await messaging.getToken()}'",
         DeviceOS: 1,
@@ -76,7 +76,7 @@ Future<void> getDeviceInfo() async {
         DeviceModel: "'${androidInfo.model}'");
   } else if (Platform.isIOS) {
     IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-    Constanst.deviceInfo = DeviceInfo.required(
+    Constants.deviceInfo = DeviceInfo.required(
         DeviceId: "''",
         DevicePushToken: "''",
         DeviceOS: 1,
@@ -84,8 +84,8 @@ Future<void> getDeviceInfo() async {
         DeviceOSVersion: "''",
         DeviceModel: "''");
   }
-  Constanst.loginName = Constanst.sharedPreferences.getString("email") ?? "";
-  Constanst.loginPass = Constanst.sharedPreferences.getString("pass") ?? "";
+  Constants.loginName = Constants.sharedPreferences.getString("email") ?? "";
+  Constants.loginPass = Constants.sharedPreferences.getString("pass") ?? "";
 }
 
 class MyApp extends StatelessWidget {
@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<LoginCubit>(
           create: (_) => LoginCubit(
-              Constanst.loginName.isNotEmpty && Constanst.loginPass.isNotEmpty
+              Constants.loginName.isNotEmpty && Constants.loginPass.isNotEmpty
                   ? ReLoginState()
                   : LoginMailState()),
         ),

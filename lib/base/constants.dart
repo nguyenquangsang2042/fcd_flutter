@@ -5,12 +5,12 @@ import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/device_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Constanst {
+class Constants {
   static late AppDatabase db;
   static late ApiClient api;
   static late ApiController apiController;
   static late DeviceInfo deviceInfo;
-  static late User currentUser = User.none();
+  static late User currentUser;
   static late SharedPreferences sharedPreferences;
   static late String loginName;
   static late String loginPass;

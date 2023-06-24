@@ -1,5 +1,5 @@
 import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/main/banner_screen.dart';
@@ -167,7 +167,7 @@ class PilotMainScreen extends StatelessWidget {
                         refreshing: value,
                         onRefresh: () {
                           isRefresh.value = true;
-                          Constanst.apiController.updateMasterData();
+                          Constants.apiController.updateMasterData();
                           Future.delayed(Duration(seconds: 3))
                               .then((value) => isRefresh.value = false);
                         });

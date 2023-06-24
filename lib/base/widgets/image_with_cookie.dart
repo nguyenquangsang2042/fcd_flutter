@@ -1,4 +1,4 @@
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:flutter/material.dart';
 
 class ImageWithCookie extends StatelessWidget {
@@ -19,7 +19,7 @@ class ImageWithCookie extends StatelessWidget {
         return Image.asset(errImage);
       },
       headers: {
-        'Cookie': Constanst.sharedPreferences.get('set-cookie').toString()
+        'Cookie': Constants.sharedPreferences.get('set-cookie').toString()
       },
       fit: BoxFit.cover,
     );

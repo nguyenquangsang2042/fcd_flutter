@@ -3,7 +3,7 @@ import 'package:fcd_flutter/base/api/api_client.dart';
 import 'package:fcd_flutter/base/api/api_controller.dart';
 import 'package:fcd_flutter/base/api/dio_controller.dart';
 import 'package:fcd_flutter/base/api/login_controller.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/crypto_controller.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
@@ -78,7 +78,7 @@ class LoginOTPScreen extends StatelessWidget {
                       onCompleted: (pin) async {
                         LoginController.instance
                             .getCurrentLoginUser(
-                                Constanst.deviceInfo.toJson().toString(),
+                                Constants.deviceInfo.toJson().toString(),
                                 "{'Email':'$email','VerifyCode':'$pin'}",
                                 "1",
                                 "1")
@@ -99,7 +99,7 @@ class LoginOTPScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: TextButton(
                         onPressed: () {
-                          Constanst.api.getOtp(email).then((value) {
+                          Constants.api.getOtp(email).then((value) {
                             AlertDialogController.instance.showAlert(
                                 context,
                                 "Vietnam Airlines",
@@ -143,10 +143,10 @@ class LoginOTPScreen extends StatelessWidget {
   }
 
   updateDataLoginAndCurrentUser(currentUser, BuildContext context, String pin) {
-    Constanst.currentUser = currentUser;
-    Constanst.sharedPreferences.setString(
+    Constants.currentUser = currentUser;
+    Constants.sharedPreferences.setString(
         "email", (context.read<LoginCubit>().state as LoginOTPState).email);
-    Constanst.sharedPreferences.setString(
+    Constants.sharedPreferences.setString(
         "pass", pin);
     BlocProvider.of<LoginCubit>(context).navigationToLoginLoaiding();
   }

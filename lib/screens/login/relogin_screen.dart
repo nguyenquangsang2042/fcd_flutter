@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fcd_flutter/base/api/login_controller.dart';
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,8 +30,8 @@ class ReLoginScreen extends StatelessWidget {
     } else {
       LoginController.instance
           .getCurrentLoginUser(
-              Constanst.deviceInfo.toJson().toString(),
-              "{'Email':'${Constanst.loginName}','VerifyCode':'${Constanst.loginPass}'}",
+              Constants.deviceInfo.toJson().toString(),
+              "{'Email':'${Constants.loginName}','VerifyCode':'${Constants.loginPass}'}",
               "1",
               "1")
           .then((value) => updateDataLoginAndCurrentUser(value.data, context))
@@ -44,7 +44,7 @@ class ReLoginScreen extends StatelessWidget {
   }
 
   updateDataLoginAndCurrentUser(currentUser, BuildContext context) {
-    Constanst.currentUser = currentUser;
+    Constants.currentUser = currentUser;
     BlocProvider.of<LoginCubit>(context).navigationToLoginLoaiding();
   }
 }

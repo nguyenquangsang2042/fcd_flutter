@@ -13,7 +13,7 @@ import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
-import '../constanst.dart';
+import '../constants.dart';
 import '../model/api_list.dart';
 import '../model/app/announcement_category.dart';
 import '../model/app/app_language.dart';
@@ -48,19 +48,19 @@ class ApiController {
 
   void updateSetting() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Setting");
+        await Constants.db.dbVariableDao.findDBVariableById("Setting");
     if (dbVariable != null) {
-      Constanst.api.getSettings(dbVariable.Value, "0").then((value) {
+      Constants.api.getSettings(dbVariable.Value, "0").then((value) {
         ApiList<Setting> data = value;
-        Constanst.db.settingDao.insertSettings(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.settingDao.insertSettings(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Setting", data.dateNow));
       });
     } else {
-      Constanst.api.getSettings("", "1").then((value) {
+      Constants.api.getSettings("", "1").then((value) {
         ApiList<Setting> data = value;
-        Constanst.db.settingDao.insertSettings(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.settingDao.insertSettings(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Setting", data.dateNow));
       });
     }
@@ -68,19 +68,19 @@ class ApiController {
 
   void updateUser() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("User");
+        await Constants.db.dbVariableDao.findDBVariableById("User");
     if (dbVariable != null) {
-      Constanst.api.getUsers(dbVariable.Value, "0").then((value) {
+      Constants.api.getUsers(dbVariable.Value, "0").then((value) {
         ApiList<User> data = value;
-        Constanst.db.userDao.insertUsers(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.userDao.insertUsers(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("User", data.dateNow));
       });
     } else {
-      Constanst.api.getUsers("", "1").then((value) {
+      Constants.api.getUsers("", "1").then((value) {
         ApiList<User> data = value;
-        Constanst.db.userDao.insertUsers(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.userDao.insertUsers(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("User", data.dateNow));
       });
     }
@@ -88,19 +88,19 @@ class ApiController {
 
   void updateAirport() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Airport");
+        await Constants.db.dbVariableDao.findDBVariableById("Airport");
     if (dbVariable != null) {
-      Constanst.api.getAirports(dbVariable.Value, "0").then((value) {
+      Constants.api.getAirports(dbVariable.Value, "0").then((value) {
         ApiList<Airport> data = value;
-        Constanst.db.airportDao.insertAirport(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.airportDao.insertAirport(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Airport", data.dateNow));
       });
     } else {
-      Constanst.api.getAirports("", "1").then((value) {
+      Constants.api.getAirports("", "1").then((value) {
         ApiList<Airport> data = value;
-        Constanst.db.airportDao.insertAirport(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.airportDao.insertAirport(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Airport", data.dateNow));
       });
     }
@@ -108,19 +108,19 @@ class ApiController {
 
   void updateUserTicketStatuses() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("UserTicketStatus");
+        await Constants.db.dbVariableDao.findDBVariableById("UserTicketStatus");
     if (dbVariable != null) {
-      Constanst.api.getUserTicketStatuses(dbVariable.Value, "0").then((value) {
+      Constants.api.getUserTicketStatuses(dbVariable.Value, "0").then((value) {
         ApiList<UserTicketStatus> data = value;
-        Constanst.db.userTicketStatusDao.insertUserTicketStatuses(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.userTicketStatusDao.insertUserTicketStatuses(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("UserTicketStatus", data.dateNow));
       });
     } else {
-      Constanst.api.getUserTicketStatuses("", "1").then((value) {
+      Constants.api.getUserTicketStatuses("", "1").then((value) {
         ApiList<UserTicketStatus> data = value;
-        Constanst.db.userTicketStatusDao.insertUserTicketStatuses(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.userTicketStatusDao.insertUserTicketStatuses(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("UserTicketStatus", data.dateNow));
       });
     }
@@ -128,43 +128,43 @@ class ApiController {
 
   void updateAppLanguage() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("AppLanguage");
+        await Constants.db.dbVariableDao.findDBVariableById("AppLanguage");
     if (dbVariable != null) {
-      Constanst.api.getAppLanguages(dbVariable.Value, "0").then((value) {
+      Constants.api.getAppLanguages(dbVariable.Value, "0").then((value) {
         ApiList<AppLanguage> data = value;
-        Constanst.db.appLanguageDao.insertAppLanguage(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.appLanguageDao.insertAppLanguage(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("AppLanguage", data.dateNow));
       });
     } else {
-      Constanst.api.getAppLanguages("", "1").then((value) {
+      Constants.api.getAppLanguages("", "1").then((value) {
         ApiList<AppLanguage> data = value;
-        Constanst.db.appLanguageDao.insertAppLanguage(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.appLanguageDao.insertAppLanguage(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("AppLanguage", data.dateNow));
       });
     }
   }
 
   void updateUserTicketCategory() async {
-    DBVariable? dbVariable = await Constanst.db.dbVariableDao
+    DBVariable? dbVariable = await Constants.db.dbVariableDao
         .findDBVariableById("UserTicketCategory");
     if (dbVariable != null) {
-      Constanst.api
+      Constants.api
           .getUserTicketCategories(dbVariable.Value, "0")
           .then((value) {
         ApiList<UserTicketCategory> data = value;
-        Constanst.db.userTicketCategoryDao
+        Constants.db.userTicketCategoryDao
             .insertUserTicketCategories(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("UserTicketCategory", data.dateNow));
       });
     } else {
-      Constanst.api.getUserTicketCategories("", "1").then((value) {
+      Constants.api.getUserTicketCategories("", "1").then((value) {
         ApiList<UserTicketCategory> data = value;
-        Constanst.db.userTicketCategoryDao
+        Constants.db.userTicketCategoryDao
             .insertUserTicketCategories(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("UserTicketCategory", data.dateNow));
       });
     }
@@ -172,19 +172,19 @@ class ApiController {
 
   void updatePilotScheduleAll() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("PilotScheduleAll");
+        await Constants.db.dbVariableDao.findDBVariableById("PilotScheduleAll");
     if (dbVariable != null) {
-      Constanst.api.getPilotScheduleAll(dbVariable.Value, "0").then((value) {
+      Constants.api.getPilotScheduleAll(dbVariable.Value, "0").then((value) {
         ApiList<PilotScheduleAll> data = value;
-        Constanst.db.pilotScheduleAllDao.insertPilotScheduleAll(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.pilotScheduleAllDao.insertPilotScheduleAll(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("PilotScheduleAll", data.dateNow));
       });
     } else {
-      Constanst.api.getPilotScheduleAll("", "1").then((value) {
+      Constants.api.getPilotScheduleAll("", "1").then((value) {
         ApiList<PilotScheduleAll> data = value;
-        Constanst.db.pilotScheduleAllDao.insertPilotScheduleAll(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.pilotScheduleAllDao.insertPilotScheduleAll(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("PilotScheduleAll", data.dateNow));
       });
     }
@@ -192,19 +192,19 @@ class ApiController {
 
   void updateFAQs() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("FAQs");
+        await Constants.db.dbVariableDao.findDBVariableById("FAQs");
     if (dbVariable != null) {
-      Constanst.api.getFAQs(dbVariable.Value, "0").then((value) {
+      Constants.api.getFAQs(dbVariable.Value, "0").then((value) {
         ApiList<FAQs> data = value;
-        Constanst.db.faqDao.insertFAQs(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.faqDao.insertFAQs(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("FAQs", data.dateNow));
       });
     } else {
-      Constanst.api.getFAQs("", "1").then((value) {
+      Constants.api.getFAQs("", "1").then((value) {
         ApiList<FAQs> data = value;
-        Constanst.db.faqDao.insertFAQs(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.faqDao.insertFAQs(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("FAQs", data.dateNow));
       });
     }
@@ -212,19 +212,19 @@ class ApiController {
 
   void updateHelpDeskCategories() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("HelpDeskCategory");
+        await Constants.db.dbVariableDao.findDBVariableById("HelpDeskCategory");
     if (dbVariable != null) {
-      Constanst.api.getHelpDeskCategories(dbVariable.Value, "0").then((value) {
+      Constants.api.getHelpDeskCategories(dbVariable.Value, "0").then((value) {
         ApiList<HelpDeskCategory> data = value;
-        Constanst.db.helpDeskCategoryDao.insertHelpDeskCategory(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.helpDeskCategoryDao.insertHelpDeskCategory(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("HelpDeskCategory", data.dateNow));
       });
     } else {
-      Constanst.api.getHelpDeskCategories("", "1").then((value) {
+      Constants.api.getHelpDeskCategories("", "1").then((value) {
         ApiList<HelpDeskCategory> data = value;
-        Constanst.db.helpDeskCategoryDao.insertHelpDeskCategory(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.helpDeskCategoryDao.insertHelpDeskCategory(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("HelpDeskCategory", data.dateNow));
       });
     }
@@ -232,19 +232,19 @@ class ApiController {
 
   void updateHelpDeskLinhVuc() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("HelpDeskLinhVuc");
+        await Constants.db.dbVariableDao.findDBVariableById("HelpDeskLinhVuc");
     if (dbVariable != null) {
-      Constanst.api.getHelpDeskLinhVucs(dbVariable.Value, "0").then((value) {
+      Constants.api.getHelpDeskLinhVucs(dbVariable.Value, "0").then((value) {
         ApiList<HelpDeskLinhVuc> data = value;
-        Constanst.db.helpDeskLinhVucDao.insertHelpDeskLinhVucs(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.helpDeskLinhVucDao.insertHelpDeskLinhVucs(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("HelpDeskLinhVuc", data.dateNow));
       });
     } else {
-      Constanst.api.getHelpDeskLinhVucs("", "1").then((value) {
+      Constants.api.getHelpDeskLinhVucs("", "1").then((value) {
         ApiList<HelpDeskLinhVuc> data = value;
-        Constanst.db.helpDeskLinhVucDao.insertHelpDeskLinhVucs(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.helpDeskLinhVucDao.insertHelpDeskLinhVucs(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("HelpDeskLinhVuc", data.dateNow));
       });
     }
@@ -252,19 +252,19 @@ class ApiController {
 
   void updateDepartments() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Department");
+        await Constants.db.dbVariableDao.findDBVariableById("Department");
     if (dbVariable != null) {
-      Constanst.api.getDepartments(dbVariable.Value, "0").then((value) {
+      Constants.api.getDepartments(dbVariable.Value, "0").then((value) {
         ApiList<Department> data = value;
-        Constanst.db.departmentDao.insertDepartment(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.departmentDao.insertDepartment(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("Department", data.dateNow));
       });
     } else {
-      Constanst.api.getDepartments("", "1").then((value) {
+      Constants.api.getDepartments("", "1").then((value) {
         ApiList<Department> data = value;
-        Constanst.db.departmentDao.insertDepartment(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.departmentDao.insertDepartment(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("Department", data.dateNow));
       });
     }
@@ -272,43 +272,43 @@ class ApiController {
 
   void updatePilotSchedulePdf() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("PilotSchedulePdf");
+        await Constants.db.dbVariableDao.findDBVariableById("PilotSchedulePdf");
     if (dbVariable != null) {
-      Constanst.api.getPilotSchedulePdf(dbVariable.Value, "0").then((value) {
+      Constants.api.getPilotSchedulePdf(dbVariable.Value, "0").then((value) {
         ApiList<PilotSchedulePdf> data = value;
-        Constanst.db.pilotSchedulePdfDao.insertPilotSchedulePdf(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.pilotSchedulePdfDao.insertPilotSchedulePdf(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("PilotSchedulePdf", data.dateNow));
       });
     } else {
-      Constanst.api.getPilotSchedulePdf("", "1").then((value) {
+      Constants.api.getPilotSchedulePdf("", "1").then((value) {
         ApiList<PilotSchedulePdf> data = value;
-        Constanst.db.pilotSchedulePdfDao.insertPilotSchedulePdf(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.pilotSchedulePdfDao.insertPilotSchedulePdf(data.data);
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("PilotSchedulePdf", data.dateNow));
       });
     }
   }
 
   void updateAnnouncementCategory() async {
-    DBVariable? dbVariable = await Constanst.db.dbVariableDao
+    DBVariable? dbVariable = await Constants.db.dbVariableDao
         .findDBVariableById("AnnouncementCategory");
     if (dbVariable != null) {
-      Constanst.api
+      Constants.api
           .getAnnouncementCategory(dbVariable.Value, "0")
           .then((value) {
         ApiList<AnnouncementCategory> data = value;
-        Constanst.db.announcementCategoryDao
+        Constants.db.announcementCategoryDao
             .insertAnnouncementCategories(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("AnnouncementCategory", data.dateNow));
       });
     } else {
-      Constanst.api.getAnnouncementCategory("", "1").then((value) {
+      Constants.api.getAnnouncementCategory("", "1").then((value) {
         ApiList<AnnouncementCategory> data = value;
-        Constanst.db.announcementCategoryDao
+        Constants.db.announcementCategoryDao
             .insertAnnouncementCategories(data.data);
-        Constanst.db.dbVariableDao.insertDBVariable(
+        Constants.db.dbVariableDao.insertDBVariable(
             DBVariable.haveParams("AnnouncementCategory", data.dateNow));
       });
     }
@@ -316,19 +316,19 @@ class ApiController {
 
   void updateNation() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Nation");
+        await Constants.db.dbVariableDao.findDBVariableById("Nation");
     if (dbVariable != null) {
-      Constanst.api.getNation(dbVariable.Value, "0").then((value) {
+      Constants.api.getNation(dbVariable.Value, "0").then((value) {
         ApiList<Nation> data = value;
-        Constanst.db.nationDao.insertNations(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.nationDao.insertNations(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Nation", data.dateNow));
       });
     } else {
-      Constanst.api.getNation("", "1").then((value) {
+      Constants.api.getNation("", "1").then((value) {
         ApiList<Nation> data = value;
-        Constanst.db.nationDao.insertNations(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.nationDao.insertNations(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Nation", data.dateNow));
       });
     }
@@ -336,19 +336,19 @@ class ApiController {
 
   void updateProvince() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Province");
+        await Constants.db.dbVariableDao.findDBVariableById("Province");
     if (dbVariable != null) {
-      Constanst.api.getProvince(dbVariable.Value, "0").then((value) {
+      Constants.api.getProvince(dbVariable.Value, "0").then((value) {
         ApiList<Province> data = value;
-        Constanst.db.provinceDao.insertProvince(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.provinceDao.insertProvince(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Province", data.dateNow));
       });
     } else {
-      Constanst.api.getProvince("", "1").then((value) {
+      Constants.api.getProvince("", "1").then((value) {
         ApiList<Province> data = value;
-        Constanst.db.provinceDao.insertProvince(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.provinceDao.insertProvince(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Province", data.dateNow));
       });
     }
@@ -356,19 +356,19 @@ class ApiController {
 
   void updateDistrict() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("District");
+        await Constants.db.dbVariableDao.findDBVariableById("District");
     if (dbVariable != null) {
-      Constanst.api.getDistrict(dbVariable.Value, "0").then((value) {
+      Constants.api.getDistrict(dbVariable.Value, "0").then((value) {
         ApiList<District> data = value;
-        Constanst.db.districtDao.insertDistrict(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.districtDao.insertDistrict(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("District", data.dateNow));
       });
     } else {
-      Constanst.api.getDistrict("", "1").then((value) {
+      Constants.api.getDistrict("", "1").then((value) {
         ApiList<District> data = value;
-        Constanst.db.districtDao.insertDistrict(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.districtDao.insertDistrict(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("District", data.dateNow));
       });
     }
@@ -376,19 +376,19 @@ class ApiController {
 
   void updateWard() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Ward");
+        await Constants.db.dbVariableDao.findDBVariableById("Ward");
     if (dbVariable != null) {
-      Constanst.api.getWard(dbVariable.Value, "0").then((value) {
+      Constants.api.getWard(dbVariable.Value, "0").then((value) {
         ApiList<Ward> data = value;
-        Constanst.db.wardDao.insertWard(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.wardDao.insertWard(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Ward", data.dateNow));
       });
     } else {
-      Constanst.api.getWard("", "1").then((value) {
+      Constants.api.getWard("", "1").then((value) {
         ApiList<Ward> data = value;
-        Constanst.db.wardDao.insertWard(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.wardDao.insertWard(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("Ward", data.dateNow));
       });
     }
@@ -396,19 +396,19 @@ class ApiController {
 
   void updateMenuApp() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("MenuApp");
+        await Constants.db.dbVariableDao.findDBVariableById("MenuApp");
     if (dbVariable != null) {
-      Constanst.api.getMenuApp(dbVariable.Value, "0").then((value) {
+      Constants.api.getMenuApp(dbVariable.Value, "0").then((value) {
         ApiList<MenuApp> data = value;
-        Constanst.db.menuAppDao.insertMenuApp(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.menuAppDao.insertMenuApp(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("MenuApp", data.dateNow));
       });
     } else {
-      Constanst.api.getMenuApp("", "1").then((value) {
+      Constants.api.getMenuApp("", "1").then((value) {
         ApiList<MenuApp> data = value;
-        Constanst.db.menuAppDao.insertMenuApp(data.data);
-        Constanst.db.dbVariableDao
+        Constants.db.menuAppDao.insertMenuApp(data.data);
+        Constants.db.dbVariableDao
             .insertDBVariable(DBVariable.haveParams("MenuApp", data.dateNow));
       });
     }
@@ -426,57 +426,57 @@ class ApiController {
 
   Future<void> updateMenuHome() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("MenuHome");
+        await Constants.db.dbVariableDao.findDBVariableById("MenuHome");
     if (dbVariable != null) {
-      await Constanst.db.menuHomeDao.deleteAll();
+      await Constants.db.menuHomeDao.deleteAll();
     }
-    Constanst.api
-        .getMenuHome({'UserId': "'${Constanst.currentUser.id}'"}.toString())
+    Constants.api
+        .getMenuHome({'UserId': "'${Constants.currentUser.id}'"}.toString())
         .then((value) {
       ApiList<MenuHome> data = value;
-      Constanst.db.menuHomeDao.insertMenuHome(data.data);
-      Constanst.db.dbVariableDao
+      Constants.db.menuHomeDao.insertMenuHome(data.data);
+      Constants.db.dbVariableDao
           .insertDBVariable(DBVariable.haveParams("MenuHome", data.dateNow));
     });
   }
 
   Future<void> updateBanner() async {
-    ApiList<BeanBanner> data = await Constanst.api
-        .getBanner(Constanst.sharedPreferences.get('set-cookie').toString());
-    await Constanst.db.bannerDao.insertBanners(data.data);
-    Constanst.db.dbVariableDao
+    ApiList<BeanBanner> data = await Constants.api
+        .getBanner(Constants.sharedPreferences.get('set-cookie').toString());
+    await Constants.db.bannerDao.insertBanners(data.data);
+    Constants.db.dbVariableDao
         .insertDBVariable(DBVariable.haveParams("Banner", data.dateNow));
   }
   Future<void> updateNotify() async {
     DBVariable? dbVariable =
-        await Constanst.db.dbVariableDao.findDBVariableById("Notify");
+        await Constants.db.dbVariableDao.findDBVariableById("Notify");
     if (dbVariable != null) {
-      ApiList<Notify> data = await Constanst.api.getNotify(
-          Constanst.sharedPreferences.get('set-cookie').toString(),
+      ApiList<Notify> data = await Constants.api.getNotify(
+          Constants.sharedPreferences.get('set-cookie').toString(),
           dbVariable.Value,
           "0");
-      await Constanst.db.notifyDao.insertNotifies(data.data);
-      Constanst.db.dbVariableDao
+      await Constants.db.notifyDao.insertNotifies(data.data);
+      Constants.db.dbVariableDao
           .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
     } else {
-      ApiList<Notify> data = await Constanst.api.getNotify(
-          Constanst.sharedPreferences.get('set-cookie').toString(), "", "1");
-      await Constanst.db.notifyDao.insertNotifies(data.data);
-      Constanst.db.dbVariableDao
+      ApiList<Notify> data = await Constants.api.getNotify(
+          Constants.sharedPreferences.get('set-cookie').toString(), "", "1");
+      await Constants.db.notifyDao.insertNotifies(data.data);
+      Constants.db.dbVariableDao
           .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
     }
   }
 
   Future<void> updateLicence() async {
     DBVariable? dbVariable =
-    await Constanst.db.dbVariableDao.findDBVariableById("Licence");
+    await Constants.db.dbVariableDao.findDBVariableById("Licence");
     if (dbVariable != null) {
-      await Constanst.db.licenceDao.deleteAll();
+      await Constants.db.licenceDao.deleteAll();
     }
-    ApiList<License> data = await Constanst.api
-        .getUserLicense(Constanst.sharedPreferences.get('set-cookie').toString(),Constanst.currentUser.id);
-    await Constanst.db.licenceDao.insertLicenses(data.data);
-    Constanst.db.dbVariableDao
+    ApiList<License> data = await Constants.api
+        .getUserLicense(Constants.sharedPreferences.get('set-cookie').toString(),Constants.currentUser.id);
+    await Constants.db.licenceDao.insertLicenses(data.data);
+    Constants.db.dbVariableDao
         .insertDBVariable(DBVariable.haveParams("Licence", data.dateNow));
   }
 

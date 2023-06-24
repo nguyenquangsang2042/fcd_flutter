@@ -1,4 +1,4 @@
-import 'package:fcd_flutter/base/constanst.dart';
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,7 @@ class LoadingScreen extends StatelessWidget {
   }
 
   Future<void> getDynamicData(BuildContext context) async {
-    Constanst.apiController.updateAllDynamicData();
+    Constants.apiController.updateAllDynamicData();
     BlocProvider.of<NavigationCubit>(context).navigateToMainView();
   }
 }
