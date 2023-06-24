@@ -17,178 +17,244 @@ class LibraryScreen extends StatelessWidget {
   LibraryScreen({Key? key}) : super(key: key);
   ValueNotifier<List<String>> titleAppBar = ValueNotifier(["Library"]);
   ValueNotifier<List<int>> currentFolder = ValueNotifier([0]);
+  ValueNotifier<bool> isAlphaBetSort = ValueNotifier(true);
+  ValueNotifier<bool> isShowSearch = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
-          appBar: AppBar(
-            leading: SizedBox(
-              width: 50,
-              height: 50,
-              child: IconButton(
-                icon: Image.asset(
-                  'asset/images/icon_back30.png',
-                  color: Colors.white,
-                  height: 20,
-                  width: 40,
-                ),
-                onPressed: () {
-                  if (currentFolder.value.isNotEmpty &&titleAppBar.value.length>1) {
-                    List<int> newListCurrentFolder = [];
-                    newListCurrentFolder.addAll(currentFolder.value);
-                    newListCurrentFolder.removeLast();
-                    currentFolder.value = newListCurrentFolder;
-                    List<String> newList = [];
-                    newList.addAll(titleAppBar.value);
-                    newList.removeLast();
-                    titleAppBar.value = newList;
-                  } else {
-                    Navigator.pop(context);
-                  }
-                },
-              ),
-            ),
-            title: ValueListenableBuilder(
-              valueListenable: titleAppBar,
-              builder: (context, value, child) {
-                return Text(
-                  value.last,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                );
-              },
-            ),
-            backgroundColor: const Color(0xFF006784),
-            centerTitle: true,
+          appBar: buildAppBar(context),
+          body: ConnectivityWidget(
+            offlineWidget: buildOfflineMode(),
+            onlineWidget: buildOnlineList(),
           ),
-          body: ConnectivityWidget(offlineWidget:buildOfflineMode() , onlineWidget: buildOnlineList(),),
         ),
         onWillPop: () => canBack(context));
   }
 
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      actions: [
+        Container(
+          margin: EdgeInsets.only(right: 10),
+          child: Icon(
+            Icons.sort,
+            color: Colors.white,
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(right: 10),
+          child: Icon(
+            Icons.search,
+            color: Colors.white,
+          ),
+        ),
+      ],
+      leading: SizedBox(
+        width: 50,
+        height: 50,
+        child: IconButton(
+          icon: Image.asset(
+            'asset/images/icon_back30.png',
+            color: Colors.white,
+            height: 20,
+            width: 40,
+          ),
+          onPressed: () {
+            if (currentFolder.value.isNotEmpty &&
+                titleAppBar.value.length > 1) {
+              List<int> newListCurrentFolder = [];
+              newListCurrentFolder.addAll(currentFolder.value);
+              newListCurrentFolder.removeLast();
+              currentFolder.value = newListCurrentFolder;
+              List<String> newList = [];
+              newList.addAll(titleAppBar.value);
+              newList.removeLast();
+              titleAppBar.value = newList;
+            } else {
+              Navigator.pop(context);
+            }
+          },
+        ),
+      ),
+      title: ValueListenableBuilder(
+        valueListenable: titleAppBar,
+        builder: (context, value, child) {
+          return Text(
+            value.last,
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          );
+        },
+      ),
+      backgroundColor: const Color(0xFF006784),
+      centerTitle: true,
+    );
+  }
+
   MultiValueListenableBuilder buildOfflineMode() {
     return MultiValueListenableBuilder(
-                valueListenables: [currentFolder],
-                builder: (context, values, child) {
-                  return FutureBuilder(
-                    future:Constants.db.libraryDao.getLibraryByParentFolderCode(currentFolder.value.last),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.data != null && snapshot.data!.isNotEmpty) {
-                          return Column(
-                            children: [
-                              Flexible(
-                                  child: ListView.builder(
-                                    itemCount: snapshot.data!.length,
-                                    itemBuilder: (context, index) {
-                                      BeanLibrary item = snapshot.data![index];
-                                      return buildItemLibrary(item, context);
-                                    },
-                                  ))
-                            ],
-                          );
-                        } else {
-                          return Container(
-                            child: Center(
-                              child: Text("Không có dữ liệu"),
+      valueListenables: [currentFolder],
+      builder: (context, values, child) {
+        return FutureBuilder(
+          future: Constants.db.libraryDao
+              .getLibraryByParentFolderCode(currentFolder.value.last),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.data != null && snapshot.data!.isNotEmpty) {
+                return Column(
+                  children: [
+                    Flexible(
+                        child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        BeanLibrary item = snapshot.data![index];
+                        return InkResponse(
+                          child:Dismissible(
+                            key: Key(item.id.toString()),
+                            onDismissed: (direction) {
+                              //delete on sql
+                            },
+                            background: Container(
+                              color: Colors.red,
+                              child: Icon(Icons.delete, color: Colors.white,),
+                              alignment: Alignment.centerRight,
                             ),
-                          );
-                        }
-                      } else {
-                        return Container(
-                          child: Center(child: CircularProgressIndicator(),),
+                            child: ListTile(
+                              leading: Functions.instance.getFileIcon(item.fileType),
+                              title: Text(item.name),
+                              subtitle: item.items != 0
+                                  ? Text("${item.items} Items")
+                                  : const SizedBox(
+                                height: 0,
+                                width: 0,
+                              ),
+                            ),
+                          ),
+                          onTap: () async {
+                            item.parentFolderCode = currentFolder.value.last;
+                            if (Functions.instance
+                                .isSupportedFileType('${item.name}${item.fileType}')) {
+                              DownloadFile.downloadFile(context, '${Constants.baseURL}${item.path}',
+                                  '${item.name}${item.fileType}');
+                              String dir = (await getApplicationSupportDirectory()).path;
+                              String filePath = '$dir/${item.name}${item.fileType}';
+                              item.localPath = filePath;
+                            } else {
+                              List<int> newListCurrentFolder = [];
+                              newListCurrentFolder.addAll(currentFolder.value);
+                              newListCurrentFolder.add(item.id);
+                              currentFolder.value = newListCurrentFolder;
+                              List<String> newList = [];
+                              newList.addAll(titleAppBar.value);
+                              newList.add(item.name);
+                              titleAppBar.value = newList;
+                            }
+                            Constants.db.libraryDao.insertLibrary(item);
+                          },
                         );
-                      }
-                    },
-                  );
-                },
+                      },
+                    ))
+                  ],
+                );
+              } else {
+                return Container(
+                  child: Center(
+                    child: Text("Không có dữ liệu"),
+                  ),
+                );
+              }
+            } else {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
+            }
+          },
+        );
+      },
+    );
   }
 
   MultiValueListenableBuilder buildOnlineList() {
     return MultiValueListenableBuilder(
-                      valueListenables: [currentFolder],
-                      builder: (context, values, child) {
-                        return FutureBuilder(
-                          future: Constants.api.getLibraryByID(
-                              Constants.sharedPreferences.get('set-cookie').toString(),
-                              currentFolder.value.last),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              if (snapshot.data!.data.length>0) {
-                                return Column(
-                                  children: [
-                                    Flexible(
-                                        child: ListView.builder(
-                                          itemCount: snapshot.data!.data.length,
-                                          itemBuilder: (context, index) {
-                                            BeanLibrary item = snapshot.data!.data[index];
-                                            return buildItemLibrary(item, context);
-                                          },
-                                        ))
-                                  ],
-                                );
-                              } else {
-                                return Container(
-                                  child: Center(
-                                    child: Text("Không có dữ liệu"),
-                                  ),
-                                );
-                              }
+      valueListenables: [currentFolder],
+      builder: (context, values, child) {
+        return FutureBuilder(
+          future: Constants.api.getLibraryByID(
+              Constants.sharedPreferences.get('set-cookie').toString(),
+              currentFolder.value.last),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.data!.data.length > 0) {
+                return Column(
+                  children: [
+                    Flexible(
+                        child: ListView.builder(
+                      itemCount: snapshot.data!.data.length,
+                      itemBuilder: (context, index) {
+                        BeanLibrary item = snapshot.data!.data[index];
+                        return InkResponse(
+                          child:ListTile(
+                            leading: Functions.instance.getFileIcon(item.fileType),
+                            title: Text(item.name),
+                            subtitle: item.items != 0
+                                ? Text("${item.items} Items")
+                                : const SizedBox(
+                              height: 0,
+                              width: 0,
+                            ),
+                          ),
+
+                          onTap: () async {
+                            item.parentFolderCode = currentFolder.value.last;
+                            if (Functions.instance
+                                .isSupportedFileType('${item.name}${item.fileType}')) {
+                              DownloadFile.downloadFile(context, '${Constants.baseURL}${item.path}',
+                                  '${item.name}${item.fileType}');
+                              String dir = (await getApplicationSupportDirectory()).path;
+                              String filePath = '$dir/${item.name}${item.fileType}';
+                              item.localPath = filePath;
                             } else {
-                              return Container(
-                                child: Center(child: CircularProgressIndicator(),),
-                              );
+                              List<int> newListCurrentFolder = [];
+                              newListCurrentFolder.addAll(currentFolder.value);
+                              newListCurrentFolder.add(item.id);
+                              currentFolder.value = newListCurrentFolder;
+                              List<String> newList = [];
+                              newList.addAll(titleAppBar.value);
+                              newList.add(item.name);
+                              titleAppBar.value = newList;
                             }
+                            Constants.db.libraryDao.insertLibrary(item);
                           },
                         );
                       },
-                    );
-  }
-
-  InkResponse buildItemLibrary(BeanLibrary item, BuildContext context) {
-    return InkResponse(
-                                            child: ListTile(
-                                              leading: Functions.instance
-                                                  .getFileIcon(item.fileType),
-                                              title: Text(item.name),
-                                              subtitle: item.items != 0
-                                                  ? Text("${item.items} Items")
-                                                  : const SizedBox(
-                                                height: 0,
-                                                width: 0,
-                                              ),
-                                            ),
-                                            onTap: () async{
-                                              item.parentFolderCode=currentFolder.value.last;
-                                              if (Functions.instance.isSupportedFileType(
-                                                  '${item.name}${item.fileType}')) {
-                                                DownloadFile.downloadFile(
-                                                    context,
-                                                    '${Constants.baseURL}${item.path}',
-                                                    '${item.name}${item.fileType}');
-                                                String dir = (await getApplicationSupportDirectory()).path;
-                                                String filePath = '$dir/${item.name}${item.fileType}';
-                                                item.localPath=filePath;
-                                              } else {
-                                                List<int> newListCurrentFolder = [];
-                                                newListCurrentFolder
-                                                    .addAll(currentFolder.value);
-                                                newListCurrentFolder.add(item.id);
-                                                currentFolder.value = newListCurrentFolder;
-                                                List<String> newList = [];
-                                                newList.addAll(titleAppBar.value);
-                                                newList.add(item.name);
-                                                titleAppBar.value = newList;
-                                              }
-                                              Constants.db.libraryDao.insertLibrary(item);
-
-                                            },
-                                          );
+                    ))
+                  ],
+                );
+              } else {
+                return Container(
+                  child: Center(
+                    child: Text("Không có dữ liệu"),
+                  ),
+                );
+              }
+            } else {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          },
+        );
+      },
+    );
   }
 
   Future<bool> canBack(context) async {
-    if (currentFolder.value.isNotEmpty && titleAppBar.value.length>1) {
+    if (currentFolder.value.isNotEmpty && titleAppBar.value.length > 1) {
       List<int> newListCurrentFolder = [];
       newListCurrentFolder.addAll(currentFolder.value);
       newListCurrentFolder.removeLast();
