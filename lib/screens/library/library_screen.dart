@@ -207,7 +207,7 @@ class LibraryScreen extends StatelessWidget {
                             ),
                             child: ListTile(
                               leading:
-                                  Functions.instance.getFileIcon(item.fileType),
+                                  SizedBox(height: 20,width: 20,child: Functions.instance.getFileIcon(item.fileType,item.type),),
                               title: Text(item.name),
                               subtitle: item.items != 0
                                   ? Text("${item.items} Items")
@@ -296,7 +296,7 @@ class LibraryScreen extends StatelessWidget {
                             return InkResponse(
                               child: ListTile(
                                 leading:
-                                Functions.instance.getFileIcon(item.fileType),
+                                SizedBox(height: 20,width: 20,child: Functions.instance.getFileIcon(item.fileType,item.type),),
                                 title: Text(item.name),
                                 subtitle: item.items != 0
                                     ? Text("${item.items} Items")

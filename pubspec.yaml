@@ -126,6 +126,14 @@ flutter:
     - asset/images/icon_flaghigh.png
     - asset/images/ic_sortza.png
     - asset/images/ic_sortaz.png
+    - asset/images/icon_pdf.png
+    - asset/images/icon_xlsx.png
+    - asset/images/icon_docx.png
+    - asset/images/icon_image.png
+    - asset/images/icon_mp3.png
+    - asset/images/icon_mp4.png
+    - asset/images/icon_file_blank.png
+    - asset/images/icon_folder.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

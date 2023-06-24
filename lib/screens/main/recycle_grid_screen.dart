@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import '../admin_notice/admin_notice_screen.dart';
+import '../contacts/contacts_screen.dart';
 import 'main_controller.dart';
 
 class RecycleGridScreen extends StatelessWidget {
@@ -133,7 +134,7 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Library':
         return LibraryScreen();
       case 'Contacts':
-        return 'icon_user2';
+        return ContactScreen();
       case 'FAQs':
         return 'icon_FAQs';
       case 'Report':

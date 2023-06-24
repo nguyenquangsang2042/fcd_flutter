@@ -6,5 +6,7 @@ import '../../model/app/user.dart';
 abstract class UserDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertUsers(List<User> users);
+  @Query("Select * from User")
+  Stream<List<User>> findAll();
 
 }
