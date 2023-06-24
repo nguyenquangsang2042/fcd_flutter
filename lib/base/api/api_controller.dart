@@ -468,16 +468,14 @@ class ApiController {
   }
 
   Future<void> updateLicence() async {
-    DBVariable? dbVariable =
-    await Constants.db.dbVariableDao.findDBVariableById("Licence");
-    if (dbVariable != null) {
-      await Constants.db.licenceDao.deleteAll();
-    }
     ApiList<License> data = await Constants.api
         .getUserLicense(Constants.sharedPreferences.get('set-cookie').toString(),Constants.currentUser.id);
-    await Constants.db.licenceDao.insertLicenses(data.data);
-    Constants.db.dbVariableDao
-        .insertDBVariable(DBVariable.haveParams("Licence", data.dateNow));
+   if(data!=null && data.data!=null)
+     {
+       await Constants.db.licenceDao.insertLicenses(data.data);
+       Constants.db.dbVariableDao
+           .insertDBVariable(DBVariable.haveParams("Licence", data.dateNow));
+     }
   }
 
 }

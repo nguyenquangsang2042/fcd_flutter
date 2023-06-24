@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/widgets/connectivity_widget.dart';
@@ -31,14 +32,15 @@ class LicenceScreen extends StatelessWidget {
             },
           ),
         ),
-        title: ConnectivityWidget(offlineWidget: Text(
-          'Licence Offline',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-        onlineWidget: Text(
-          'Licence',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        )),
+        title: ConnectivityWidget(
+            offlineWidget: Text(
+              'Licence Offline',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            onlineWidget: Text(
+              'Licence',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            )),
         backgroundColor: const Color(0xFF006784),
         centerTitle: true,
       ),
@@ -47,12 +49,21 @@ class LicenceScreen extends StatelessWidget {
             future: Constants.apiController.updateLicence(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return buildList();
+                return ValueListenableBuilder(valueListenable: isSync, builder: (context, value, child) => DeclarativeRefreshIndicator(
+                    refreshing: isSync.value,
+                    color: const Color(0xFF006784),
+                    onRefresh: () async {
+                      isSync.value = true;
+                      await Constants.db.licenceDao.deleteAll();
+                      await Constants.apiController.updateLicence();
+                      isSync.value = false;
+                    },
+                    child: buildList()),);
               } else {
                 return Container(
                     child: Center(
-                  child: CircularProgressIndicator(),
-                ));
+                      child: CircularProgressIndicator(),
+                    ));
               }
             },
           ),
@@ -62,121 +73,110 @@ class LicenceScreen extends StatelessWidget {
 
   ValueListenableBuilder<bool> buildList() {
     return ValueListenableBuilder(
-          valueListenable: isAll,
-          builder: (context, value, child) {
-            return StreamBuilder(
-              stream: Constants.db.licenceDao.findAll(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  allLiscense = snapshot.data!;
-                  List<License> dataFilter = !isAll.value
-                      ? allLiscense
-                          .where((element) => Functions.instance
-                              .stringToDate(element.expireDate, null)
-                              .isBefore(DateTime.now()))
-                          .toList()
-                      : allLiscense;
-                  return Column(
+      valueListenable: isAll,
+      builder: (context, value, child) {
+        return StreamBuilder(
+          stream: Constants.db.licenceDao.findAll(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              allLiscense = snapshot.data!;
+              List<License> dataFilter = !isAll.value
+                  ? allLiscense
+                      .where((element) => Functions.instance
+                          .stringToDate(element.expireDate, null)
+                          .isBefore(DateTime.now()))
+                      .toList()
+                  : allLiscense;
+              return Column(
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: TextButton(
-                                onPressed: () {
-                                  isAll.value = false;
-                                },
-                                child: Text(
-                                  "Expired",
-                                  style: TextStyle(
-                                      color: !isAll.value
-                                          ? Color(0xFFDBA40D)
-                                          : Color(0xFFAAAAAA)),
-                                )),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: TextButton(
-                                onPressed: () {
-                                  isAll.value = true;
-                                },
-                                child: Text(
-                                  "All",
-                                  style: TextStyle(
-                                      color: isAll.value
-                                          ? Color(0xFFDBA40D)
-                                          : Color(0xFFAAAAAA)),
-                                )),
-                          ),
-                        ],
-                      ),
-                      ConnectivityWidget(onlineWidget: Flexible(
-                          child: DeclarativeRefreshIndicator(
-                            refreshing: isSync.value,
-                            color: const Color(0xFF006784),
-                            onRefresh: () async {
-                              isSync.value = true;
-                              await Constants.apiController.updateLicence();
-                              isSync.value = false;
+                      Expanded(
+                        flex: 1,
+                        child: TextButton(
+                            onPressed: () {
+                              isAll.value = false;
                             },
-                            child: buildListView(dataFilter),
-                          )), offlineWidget: Flexible(child: buildListView(dataFilter),))
+                            child: Text(
+                              "Expired",
+                              style: TextStyle(
+                                  color: !isAll.value
+                                      ? Color(0xFFDBA40D)
+                                      : Color(0xFFAAAAAA)),
+                            )),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: TextButton(
+                            onPressed: () {
+                              isAll.value = true;
+                            },
+                            child: Text(
+                              "All",
+                              style: TextStyle(
+                                  color: isAll.value
+                                      ? Color(0xFFDBA40D)
+                                      : Color(0xFFAAAAAA)),
+                            )),
+                      ),
                     ],
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            );
+                  ),
+                  Flexible(child: buildListView(dataFilter))
+                ],
+              );
+            } else {
+              return Container();
+            }
           },
         );
+      },
+    );
   }
 
   ListView buildListView(List<License> dataFilter) {
     return ListView.builder(
-                          itemCount: dataFilter.length,
-                          itemBuilder: (_, index) {
-                            TextStyle style = getExpireDateTextStyle(
-                                Functions.instance.stringToDate(
-                                    dataFilter[index].expireDate, null),
-                                dataFilter[index].status);
-                            return ListTile(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                      child: Text(
-                                    dataFilter[index].licenseType,
-                                    style: style,
-                                  )),
-                                  Flexible(
-                                      child: Text(
-                                    dataFilter[index].number,
-                                    style: style,
-                                  )),
-                                ],
-                              ),
-                              subtitle: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                      child: Text(
-                                    dataFilter[index].note,
-                                    style: style,
-                                  )),
-                                  Flexible(
-                                      child: Text(
-                                    Functions.instance.formatDateString(
-                                        dataFilter[index].expireDate,
-                                        Constants.formatDateddmmyyy),
-                                    style: style,
-                                  )),
-                                ],
-                              ),
-                            );
-                          });
+        itemCount: dataFilter.length,
+        itemBuilder: (_, index) {
+          TextStyle style = getExpireDateTextStyle(
+              Functions.instance
+                  .stringToDate(dataFilter[index].expireDate, null),
+              dataFilter[index].status);
+          return ListTile(
+            tileColor: index % 2 == 0 ? Colors.grey.shade50 : Colors.white,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                    child: Text(
+                  dataFilter[index].licenseType,
+                  style: style,
+                )),
+                Flexible(
+                    child: Text(
+                  dataFilter[index].number,
+                  style: style,
+                )),
+              ],
+            ),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                    child: Text(
+                  dataFilter[index].note,
+                  style: style,
+                )),
+                Flexible(
+                    child: Text(
+                  Functions.instance.formatDateString(
+                      dataFilter[index].expireDate,
+                      Constants.formatDateddmmyyy),
+                  style: style,
+                )),
+              ],
+            ),
+          );
+        });
   }
 
   TextStyle getExpireDateTextStyle(DateTime expireDate, int status) {

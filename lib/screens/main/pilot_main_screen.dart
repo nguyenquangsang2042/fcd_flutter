@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 
 class PilotMainScreen extends StatelessWidget {
   PilotMainScreen({Key? key}) : super(key: key);
-  ValueNotifier<bool> isRefresh = ValueNotifier(false);
+  final ValueNotifier<bool> isRefresh = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     MainController.instance.wightBanner.value =

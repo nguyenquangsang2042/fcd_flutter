@@ -16,8 +16,9 @@ class ConnectivityWidget extends StatelessWidget {
     return StreamBuilder(
       stream: Connectivity().onConnectivityChanged,
       builder: (context, snapshot) {
-        if (snapshot.data == null || snapshot.data == ConnectivityResult.none) {
+        if (snapshot.connectionState== ConnectionState.waiting|| snapshot.data == ConnectivityResult.none || snapshot.data==null) {
           return offlineWidget;
+
         } else {
           return FutureBuilder(
             future: LoginController.instance.getCurrentLoginUser(
@@ -34,15 +35,14 @@ class ConnectivityWidget extends StatelessWidget {
                 }
                 return onlineWidget;
               } else {
-                return const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
+                return Container(child: Center(
+                  child: CircularProgressIndicator(),
+                ),);
               }
             },
           );
         }
+
       },
     );
   }

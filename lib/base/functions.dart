@@ -38,6 +38,9 @@ class Functions {
   String formatDateToString(DateTime dateTime) {
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }
+  String formatDateToStringWithFormat(DateTime dateTime,String format) {
+    return DateFormat(format).format(dateTime);
+  }
 
   String formatDateString(String dateString, String formatReturn) {
     DateTime dateTime = DateTime.parse(dateString);
