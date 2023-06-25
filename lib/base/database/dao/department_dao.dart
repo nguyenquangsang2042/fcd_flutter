@@ -8,4 +8,6 @@ import 'package:floor/floor.dart';
 abstract class DepartmentDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertDepartment(List<Department> departments);
+  @Query("SELECT * FROM Department WHERE Effect = :effect ORDER BY TITLE")
+  Stream<List<Department>> getListDepartmentByEffect(int effect);
 }

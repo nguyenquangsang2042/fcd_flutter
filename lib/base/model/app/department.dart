@@ -27,6 +27,8 @@ class Department
 
   Department(this.id, this.title, this.code, this.parentID, this.parentName,
       this.groupID, this.modified, this.effect);
+  Department.none();
+
   factory Department.fromJson(Map<String, dynamic> json) =>
       _$DepartmentFromJson(json);
 
