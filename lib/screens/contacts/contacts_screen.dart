@@ -3,6 +3,7 @@ import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/widgets/circle_image_cookie.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
+import 'package:fcd_flutter/screens/contacts/detail_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
@@ -46,20 +47,20 @@ class ContactScreen extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 User item = snapshot.data![index];
-                                return ListTile(
+                                return InkResponse(child: ListTile(
                                     tileColor:
-                                        snapshot.data!.indexOf(item) % 2 == 0
-                                            ? Colors.grey.shade50
-                                            : Colors.white,
+                                    snapshot.data!.indexOf(item) % 2 == 0
+                                        ? Colors.grey.shade50
+                                        : Colors.white,
                                     title: Text(
                                       "${item.fullName}",
                                       style:
-                                          TextStyle(color: Color(0xFF006784)),
+                                      TextStyle(color: Color(0xFF006784)),
                                     ),
                                     subtitle: Flexible(
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Text("CREWCODE: ${item.code2}"),
                                           Text(item.specialContent == null
@@ -72,11 +73,16 @@ class ContactScreen extends StatelessWidget {
                                     ),
                                     leading: CircleImageCookie(
                                         imageUrl:
-                                            '${Constants.baseURL}/${snapshot.data![index].avatar}?ver=${Functions.instance.formatDateToStringWithFormat(DateTime.now(), "yyyyMMddHHmmss")}',
+                                        '${Constants.baseURL}/${snapshot.data![index].avatar}?ver=${Functions.instance.formatDateToStringWithFormat(DateTime.now(), "yyyyMMddHHmmss")}',
                                         errImage:
-                                            'asset/images/icon_avatar64.png',
+                                        'asset/images/icon_avatar64.png',
                                         width: 35,
-                                        height: 35));
+                                        height: 35)),onTap: (){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailContactScreen(info: item,)));
+                                },);
                               },
                             ));
                           }
