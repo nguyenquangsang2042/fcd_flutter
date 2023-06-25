@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:fcd_flutter/base/alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -10,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 class DownloadFile {
   DownloadFile._();
 
-  static void showDownloadProgress( received, total) {
+  static void showDownloadProgress(received, total) {
     if (total != -1) {
       print((received / total * 100).toStringAsFixed(0) + "%");
     }
@@ -21,10 +22,12 @@ class DownloadFile {
     String dir = (await getApplicationSupportDirectory()).path;
     String filePath = '$dir/$fileName';
     File file = File(filePath);
-    if (!(await file.exists()))
-    {
+    if (!(await file.exists())) {
       try {
-        Loader.show(context,progressIndicator:CircularProgressIndicator(),);
+        Loader.show(
+          context,
+          progressIndicator: CircularProgressIndicator(),
+        );
         Dio dio = Dio();
         Response response = await dio.get(
           url,
@@ -41,12 +44,14 @@ class DownloadFile {
         raf.writeFromSync(response.data);
         await raf.close();
       } catch (e) {
+        if (Loader.isShown) Loader.hide();
         print(e);
+        return "Không tìm thấy file";
       }
     }
 
     if (await file.exists()) {
-      if(Loader.isShown) Loader.hide();
+      if (Loader.isShown) Loader.hide();
       try {
         OpenResult result = await OpenFilex.open(file.path);
         if (result.message.contains("No APP found to open this file")) {

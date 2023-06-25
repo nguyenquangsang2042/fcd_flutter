@@ -4,6 +4,7 @@ import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/bean_library.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
+import 'package:fcd_flutter/base/model/app/bean_salary.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
@@ -130,4 +131,11 @@ abstract class ApiClient {
   @GET('/API/ApiLibrary.ashx?func=GetFolderItem')
   Future<ApiList<BeanLibrary>> getLibraryByID(
       @Header('Cookie') String cookieValue, @Query('fid') int fid);
+  
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanSalary')
+  Future<ApiList<BeanSalary>> getSalaryBetweenTwoDate(
+      @Header('Cookie') String cookieValue,
+      @Query('FromDate') String fromDate,
+      @Query('ToDate') String toDate
+      );
 }
