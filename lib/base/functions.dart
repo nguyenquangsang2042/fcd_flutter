@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,7 +28,37 @@ class Functions {
       throw Exception('Could not launch $_url');
     }
   }
+  Future<void> launchZalo(String phoneNumber) async {
+    final urlScheme = 'zalo://chat?phone=$phoneNumber';
+    final appStoreUrl = 'https://apps.apple.com/vn/app/zalo/id579523206';
+    final googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.zing.zalo';
 
+    if (await canLaunch(urlScheme)) {
+      await launch(urlScheme);
+    } else {
+      if (Platform.isIOS&& await canLaunch(appStoreUrl)) {
+        await launch(appStoreUrl);
+      } else if (await canLaunch(googlePlayUrl)) {
+        await launch(googlePlayUrl);
+      } else {
+        throw 'Could not launch Zalo';
+      }
+    }
+  }
+  Future<void> launchVibe(String phoneNumber) async {
+    final urlScheme = 'vibe://chat?phone=$phoneNumber';
+    final appStoreUrl = Platform.isAndroid ? 'https://play.google.com/store/apps/details?id=com.viber.voip' : 'https://apps.apple.com/us/app/vibe-by-hitch-app/id1100814853';
+
+    if (await canLaunch(urlScheme)) {
+      await launch(urlScheme);
+    } else {
+      if (await canLaunch(appStoreUrl)) {
+        await launch(appStoreUrl);
+      } else {
+        throw 'Could not launch Vibe';
+      }
+    }
+  }
   DateTime stringToDate(String dateString, String? format) {
     if (format == null) {
       return DateTime.parse(dateString);

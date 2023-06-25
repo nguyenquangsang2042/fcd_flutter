@@ -136,6 +136,11 @@ flutter:
     - asset/images/icon_mp4.png
     - asset/images/icon_file_blank.png
     - asset/images/icon_folder.png
+    - asset/images/icon_message_textting.png
+    - asset/images/icon_phone.png
+    - asset/images/icon_viber.png
+    - asset/images/icon_zalo.png
+    - asset/images/icon_email.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

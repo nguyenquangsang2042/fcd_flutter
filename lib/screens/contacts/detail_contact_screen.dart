@@ -61,7 +61,78 @@ class DetailContactScreen extends StatelessWidget {
                 DownloadFile.downloadFile(context, '${Constants.baseURL}/${info.avatar}', fileName);
               },),),
           ),
+
         ),
+        Container(
+          margin: EdgeInsets.all(10),
+          child: SingleChildScrollView(child:
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                child: Text("Phone"),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(info.mobile!=null? info.mobile!: "",style: TextStyle(color: Color(0xFF006784)),),
+                  Row(
+                    children: [
+                      Container(margin: EdgeInsets.only(right: 5), height: 20,width: 20,child: InkResponse(child: Image.asset("asset/images/icon_message_textting.png",color: Colors.deepOrange,),onTap: () {
+                        Functions.instance.launchCustomUrl('sms', info.mobile);
+                      },),),
+                      Container(margin: EdgeInsets.only(right: 5),height: 20,width: 20,child: InkResponse(child: Image.asset("asset/images/icon_phone.png",color: Colors.green,),onTap: () {
+                        Functions.instance.launchCustomUrl('tel', info.mobile);
+                      },),),
+                      Container(margin: EdgeInsets.only(right: 5),height: 20,width: 20,child: InkResponse(child: Image.asset("asset/images/icon_viber.png",),onTap: () {
+                        Functions.instance.launchVibe(info.mobile.toString());
+                      },),),
+                      Container(margin: EdgeInsets.only(right: 5),height: 20,width: 20,child: InkResponse(child: Image.asset("asset/images/icon_zalo.png",),onTap: () {
+                        Functions.instance.launchZalo(info.mobile.toString());
+                      },),),
+                    ],
+                  )
+                ],
+              ),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(
+                width: double.infinity,
+                child: Text("Email"),),
+              InkResponse(child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Text(info.mobile!=null? info.email!: "",style: TextStyle(color: Color(0xFF006784)),),
+                  ),
+                  Container(
+                      height: 20,width: 20,
+                      child: Image.asset('asset/images/icon_email.png')),
+
+                ],
+              ),
+              onTap: () {
+                Functions.instance.launchCustomUrl("mailto", info.email);
+              },),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(width: double.infinity,child: Text("Position: ${info.positionName!=null?info.positionName:"N/A"}")),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(width: double.infinity,child: Text("Department: ${info.departmentName!=null?info.departmentName:"N/A"}")),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(width: double.infinity,child: Text("Base: ${info.base!=null?info.base:"N/A"}")),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(width: double.infinity,child: Text("My id travel account : ${info.code3!=null?info.code3:"N/A"}")),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(width: double.infinity,child: Text("Crew code : ${info.code2!=null?info.code2:"N/A"}")),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(width: double.infinity,child: Text("IDNumber : ${info.idNumber!=null?info.idNumber:"N/A"}")),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+              Container(width: double.infinity,child: Text("Special Content : ${info.specialContent!=null?info.specialContent:"N/A"}")),
+              Container(margin: EdgeInsets.only(top: 5,bottom: 5),width: double.infinity,height: 0.5,color: Colors.grey,),
+
+            ],
+          ),),
+        )
       ],
     );
   }
