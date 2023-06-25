@@ -2,6 +2,7 @@ import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/screens/library/library_screen.dart';
 import 'package:fcd_flutter/screens/licence/licence_screen.dart';
 import 'package:fcd_flutter/screens/notification/notification_screen.dart';
+import 'package:fcd_flutter/screens/payroll/payroll_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
@@ -130,7 +131,7 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Training':
         return 'icon_training';
       case 'Payroll':
-        return 'icon_payroll';
+        return PayrollScreen();
       case 'Library':
         return LibraryScreen();
       case 'Contacts':
