@@ -129,4 +129,9 @@ class Functions {
     var unicodeBytesCount = utf8.encode(input).length;
     return asciiBytesCount != unicodeBytesCount;
   }
+
+  String getFileNameFromURL(String url)
+  {
+    return p.basename(url);
+  }
 }

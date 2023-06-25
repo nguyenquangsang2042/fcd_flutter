@@ -1,3 +1,5 @@
+import 'package:fcd_flutter/base/download_file.dart';
+import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,7 @@ class DetailContactScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: buildInfo(),
+      body: buildInfo(context),
     );
   }
 
@@ -41,7 +43,7 @@ class DetailContactScreen extends StatelessWidget {
     );
   }
 
-  Column buildInfo() {
+  Column buildInfo(context) {
     return Column(
       children: [
         Align(
@@ -51,10 +53,13 @@ class DetailContactScreen extends StatelessWidget {
             child: SizedBox(
               height: 90,
               width: 90,
-              child: ImageWithCookie(
+              child: InkResponse(child: ImageWithCookie(
                   imageUrl: '${Constants.baseURL}/${info.avatar}',
                   errImage: 'asset/images/icon_avatar64.png'),
-            ),
+              onTap: (){
+                String? fileName ="${info.avatar?.split("/")[info.avatar!.split("/").length-2]}${info.avatar!.split("/").last}";
+                DownloadFile.downloadFile(context, '${Constants.baseURL}/${info.avatar}', fileName);
+              },),),
           ),
         ),
       ],
