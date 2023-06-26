@@ -3,6 +3,7 @@ import 'package:fcd_flutter/base/download_file.dart';
 import 'package:fcd_flutter/base/functions.dart';
 import 'package:fcd_flutter/base/widgets/connectivity_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 
 import '../../base/alert_dialog.dart';
@@ -27,6 +28,7 @@ class PayrollScreen extends StatelessWidget {
           child: MultiValueListenableBuilder(
             valueListenables: [startDate, endDate],
             builder: (context, values, child) {
+              print("object");
               return FutureBuilder(
                 future: Constants.api.getSalaryBetweenTwoDate(
                     Constants.sharedPreferences.get('set-cookie').toString(),
@@ -114,10 +116,118 @@ class PayrollScreen extends StatelessWidget {
               Icons.calendar_month,
               color: Colors.white,
             ),
-            onTap: () {},
+            onTap: () {
+              buildFilter(context);
+            },
           ),
         )
       ],
     );
   }
+  buildFilter(context)
+  {
+    String strStartDate= startDate.value.toString();
+    String strEndDate= endDate.value.toString();
+    TextEditingController startController = TextEditingController(text: strStartDate);
+    TextEditingController endController = TextEditingController(text: strEndDate);
+
+    showDialog(context: context, builder: (context) {
+      return  Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: startController,
+                readOnly: true,
+                onTap: () {
+                  showRoundedDatePicker(
+                    height: 310,
+                    context: context,
+                    initialDate: Functions.instance.stringToDate(strStartDate, "yyyy/MM/dd"),
+                    firstDate: DateTime(DateTime.now().year - 10),
+                    lastDate: DateTime(DateTime.now().year + 10),
+                    borderRadius: 16,
+                  ).then((value) {
+                      if(value!=null)
+                        {
+                          strStartDate= Functions.instance.formatDateToStringWithFormat(value!, "yyyy/MM/dd");
+                          startController.text=strStartDate;
+                        }
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Fromdate',
+                  suffixIcon: Icon(Icons.calendar_month_rounded),
+                ),
+              ),
+              TextField(
+                controller: endController,
+                readOnly: true,
+                onTap: () {
+                  showRoundedDatePicker(
+                    height: 310,
+                    context: context,
+                    initialDate: Functions.instance.stringToDate(strEndDate, "yyyy/MM/dd"),
+                    firstDate: DateTime(DateTime.now().year - 10),
+                    lastDate: DateTime(DateTime.now().year + 10),
+                    borderRadius: 16,
+                  ).then((value) {
+                    if(value!=null)
+                      {
+                        strEndDate= Functions.instance.formatDateToStringWithFormat(value!, "yyyy/MM/dd");
+                        endController.text=strStartDate;
+                      }
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Todate',
+                  suffixIcon: Icon(Icons.calendar_month_rounded),
+                ),
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Reset button action goes here
+                      startDate.value=Functions.instance
+                          .formatDateToStringWithFormat(
+                          DateTime.now().add(const Duration(days: -365)), "yyyy/MM/dd");
+                      endDate.value=Functions.instance
+                          .formatDateToStringWithFormat(
+                          DateTime.now().add(Duration(days: 1)), "yyyy/MM/dd");
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Reset'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Apply button action goes here
+                      startDate.value=strStartDate;
+                      endDate.value=strEndDate;
+                      Navigator.of(context).pop();
+
+                    },
+                    child: Text('Apply'),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },);
+  }
+
 }
