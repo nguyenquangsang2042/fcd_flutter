@@ -7,4 +7,6 @@ import 'package:floor/floor.dart';
 abstract class MenuAppDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertMenuApp(List<MenuApp> menuapps);
+  @Query("SELECT * FROM MenuApp WHERE status = :intStatus AND languageId = :languageId")
+  Stream<List<MenuApp>> getMenuAppByStatusAndLanguageID(int intStatus,int languageId);
 }

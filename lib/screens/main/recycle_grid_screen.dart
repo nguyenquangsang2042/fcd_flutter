@@ -1,4 +1,5 @@
 import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/screens/application/application_screen.dart';
 import 'package:fcd_flutter/screens/library/library_screen.dart';
 import 'package:fcd_flutter/screens/licence/licence_screen.dart';
 import 'package:fcd_flutter/screens/notification/notification_screen.dart';
@@ -141,7 +142,7 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Report':
         return 'icon_report';
       case 'Application':
-        return 'ic_menu_application';
+        return ApplicationScreen();
       default:
         return NotificationScreen();
     }
