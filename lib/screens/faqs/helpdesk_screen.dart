@@ -68,7 +68,7 @@ class HelpdeskScreen extends StatelessWidget {
           Icons.add,
           color: Colors.white,
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF006784),
         elevation: 2.0,
         shape: CircleBorder(),
       ),
