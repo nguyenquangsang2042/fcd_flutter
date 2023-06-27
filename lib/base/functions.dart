@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
+import 'package:html/parser.dart';
 
 class Functions {
   static final Functions _singleton = Functions._internal();
@@ -164,5 +165,10 @@ class Functions {
   String getFileNameFromURL(String url)
   {
     return p.basename(url);
+  }
+
+  String htmlToPlainText(String htmlString) {
+    String plainText = parse(htmlString).documentElement!.text;
+    return plainText;
   }
 }

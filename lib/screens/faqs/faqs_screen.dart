@@ -1,67 +1,91 @@
+import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/base/functions.dart';
+import 'package:fcd_flutter/base/widgets/html_content_widget.dart';
 import 'package:fcd_flutter/base/widgets/language_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../base/model/app/settings.dart';
+
 class FaqsScreen extends StatelessWidget {
-  FaqsScreen({Key? key}) : super(key: key);
-  ValueNotifier<bool> isVietnamese = ValueNotifier(true);
+  FaqsScreen({Key? key, required this.isVietnamese}) : super(key: key);
+  bool isVietnamese;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context),
+    return FutureBuilder(
+      future: getSetting(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data == null) {
+            return Center(
+              child: Text("Không có dữ liệu"),
+            );
+          } else {
+            return StreamBuilder(
+              stream: Constants.db.faqDao.getListFaqsDifLstIDAndLang(
+                  snapshot.data!, isVietnamese ? "2" : "1"),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return Flexible(
+                        child: ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                color: index % 2 != 0
+                                    ? Colors.grey.shade50
+                                    : Colors.white,
+                                child: ExpansionTile(
+                                  backgroundColor: Colors.grey.shade100,
+                                  title: Text(snapshot.data![index].question),
+                                  trailing: Icon(
+                                      Icons.arrow_drop_down_circle
+                                  ),
+                                  children: [
+                                    Container(
+                                      color: Colors.white,
+                                      child: ListTile(
+                                      tileColor: Colors.white,
+                                      title: HtmlContentWidget(htmlContent: snapshot.data![index].answer),
+                                    ),)
+                                  ],
+                                ),
+                              );
+                            }));
+                  } else {
+                    return Center(
+                      child: Text("Không có dữ liệu"),
+                    );
+                  }
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            );
+          }
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      leading: SizedBox(
-        width: 50,
-        height: 50,
-        child: IconButton(
-          icon: Image.asset(
-            'asset/images/icon_back30.png',
-            color: Colors.white,
-            height: 20,
-            width: 40,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      title: const Text(
-        "Faqs",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-      backgroundColor: const Color(0xFF006784),
-      centerTitle: true,
-      actions: [
-        InkResponse(
-          child: Container(
-            height: 20,
-            width: 20,
-            margin: EdgeInsets.only(right: 10),
-            child: ValueListenableBuilder(
-              valueListenable: isVietnamese,
-              builder: (context, value, child) {
-                return Image.asset(value
-                    ? 'asset/images/icon_lang_united_kingdom.png'
-                    : 'asset/images/icon_lang_vietnam.png');
-              },
-            ),
-          ),
-          onTap: () {
-            isVietnamese.value = !isVietnamese.value;
-          },
-        ),
-        Container(
-            child: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            margin: EdgeInsets.only(right: 10))
-      ],
-    );
+  Future<List<int>> getSetting() async {
+    List<int> data = [];
+    Setting? Helpdesk_Mobile =
+        await Constants.db.settingDao.findSettingByKey("Helpdesk_Mobile_ID");
+    if (Helpdesk_Mobile != null) {
+      data.add(int.parse(Helpdesk_Mobile!.VALUE));
+    }
+    Setting? Helpdesk_Mobile_ID_2 =
+        await Constants.db.settingDao.findSettingByKey("Helpdesk_Mobile_ID_2");
+    if (Helpdesk_Mobile_ID_2 != null) {
+      data.add(int.parse(Helpdesk_Mobile_ID_2!.VALUE));
+    }
+    return data;
   }
 }

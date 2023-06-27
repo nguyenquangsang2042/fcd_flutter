@@ -1,8 +1,10 @@
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/screens/application/application_screen.dart';
 import 'package:fcd_flutter/screens/faqs/faqs_screen.dart';
+import 'package:fcd_flutter/screens/faqs/support_screen.dart';
 import 'package:fcd_flutter/screens/library/library_screen.dart';
 import 'package:fcd_flutter/screens/licence/licence_screen.dart';
+import 'package:fcd_flutter/screens/main/navigation_grid.dart';
 import 'package:fcd_flutter/screens/notification/notification_screen.dart';
 import 'package:fcd_flutter/screens/payroll/payroll_screen.dart';
 import 'package:fcd_flutter/screens/schedule/flight_schedule_md_screen.dart';
@@ -24,25 +26,30 @@ class RecycleGridScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ResponsiveGridList(
-              horizontalGridSpacing: 10, // Horizontal space between grid items
-              verticalGridSpacing: 10, // Vertical space between grid items
-              horizontalGridMargin: 10, // Horizontal space around the grid
-              verticalGridMargin: 10, // Vertical space around the grid
-              minItemWidth:
-                  300, // The minimum item width (can be smaller, if the layout constraints are smaller)
-              minItemsPerRow:
-                  2, // The minimum items to show in a single row. Takes precedence over minItemWidth
-              maxItemsPerRow:
-                  5, // The maximum items to show in a single row. Can be useful on large screens
-              listViewBuilderOptions:
-                  ListViewBuilderOptions(controller: MainController.instance.scrollController), // Options that are getting passed to the ListView.builder() function
+              horizontalGridSpacing: 10,
+              // Horizontal space between grid items
+              verticalGridSpacing: 10,
+              // Vertical space between grid items
+              horizontalGridMargin: 10,
+              // Horizontal space around the grid
+              verticalGridMargin: 10,
+              // Vertical space around the grid
+              minItemWidth: 300,
+              // The minimum item width (can be smaller, if the layout constraints are smaller)
+              minItemsPerRow: 2,
+              // The minimum items to show in a single row. Takes precedence over minItemWidth
+              maxItemsPerRow: 5,
+              // The maximum items to show in a single row. Can be useful on large screens
+              listViewBuilderOptions: ListViewBuilderOptions(
+                  controller: MainController.instance.scrollController),
+              // Options that are getting passed to the ListView.builder() function
               children: snapshot.data!
                   .map((e) => InkResponse(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => redirectToView(e.key)));
+                                  builder: (context) => NavigationGridScreen(childView: redirectToView(e.key))));
                         },
                         child: Container(
                           height: 115,
@@ -119,7 +126,7 @@ class RecycleGridScreen extends StatelessWidget {
         return 'icon_shield2';
     }
   }
-  
+
   redirectToView(String key) {
     switch (key) {
       case 'Safety':
@@ -129,14 +136,11 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Licence':
         return LicenceScreen();
       case 'Schedule':
-        if(Constants.currentUser.userType==1)
-          {
-            return const FlightScheduleScreen();
-          }
-        else
-          {
-            return FlightScheduleMDScreen();
-          }
+        if (Constants.currentUser.userType == 1) {
+          return const FlightScheduleScreen();
+        } else {
+          return FlightScheduleMDScreen();
+        }
       case 'Ticket request':
         return 'icon_ticket_booking30';
       case 'Training':
@@ -148,7 +152,7 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Contacts':
         return ContactScreen();
       case 'FAQs':
-        return FaqsScreen();
+        return SupportScreen();
       case 'Report':
         return 'icon_report';
       case 'Application':

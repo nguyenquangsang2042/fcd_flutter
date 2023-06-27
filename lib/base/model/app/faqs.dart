@@ -1,4 +1,5 @@
 import 'package:floor/floor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'faqs.g.dart';
 @entity
@@ -22,6 +23,7 @@ class FAQs
   late String modified;
   @JsonKey(name: 'Language')
   late String language;
+
 
   FAQs(this.id, this.departmentId, this.question, this.answer, this.status,
       this.created, this.modified, this.language);
