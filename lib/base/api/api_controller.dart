@@ -418,8 +418,8 @@ class ApiController {
 
 
   Future<void> updateAllDynamicData()async {
-    updateMenuHome();
-    updateBanner();
+    await updateMenuHome();
+    await updateBanner();
     updateNotify();
     updateLicence();
   }

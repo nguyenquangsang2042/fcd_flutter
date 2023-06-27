@@ -1,4 +1,6 @@
 import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/base/exports_base.dart';
+import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/screens/application/application_webview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,8 @@ import 'package:multi_value_listenable_builder/multi_value_listenable_builder.da
 class ApplicationScreen extends StatelessWidget {
   ApplicationScreen({super.key});
   ValueNotifier<int> langCode = ValueNotifier(1066);
+  ValueNotifier<bool> isShowSearch = ValueNotifier(false);
+  ValueNotifier<String> searchKey = ValueNotifier("");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,26 +52,38 @@ class ApplicationScreen extends StatelessWidget {
               ],
             ),
           ),
-          MultiValueListenableBuilder(valueListenables: [langCode], builder: (context, values, child) {
+          ValueListenableBuilder(
+            valueListenable: isShowSearch,
+            builder: (context, value, child) {
+              return Visibility(visible: value, child: buildTextSearch());
+            },
+          ),
+          MultiValueListenableBuilder(valueListenables: [langCode,searchKey], builder: (context, values, child) {
             return Flexible(child:  StreamBuilder(
               stream: Constants.db.menuAppDao
                   .getMenuAppByStatusAndLanguageID(1, langCode.value),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data != null) {
+                    List<MenuApp>data= snapshot.data!;
+                    if(searchKey.value.isNotEmpty)
+                      {
+                        print(searchKey.value);
+                        data=data.where((element) => Functions.instance.removeDiacritics(element.title).toLowerCase().contains(searchKey.value.toLowerCase())).toList();
+                      }
                     return ListView.builder(
-                      itemCount: snapshot.data!.length,
+                      itemCount: data.length,
                       itemBuilder: (context, index) {
                         return InkResponse(child: ListTile(
                           tileColor: index%2==0?Colors.grey.shade100:Colors.white,
-                          title: Text(snapshot.data![index].title.toUpperCase(),style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xFF006784))),
+                          title: Text(data[index].title.toUpperCase(),style: TextStyle(fontWeight: FontWeight.bold,color: Color(0xFF006784))),
                         ),
                         onTap:(){
                           Future.delayed(Duration(milliseconds: 200),() {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ApplicationWebview(data: snapshot.data![index])));
+                                    builder: (context) => ApplicationWebview(data: data[index])));
                           },);
                         },);
                       },
@@ -90,6 +106,37 @@ class ApplicationScreen extends StatelessWidget {
             ));
           },)
         ],
+      ),
+    );
+  }
+  Widget buildTextSearch() {
+    TextEditingController contollerSearch = TextEditingController(text: searchKey.value);
+    return Container(
+      padding: EdgeInsets.all(5.0),
+      color: Colors.grey.shade400,
+      child: TextField(
+        controller: contollerSearch,
+        onChanged: (value) {
+          searchKey.value = value;
+        },
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+          hintText: "Search",
+          prefixIcon: Icon(Icons.search),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: () {
+              searchKey.value = "";
+              contollerSearch.clear();
+            }, // Replace with delete functionality
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6.0),
+            borderSide: BorderSide.none,
+          ),
+        ),
       ),
     );
   }
@@ -119,15 +166,21 @@ class ApplicationScreen extends StatelessWidget {
       centerTitle: true,
       actions: [
         Container(
-          margin: EdgeInsets.only(right: 15),
-          height: 30,
-          width: 30,
-          child: InkResponse(
-            child: Icon(
-              Icons.search,
+          width: 40,
+          height: 40,
+          child: IconButton(
+            icon: Image.asset(
+              'asset/images/icon_search26.png',
               color: Colors.white,
+              height: 20,
+              width: 40,
             ),
-            onTap: () {},
+            onPressed: () {
+              isShowSearch.value = !isShowSearch.value;
+              if (!isShowSearch.value) {
+                searchKey.value = "";
+              }
+            },
           ),
         )
       ],

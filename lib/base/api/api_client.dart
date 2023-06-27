@@ -138,4 +138,6 @@ abstract class ApiClient {
       @Query('FromDate') String fromDate,
       @Query('ToDate') String toDate
       );
+  @GET('/API/User.ashx?func=getMyUserInfo')
+  Future<ApiObject<User>> getMyUserInfo( @Header('Cookie') String cookieValue);
 }

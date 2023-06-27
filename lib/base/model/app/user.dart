@@ -67,6 +67,8 @@ class User{
   late String? rewardDiscipline;
   @JsonKey(name: 'EstimatedFlightTimeInMonth')
   late String? estimatedFlightTimeInMonth;
+  @JsonKey(name: 'UserType')
+  late int userType;
 
   User(
       this.id,
@@ -99,8 +101,8 @@ class User{
       this.base,
       this.idNumber,
       this.rewardDiscipline,
-      this.estimatedFlightTimeInMonth);
-
+      this.estimatedFlightTimeInMonth,
+      this.userType);
 
   User.none();
 

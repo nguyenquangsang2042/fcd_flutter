@@ -1,14 +1,17 @@
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/screens/application/application_screen.dart';
+import 'package:fcd_flutter/screens/faqs/faqs_screen.dart';
 import 'package:fcd_flutter/screens/library/library_screen.dart';
 import 'package:fcd_flutter/screens/licence/licence_screen.dart';
 import 'package:fcd_flutter/screens/notification/notification_screen.dart';
 import 'package:fcd_flutter/screens/payroll/payroll_screen.dart';
+import 'package:fcd_flutter/screens/schedule/flight_schedule_md_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import '../admin_notice/admin_notice_screen.dart';
 import '../contacts/contacts_screen.dart';
+import '../schedule/flight_schedule_screen.dart';
 import 'main_controller.dart';
 
 class RecycleGridScreen extends StatelessWidget {
@@ -126,7 +129,14 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Licence':
         return LicenceScreen();
       case 'Schedule':
-        return 'icon_plane30Gray';
+        if(Constants.currentUser.userType==1)
+          {
+            return const FlightScheduleScreen();
+          }
+        else
+          {
+            return FlightScheduleMDScreen();
+          }
       case 'Ticket request':
         return 'icon_ticket_booking30';
       case 'Training':
@@ -138,7 +148,7 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Contacts':
         return ContactScreen();
       case 'FAQs':
-        return 'icon_FAQs';
+        return FaqsScreen();
       case 'Report':
         return 'icon_report';
       case 'Application':

@@ -142,6 +142,8 @@ flutter:
     - asset/images/icon_viber.png
     - asset/images/icon_zalo.png
     - asset/images/icon_email.png
+    - asset/images/icon_lang_united_kingdom.png
+    - asset/images/icon_lang_vietnam.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

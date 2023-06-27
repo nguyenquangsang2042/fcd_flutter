@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/widgets.dart';
 class PilotMainScreen extends StatelessWidget {
   PilotMainScreen({Key? key}) : super(key: key);
   final ValueNotifier<bool> isRefresh = ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
     MainController.instance.wightBanner.value =
@@ -18,6 +20,14 @@ class PilotMainScreen extends StatelessWidget {
     MainController.instance.heightBanner.value = 200;
     MainController.instance.wightScreen =
         MediaQuery.of(context).size.width.toInt();
+    if (Connectivity().checkConnectivity() != ConnectivityResult.none) {
+      Constants.api
+          .getMyUserInfo(
+              Constants.sharedPreferences.get('set-cookie').toString())
+          .then((value) =>
+
+      Constants.currentUser = value.data);
+    }
     return Scaffold(
       backgroundColor: Color(0xFF00485C),
       appBar: AppBar(
