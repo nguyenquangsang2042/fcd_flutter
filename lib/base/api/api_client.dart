@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
+import 'package:fcd_flutter/base/model/app/bean_faqs.dart';
 import 'package:fcd_flutter/base/model/app/bean_library.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/model/app/bean_salary.dart';
@@ -9,6 +10,7 @@ import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
+import 'package:fcd_flutter/base/model/app/helpdesk.dart';
 import 'package:fcd_flutter/base/model/app/licence.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
@@ -122,6 +124,9 @@ abstract class ApiClient {
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanNotify')
   Future<ApiList<Notify>> getNotify(@Header('Cookie') String cookieValue,
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanHelpdesk')
+  Future<ApiList<Helpdesk>> getHelpdesk(@Header('Cookie') String cookieValue,
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
 
   @POST('/API/User.ashx?func=mobileAutoLoginWeb')

@@ -1,5 +1,6 @@
 import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
+import 'package:fcd_flutter/base/model/app/bean_faqs.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
@@ -18,6 +19,7 @@ import '../model/api_list.dart';
 import '../model/app/announcement_category.dart';
 import '../model/app/app_language.dart';
 import '../model/app/db_variable.dart';
+import '../model/app/helpdesk.dart';
 import '../model/app/pilot_schedule_all.dart';
 import '../model/app/pilot_schedule_pdf.dart';
 import '../model/app/province.dart';
@@ -418,10 +420,12 @@ class ApiController {
 
 
   Future<void> updateAllDynamicData()async {
-    await updateMenuHome();
-    await updateBanner();
     updateNotify();
     updateLicence();
+    updateHelpdesk();
+    await updateMenuHome();
+    await updateBanner();
+
   }
 
   Future<void> updateMenuHome() async {
@@ -466,7 +470,25 @@ class ApiController {
           .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
     }
   }
-
+  Future<void> updateHelpdesk() async {
+    DBVariable? dbVariable =
+        await Constants.db.dbVariableDao.findDBVariableById("Helpdesk");
+    if (dbVariable != null) {
+      ApiList<Helpdesk> data = await Constants.api.getHelpdesk(
+          Constants.sharedPreferences.get('set-cookie').toString(),
+          dbVariable.Value,
+          "0");
+      await Constants.db.helpdeskDao.insertHelpdesk(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Helpdesk", data.dateNow));
+    } else {
+      ApiList<Helpdesk> data = await Constants.api.getHelpdesk(
+          Constants.sharedPreferences.get('set-cookie').toString(), "", "1");
+      await Constants.db.helpdeskDao.insertHelpdesk(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Helpdesk", data.dateNow));
+    }
+  }
   Future<void> updateLicence() async {
     ApiList<License> data = await Constants.api
         .getUserLicense(Constants.sharedPreferences.get('set-cookie').toString(),Constants.currentUser.id);

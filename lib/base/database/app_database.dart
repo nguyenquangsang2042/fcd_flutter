@@ -6,6 +6,7 @@ import 'package:fcd_flutter/base/database/dao/department_dao.dart';
 import 'package:fcd_flutter/base/database/dao/district_dao.dart';
 import 'package:fcd_flutter/base/database/dao/faqs_dao.dart';
 import 'package:fcd_flutter/base/database/dao/help_desk_category_dao.dart';
+import 'package:fcd_flutter/base/database/dao/helpdesk_dao.dart';
 import 'package:fcd_flutter/base/database/dao/library_dao.dart';
 import 'package:fcd_flutter/base/database/dao/licence_dao.dart';
 import 'package:fcd_flutter/base/database/dao/menu_home_dao.dart';
@@ -20,11 +21,13 @@ import 'package:fcd_flutter/base/database/dao/ward_dao.dart';
 import 'package:fcd_flutter/base/model/app/airport.dart';
 import 'package:fcd_flutter/base/model/app/app_language.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
+import 'package:fcd_flutter/base/model/app/bean_faqs.dart';
 import 'package:fcd_flutter/base/model/app/bean_library.dart';
 import 'package:fcd_flutter/base/model/app/db_variable.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
+import 'package:fcd_flutter/base/model/app/helpdesk.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
 import 'package:fcd_flutter/base/model/app/licence.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
@@ -78,7 +81,9 @@ part 'app_database.g.dart'; // the generated code will be there
   MenuHome,
   BeanBanner,
   License,
-  BeanLibrary
+  BeanLibrary,
+  BeanFAQs,
+  Helpdesk
 ])
 abstract class AppDatabase extends FloorDatabase {
   SettingsDao get settingDao;
@@ -106,4 +111,5 @@ abstract class AppDatabase extends FloorDatabase {
   BannerDao get bannerDao;
   LicenceDao get licenceDao;
   LibraryDao get libraryDao;
+  HelpdeskDao get helpdeskDao;
 }

@@ -8,6 +8,7 @@ import 'package:fcd_flutter/base/model/app/bean_salary.dart';
 import 'package:fcd_flutter/base/model/app/department.dart';
 import 'package:fcd_flutter/base/model/app/district.dart';
 import 'package:fcd_flutter/base/model/app/help_desk_category.dart';
+import 'package:fcd_flutter/base/model/app/helpdesk.dart';
 import 'package:fcd_flutter/base/model/app/helpdesk_linhvuc.dart';
 import 'package:fcd_flutter/base/model/app/licence.dart';
 import 'package:fcd_flutter/base/model/app/menu_app.dart';
@@ -91,6 +92,8 @@ class ApiList<T> extends Status {
       return BeanLibrary.fromJson(data);
     }else if (T == BeanSalary) {
       return BeanSalary.fromJson(data);
+    }else if (T == Helpdesk) {
+      return Helpdesk.fromJson(data);
     } else {
       return null;
     }

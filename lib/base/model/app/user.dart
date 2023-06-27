@@ -68,7 +68,7 @@ class User{
   @JsonKey(name: 'EstimatedFlightTimeInMonth')
   late String? estimatedFlightTimeInMonth;
   @JsonKey(name: 'UserType')
-  late int userType;
+  late int? userType;
 
   User(
       this.id,
