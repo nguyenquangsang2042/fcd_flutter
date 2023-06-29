@@ -6,6 +6,6 @@ import 'package:floor/floor.dart';
 abstract class HelpDeskLinhVucDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertHelpDeskLinhVucs(List<HelpDeskLinhVuc> helpDeskLinhVucs);
-  @Query('Select * HelpDeskLinhVuc Order by [Order]')
-  Stream<List<HelpDeskLinhVuc>> getAllHelpdeskLinhVuc();
+  @Query('Select * from HelpDeskLinhVuc Order by [Order]')
+  Future<List<HelpDeskLinhVuc>> getAllHelpdeskLinhVuc();
 }
