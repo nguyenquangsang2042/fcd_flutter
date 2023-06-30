@@ -7,5 +7,5 @@ abstract class HelpDeskLinhVucDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertHelpDeskLinhVucs(List<HelpDeskLinhVuc> helpDeskLinhVucs);
   @Query('Select * from HelpDeskLinhVuc Order by [Order]')
-  Future<List<HelpDeskLinhVuc>> getAllHelpdeskLinhVuc();
+  Stream<List<HelpDeskLinhVuc>> getAllHelpdeskLinhVuc();
 }

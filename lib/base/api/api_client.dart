@@ -145,4 +145,8 @@ abstract class ApiClient {
       );
   @GET('/API/User.ashx?func=getMyUserInfo')
   Future<ApiObject<User>> getMyUserInfo( @Header('Cookie') String cookieValue);
+
+  @POST('/API/HelpDesk.ashx?func=add')
+  @FormUrlEncoded()
+  Future<Status> sendQuestionToHelpDesk( @Header('Cookie') String cookieValue,@Field("data") String data);
 }

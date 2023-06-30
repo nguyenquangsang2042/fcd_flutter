@@ -13,7 +13,7 @@ class Helpdesk {
   late int categoryId;
 
   @JsonKey(name: 'Title')
-  late String title;
+  late String? title;
 
   @JsonKey(name: 'Content')
   late String content;
@@ -56,6 +56,8 @@ class Helpdesk {
       this.created,
       this.adminReply,
       this.dateReply);
+
+  Helpdesk.none();
 
   factory Helpdesk.fromJson(Map<String, dynamic> json) => _$HelpdeskFromJson(json);
 
