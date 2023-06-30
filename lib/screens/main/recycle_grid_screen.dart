@@ -9,6 +9,7 @@ import 'package:fcd_flutter/screens/notification/notification_screen.dart';
 import 'package:fcd_flutter/screens/payroll/payroll_screen.dart';
 import 'package:fcd_flutter/screens/report/report_screen.dart';
 import 'package:fcd_flutter/screens/schedule/flight_schedule_md_screen.dart';
+import 'package:fcd_flutter/screens/ticket_request/ticket_request_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
@@ -137,13 +138,15 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Licence':
         return LicenceScreen();
       case 'Schedule':
-        if (Constants.currentUser.userType == 1) {
-          return const FlightScheduleScreen();
-        } else {
-          return FlightScheduleMDScreen();
-        }
+        // if (Constants.currentUser.userType == 1) {
+        //   return const FlightScheduleScreen();
+        // } else {
+        //   return FlightScheduleMDScreen();
+        // }
+        return "";
       case 'Ticket request':
-        return 'icon_ticket_booking30';
+        // return TicketRequestScreen();
+        return "";
       case 'Training':
         return 'icon_training';
       case 'Payroll':

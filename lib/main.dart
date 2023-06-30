@@ -35,6 +35,7 @@ Future<void> main() async {
   Constants.sharedPreferences = await SharedPreferences.getInstance();
   HttpOverrides.global = MyHttpOverrides();
   if (Platform.isAndroid) {
+    await Permission.camera.request();
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
 
     var swAvailable = await AndroidWebViewFeature.isFeatureSupported(

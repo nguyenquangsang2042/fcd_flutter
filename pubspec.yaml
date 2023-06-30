@@ -71,6 +71,10 @@ dependencies:
   flutter_rounded_date_picker: ^3.0.4
   html: ^0.15.4
   flutter_html: ^3.0.0-beta.2
+  qr_code_scanner: ^1.0.1
+  image_picker: any
+  qr_flutter: ^4.1.0
+  camera: ^0.10.5+2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -146,6 +150,7 @@ flutter:
     - asset/images/icon_email.png
     - asset/images/icon_lang_united_kingdom.png
     - asset/images/icon_lang_vietnam.png
+    - asset/images/icon_helpdesk.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

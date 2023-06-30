@@ -30,7 +30,7 @@ class SupportScreen extends StatelessWidget {
                     return FaqsScreen(isVietnamese: isVietnamese.value);
                   },
                 ),
-                HelpdeskScreen()
+                HelpdeskScreen(isShowAppBar: false,)
               ]))
             ],
           )),

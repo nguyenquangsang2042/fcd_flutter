@@ -6,6 +6,7 @@ import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/main/banner_screen.dart';
 import 'package:fcd_flutter/screens/main/main_controller.dart';
 import 'package:fcd_flutter/screens/main/recycle_grid_screen.dart';
+import 'package:fcd_flutter/screens/qr_scan/qr_scan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -39,17 +40,7 @@ class PilotMainScreen extends StatelessWidget {
                 flex: 3,
                 child: Image.asset('asset/images/ic_title_vnairlines.png'),
               ),
-              Expanded(
-                flex: 1,
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                        child: Image.asset(
-                          'asset/images/icon_qrcode.png',
-                        ),
-                        height: 35,
-                        width: 35)),
-              )
+              buildIconScanQR(context)
             ],
           )),
       body: Container(
@@ -187,5 +178,24 @@ class PilotMainScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Expanded buildIconScanQR(BuildContext context) {
+    return Expanded(
+              flex: 1,
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: InkResponse(child: SizedBox(
+                      child: Image.asset(
+                        'asset/images/icon_qrcode.png',
+                      ),
+                      height: 35,
+                      width: 35),onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => QRScannerScreen()));
+                      },)),
+            );
   }
 }
