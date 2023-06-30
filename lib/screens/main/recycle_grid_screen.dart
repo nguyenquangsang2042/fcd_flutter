@@ -7,6 +7,7 @@ import 'package:fcd_flutter/screens/licence/licence_screen.dart';
 import 'package:fcd_flutter/screens/main/navigation_grid.dart';
 import 'package:fcd_flutter/screens/notification/notification_screen.dart';
 import 'package:fcd_flutter/screens/payroll/payroll_screen.dart';
+import 'package:fcd_flutter/screens/report/report_screen.dart';
 import 'package:fcd_flutter/screens/schedule/flight_schedule_md_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
@@ -154,7 +155,7 @@ class RecycleGridScreen extends StatelessWidget {
       case 'FAQs':
         return SupportScreen();
       case 'Report':
-        return 'icon_report';
+        return ReportScreen();
       case 'Application':
         return ApplicationScreen();
       default:
