@@ -29,7 +29,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scan QR Code'),
+        title: const Text('Scan QR Code'),
       ),
       body: Column(
         children: [
@@ -46,14 +46,14 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                 onPressed: () {
                   controller?.flipCamera();
                 },
-                child: Icon(Icons.flip_camera_ios),
+                child: const Icon(Icons.flip_camera_ios),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
                   controller?.toggleFlash();
                 },
-                child: Icon(Icons.flash_on),
+                child: const Icon(Icons.flash_on),
               ),
             ],
           ),
