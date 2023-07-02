@@ -26,7 +26,6 @@ class PilotMainScreen extends StatelessWidget {
           .getMyUserInfo(
               Constants.sharedPreferences.get('set-cookie').toString())
           .then((value) =>
-
       Constants.currentUser = value.data);
     }
     return Scaffold(
@@ -178,6 +177,20 @@ class PilotMainScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showNotifyAlert(BuildContext context) {
+    Future.delayed(Duration(seconds: 4),() {
+      showDialog(context: context, builder: (context) {
+        return Text("data",style: TextStyle(color: Colors.white),);
+      },);
+      showDialog(context: context, builder: (context) {
+        return Text("data2",style: TextStyle(color: Colors.white),);
+      },);
+      showDialog(context: context, builder: (context) {
+        return Text("data3",style: TextStyle(color: Colors.white),);
+      },);
+    },);
   }
 
   Expanded buildIconScanQR(BuildContext context) {

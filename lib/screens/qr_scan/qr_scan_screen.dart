@@ -21,7 +21,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      print(scanData.code!);
+      controller.pauseCamera();//=> dừng quét
+      controller.resumeCamera();// tiếp tục quét
     });
   }
 
