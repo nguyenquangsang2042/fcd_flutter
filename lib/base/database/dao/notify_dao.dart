@@ -124,4 +124,8 @@ abstract class NotifyDao {
   Stream<List<Notify>> caseEmergencySwitch4(List<String> beanAnnounceID);
   @Query('SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId IN (:beanAnnounceID) ORDER BY  flgConfirm DESC, flgConfirmed   ,Created DESC ')
   Stream<List<Notify>> caseConfirmSwitch4(List<String> beanAnnounceID);
+  
+  @Query('SELECT * FROM Notify WHERE ((flgConfirm = 1 AND flgConfirmed = 0) OR (flgReply = 1 AND flgReplied = 0)) AND ANStatus != -1  ORDER BY flgImmediately DESC, Modified ')
+  Future<List<Notify>> checkPopAnnouncement();
+
 }

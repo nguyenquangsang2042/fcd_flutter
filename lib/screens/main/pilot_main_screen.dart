@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
+import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/main/banner_screen.dart';
 import 'package:fcd_flutter/screens/main/main_controller.dart';
@@ -185,17 +186,12 @@ class PilotMainScreen extends StatelessWidget {
   }
 
   void showNotifyAlert(BuildContext context) {
-    Future.delayed(Duration(seconds: 4),() {
-      showDialog(context: context, builder: (context) {
-        return Text("data",style: TextStyle(color: Colors.white),);
-      },);
-      showDialog(context: context, builder: (context) {
-        return Text("data2",style: TextStyle(color: Colors.white),);
-      },);
-      showDialog(context: context, builder: (context) {
-        return Text("data3",style: TextStyle(color: Colors.white),);
-      },);
-    },);
+    Constants.db.notifyDao.checkPopAnnouncement().then((value) {
+      if(value.isNotEmpty)
+        {
+          // show dialog => kiem ta lai thong tin;
+        }
+    });
   }
 
   Expanded buildIconScanQR(BuildContext context) {

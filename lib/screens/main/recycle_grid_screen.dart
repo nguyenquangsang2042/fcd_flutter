@@ -1,3 +1,4 @@
+import 'package:fcd_flutter/base/alert_dialog.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/screens/application/application_screen.dart';
 import 'package:fcd_flutter/screens/faqs/faqs_screen.dart';
@@ -12,6 +13,7 @@ import 'package:fcd_flutter/screens/schedule/flight_schedule_md_screen.dart';
 import 'package:fcd_flutter/screens/ticket_request/ticket_request_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../admin_notice/admin_notice_screen.dart';
 import '../contacts/contacts_screen.dart';
@@ -48,10 +50,19 @@ class RecycleGridScreen extends StatelessWidget {
               children: snapshot.data!
                   .map((e) => InkResponse(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NavigationGridScreen(childView: redirectToView(e.key))));
+                          if(e.key.contains('Ticket request'))
+                          {
+                            Constants.db.settingDao.findSettingByKey("TICKET_REIGIST_URL").then((setting) {
+                              _launchURL(setting!.VALUE,context);
+                            });
+                          }
+                          else
+                            {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NavigationGridScreen(childView: redirectToView(e.key))));
+                            }
                         },
                         child: Container(
                           height: 115,
@@ -97,7 +108,13 @@ class RecycleGridScreen extends StatelessWidget {
       },
     );
   }
-
+  _launchURL(String url,BuildContext context) async {
+    if (await canLaunch(url)) {
+      await launch(url, forceSafariVC: false, forceWebView: false);
+    } else {
+      AlertDialogController.instance.showAlert(context, "FCD 919", "Can't not open this site", "Cancel", () { });
+    }
+  }
   String pathImage(String key) {
     switch (key) {
       case 'Safety':

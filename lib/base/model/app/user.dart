@@ -67,6 +67,8 @@ class User{
   late String? rewardDiscipline;
   @JsonKey(name: 'EstimatedFlightTimeInMonth')
   late String? estimatedFlightTimeInMonth;
+  @JsonKey(name: 'UseAppDate')
+  late String? useAppDate;
   @JsonKey(name: 'UserType')
   late int? userType;
 
