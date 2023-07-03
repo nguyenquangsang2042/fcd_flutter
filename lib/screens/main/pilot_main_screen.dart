@@ -189,7 +189,13 @@ class PilotMainScreen extends StatelessWidget {
     Constants.db.notifyDao.checkPopAnnouncement().then((value) {
       if(value.isNotEmpty)
         {
-          // show dialog => kiem ta lai thong tin;
+
+          for(Notify item in value.take(5))
+            {
+              showDialog(context: context, builder: (context) {
+                return Container(child: Center(child: Text("data"),),);
+              },);
+            }
         }
     });
   }
