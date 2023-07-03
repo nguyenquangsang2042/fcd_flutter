@@ -13,7 +13,7 @@ import 'package:flutter/widgets.dart';
 class PilotMainScreen extends StatelessWidget {
   PilotMainScreen({Key? key}) : super(key: key);
   final ValueNotifier<bool> isRefresh = ValueNotifier(false);
-
+  bool isNeedShowAds = true;
   @override
   Widget build(BuildContext context) {
     MainController.instance.wightBanner.value =
@@ -162,6 +162,11 @@ class PilotMainScreen extends StatelessWidget {
                 child: ValueListenableBuilder<bool>(
                   valueListenable: isRefresh,
                   builder: (_, value, __) {
+                    if(isNeedShowAds)
+                      {
+                        showNotifyAlert(context);
+                        isNeedShowAds=false;
+                      }
                     return DeclarativeRefreshIndicator(
                         child: RecycleGridScreen(),
                         refreshing: value,

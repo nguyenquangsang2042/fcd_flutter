@@ -22,20 +22,20 @@ class MainController {
           ScrollDirection.reverse) {
         if(_heightBanner!=null && _heightBanner.value>70)
         {
-          _heightBanner.value =_heightBanner.value-5;
+          _heightBanner.value =_heightBanner.value-15;
         }
         if(_wightBanner!=null && _wightBanner.value>150)
         {
-          _wightBanner.value =_wightBanner.value-5;
+          _wightBanner.value =_wightBanner.value-15;
         }
       } else {
         if(_heightBanner!=null && _heightBanner.value<200)
         {
-          _heightBanner.value =_heightBanner.value+5;
+          _heightBanner.value =_heightBanner.value+15;
         }
         if(_wightBanner!=null && _wightBanner.value<wightScreen)
         {
-          _wightBanner.value =_wightBanner.value+5;
+          _wightBanner.value =_wightBanner.value+15;
         }
 
       }
