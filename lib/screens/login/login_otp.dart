@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fcd_flutter/base/alert_dialog.dart';
 import 'package:fcd_flutter/base/api/api_client.dart';
 import 'package:fcd_flutter/base/api/api_controller.dart';
@@ -78,7 +80,7 @@ class LoginOTPScreen extends StatelessWidget {
                       onCompleted: (pin) async {
                         LoginController.instance
                             .getCurrentLoginUser(
-                                Constants.deviceInfo.toJson().toString(),
+                                jsonEncode(Constants.deviceInfo),
                                 "{'Email':'$email','VerifyCode':'$pin'}",
                                 "1",
                                 "1")
@@ -147,7 +149,7 @@ class LoginOTPScreen extends StatelessWidget {
     Constants.sharedPreferences.setString(
         "email", (context.read<LoginCubit>().state as LoginOTPState).email);
     Constants.sharedPreferences.setString(
-        "pass", pin);
+        "pass", CryptoController.instance.getMd5Hash("$pin#"));
     BlocProvider.of<LoginCubit>(context).navigationToLoginLoaiding();
   }
 }

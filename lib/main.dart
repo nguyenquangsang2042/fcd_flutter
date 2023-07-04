@@ -69,12 +69,12 @@ Future<void> getDeviceInfo() async {
 
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     Constants.deviceInfo = DeviceInfo.required(
-        DeviceId: "'${androidInfo.id}'",
-        DevicePushToken: "'${await messaging.getToken()}'",
+        DeviceId: androidInfo.id,
+        DevicePushToken: "${await messaging.getToken()}",
         DeviceOS: 1,
-        AppVersion: "'${packageInfo.version}'",
-        DeviceOSVersion: "'${androidInfo.version.release}'",
-        DeviceModel: "'${androidInfo.model}'");
+        AppVersion: packageInfo.version,
+        DeviceOSVersion: androidInfo.version.release,
+        DeviceModel: androidInfo.model);
   } else if (Platform.isIOS) {
     IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
     Constants.deviceInfo = DeviceInfo.required(

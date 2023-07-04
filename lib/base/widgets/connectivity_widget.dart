@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +23,14 @@ class ConnectivityWidget extends StatelessWidget {
 
         } else {
           return FutureBuilder(
-            future: LoginController.instance.getCurrentLoginUser(
-                Constants.deviceInfo.toJson().toString(),
-                "{'Email':'${Constants.loginName}','VerifyCode':'${Constants.loginPass}'}",
-                "1",
-                "1"),
+            future: LoginController.instance.reLogin(
+                1,jsonEncode({
+              "LoginName": Constants.sharedPreferences.get("email"),
+              "Password": Constants.sharedPreferences.get("pass"),
+              "deviceInfo":json.encode(Constants.deviceInfo),
+              "loginType":"1",
+              "userTypeLogin":"1"
+            })),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data == null || snapshot.data!.data == null) {

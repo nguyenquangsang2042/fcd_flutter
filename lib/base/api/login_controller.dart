@@ -47,6 +47,33 @@ class LoginController
     Constants.sharedPreferences.setString("set-cookie", _result.headers.value("set-cookie").toString());
     return value;
   }
+  Future<ApiObject<User>> reLogin(
+      reLogin,
+      data,
+      ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'reLogin': reLogin};
+    final _headers = <String, dynamic>{};
+    final _data = {'data': data};
+    final _result = await  DioController().dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiObject<User>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
+    )
+        .compose(
+      DioController().dio.options,
+      '/API/User.ashx?func=login',
+      queryParameters: queryParameters,
+      data: _data,
+    )
+        .copyWith(baseUrl: Constants.baseURL)));
+    final value = ApiObject<User>.fromJson(_result.data!);
+    Constants.sharedPreferences.setString("set-cookie", _result.headers.value("set-cookie").toString());
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fcd_flutter/base/api/login_controller.dart';
 import 'package:fcd_flutter/base/constants.dart';
@@ -29,11 +31,14 @@ class ReLoginScreen extends StatelessWidget {
       BlocProvider.of<NavigationCubit>(context).navigateToMainView();
     } else {
       LoginController.instance
-          .getCurrentLoginUser(
-              Constants.deviceInfo.toJson().toString(),
-              "{'Email':'${Constants.loginName}','VerifyCode':'${Constants.loginPass}'}",
-              "1",
-              "1")
+          .reLogin(
+              1,jsonEncode({
+        "LoginName": Constants.sharedPreferences.get("email"),
+        "Password": Constants.sharedPreferences.get("pass"),
+        "deviceInfo":json.encode(Constants.deviceInfo),
+        "loginType":"1",
+        "userTypeLogin":"1"
+      }))
           .then((value) => updateDataLoginAndCurrentUser(value.data, context))
           .onError((error, stackTrace) => AlertDialogController.instance
                   .showAlert(context, "Vietnam Airlines",
