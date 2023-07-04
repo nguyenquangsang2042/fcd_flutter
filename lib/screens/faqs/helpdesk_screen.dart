@@ -1,13 +1,15 @@
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
+import 'package:fcd_flutter/base/model/app/helpdesk.dart';
 import 'package:fcd_flutter/screens/faqs/form_add_helpdesk.dart';
 import 'package:fcd_flutter/screens/faqs/reply_helpdesk_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HelpdeskScreen extends StatelessWidget {
-  HelpdeskScreen({super.key, required this.isShowAppBar});
+  HelpdeskScreen({super.key, required this.isShowAppBar,required this.keySearch});
   bool isShowAppBar;
+  String keySearch;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,22 +19,27 @@ class HelpdeskScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData && snapshot.data != null) {
+              List<Helpdesk> data= snapshot.data!;
+              if(keySearch.isNotEmpty)
+                {
+                  data= data.where((element) => element.content.toLowerCase().contains(keySearch.toLowerCase())).toList();
+                }
               return ListView.builder(
-                itemCount: snapshot.data!.length,
+                itemCount:data.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     child: ListTile(
                       tileColor:
                           index % 2 != 0 ? Colors.white : Colors.grey.shade50,
                       title: Text(
-                        snapshot.data![index].content,
+                        data[index].content,
                         style: TextStyle(
                             color: Color(0xFF006784),
                             fontWeight: FontWeight.w500),
                       ),
-                      trailing: Text(snapshot.data![index].created != null
+                      trailing: Text(data[index].created != null
                           ? Functions.instance.formatDateString(
-                              snapshot.data![index].created!, "dd MMM yyyy")
+                              data[index].created!, "dd MMM yyyy")
                           : ""),
                     ),
                     onTap: () {
@@ -40,7 +47,7 @@ class HelpdeskScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ReplyHelpdeskScreen(
-                                    data: snapshot.data![index],
+                                    data: data[index],
                                   )));
                     },
                   );

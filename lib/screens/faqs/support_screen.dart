@@ -8,6 +8,10 @@ class SupportScreen extends StatelessWidget {
   SupportScreen({super.key});
 
   ValueNotifier<bool> isVietnamese = ValueNotifier(true);
+  ValueNotifier<bool> isShowLang = ValueNotifier(true);
+  ValueNotifier<bool> isShowSearch = ValueNotifier(false);
+  ValueNotifier<String> keySearch = ValueNotifier("");
+  TextEditingController _controller = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +21,70 @@ class SupportScreen extends StatelessWidget {
           length: 2,
           child: Column(
             children: [
-              const TabBar(
+              TabBar(
                 tabs: [
                   Tab(icon: Text("Faqs")),
                   Tab(icon: Text("Helpdesk")),
                 ],
+                onTap:(value) {
+                  isShowLang.value=(value==0);
+                },
               ),
-              Flexible(child: TabBarView(children: [
-                MultiValueListenableBuilder(
-                  valueListenables: [isVietnamese],
-                  builder: (context, values, child) {
-                    return FaqsScreen(isVietnamese: isVietnamese.value);
-                  },
-                ),
-                HelpdeskScreen(isShowAppBar: false,)
-              ]))
+              ValueListenableBuilder(
+                valueListenable: isShowSearch,
+                builder: (context, value, child) {
+                  return Visibility(visible: value, child: buildTextSearch());
+                },
+              ),
+              Flexible(child: TabBarView(
+                  children: [
+                    MultiValueListenableBuilder(
+                      valueListenables: [isVietnamese, keySearch],
+                      builder: (context, values, child) {
+                        return FaqsScreen(isVietnamese: isVietnamese.value,
+                          keySearch: keySearch.value,);
+                      },
+                    ),
+                    ValueListenableBuilder(valueListenable: keySearch,
+                      builder: (context, value, child) {
+                        return HelpdeskScreen(
+                          isShowAppBar: false, keySearch: keySearch.value,);
+                      },)
+                  ]))
             ],
           )),
+    );
+  }
+
+  Widget buildTextSearch() {
+    _controller = TextEditingController(text: keySearch.value);
+    return Container(
+      padding: EdgeInsets.all(5.0),
+      color: Colors.grey.shade400,
+      child: TextField(
+        controller: _controller,
+        onChanged: (value) {
+          keySearch.value = value;
+        },
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+          hintText: "Search",
+          prefixIcon: Icon(Icons.search),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: () {
+              keySearch.value = "";
+              _controller.clear();
+            }, // Replace with delete functionality
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6.0),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
     );
   }
 
@@ -61,30 +112,35 @@ class SupportScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF006784),
       centerTitle: true,
       actions: [
-        InkResponse(
-          child: Container(
-            height: 20,
-            width: 20,
-            margin: EdgeInsets.only(right: 10),
-            child: ValueListenableBuilder(
-              valueListenable: isVietnamese,
-              builder: (context, value, child) {
-                return Image.asset(!value
-                    ? 'asset/images/icon_lang_united_kingdom.png'
-                    : 'asset/images/icon_lang_vietnam.png');
-              },
+        ValueListenableBuilder(
+          valueListenable: isShowLang, builder: (context, value, child) {
+          return Visibility(visible: value, child: InkResponse(
+            child: Container(
+              height: 20,
+              width: 20,
+              margin: EdgeInsets.only(right: 10),
+              child: ValueListenableBuilder(
+                valueListenable: isVietnamese,
+                builder: (context, value, child) {
+                  return Image.asset(!value
+                      ? 'asset/images/icon_lang_united_kingdom.png'
+                      : 'asset/images/icon_lang_vietnam.png');
+                },
+              ),
             ),
-          ),
-          onTap: () {
-            isVietnamese.value = !isVietnamese.value;
-          },
-        ),
-        Container(
+            onTap: () {
+              isVietnamese.value = !isVietnamese.value;
+            },
+          ),);
+        },),
+        InkResponse(child: Container(
             child: Icon(
               Icons.search,
               color: Colors.white,
             ),
-            margin: EdgeInsets.only(right: 10))
+            margin: EdgeInsets.only(right: 10)), onTap: () {
+          isShowSearch.value = !isShowSearch.value;
+        },)
       ],
     );
   }

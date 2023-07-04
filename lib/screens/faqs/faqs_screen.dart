@@ -1,5 +1,6 @@
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/functions.dart';
+import 'package:fcd_flutter/base/model/app/faqs.dart';
 import 'package:fcd_flutter/base/widgets/html_content_widget.dart';
 import 'package:fcd_flutter/base/widgets/language_switch.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,9 +9,9 @@ import 'package:flutter/material.dart';
 import '../../base/model/app/settings.dart';
 
 class FaqsScreen extends StatelessWidget {
-  FaqsScreen({Key? key, required this.isVietnamese}) : super(key: key);
+  FaqsScreen({Key? key, required this.isVietnamese,required this.keySearch}) : super(key: key);
   bool isVietnamese;
-
+  String keySearch;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -28,9 +29,14 @@ class FaqsScreen extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData && snapshot.data != null) {
+                    List<FAQs> data = snapshot.data!;
+                    if(keySearch.isNotEmpty)
+                      {
+                        data = data.where((element) => element.question.toLowerCase().contains(keySearch.toLowerCase())).toList();
+                      }
                     return Flexible(
                         child: ListView.builder(
-                            itemCount: snapshot.data!.length,
+                            itemCount: data.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 color: index % 2 != 0
@@ -38,8 +44,8 @@ class FaqsScreen extends StatelessWidget {
                                     : Colors.white,
                                 child: ExpansionTile(
                                   backgroundColor: Colors.grey.shade100,
-                                  title: Text(snapshot.data![index].question),
-                                  trailing: Icon(
+                                  title: Text(data[index].question),
+                                  trailing: const Icon(
                                       Icons.arrow_drop_down_circle
                                   ),
                                   children: [
@@ -47,7 +53,7 @@ class FaqsScreen extends StatelessWidget {
                                       color: Colors.white,
                                       child: ListTile(
                                       tileColor: Colors.white,
-                                      title: HtmlContentWidget(htmlContent: snapshot.data![index].answer),
+                                      title: HtmlContentWidget(htmlContent: data[index].answer),
                                     ),)
                                   ],
                                 ),

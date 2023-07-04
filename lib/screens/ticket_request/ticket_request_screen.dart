@@ -44,7 +44,7 @@ class TicketRequestScreen extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => NavigationGridScreen(childView: HelpdeskScreen(isShowAppBar: true))));
+                    builder: (context) => NavigationGridScreen(childView: HelpdeskScreen(isShowAppBar: true,keySearch: "",))));
           },)
         )
       ],
