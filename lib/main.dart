@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fcd_flutter/base/api/api_client.dart';
 import 'package:fcd_flutter/base/api/api_controller.dart';
 import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/base/firebase/firebase_messaging.dart';
 import 'package:fcd_flutter/base/model/device_info.dart';
 import 'package:fcd_flutter/blocs/login/login_cubit.dart';
 import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
@@ -57,7 +58,7 @@ Future<void> main() async {
     }
   }
   await getDeviceInfo();
-  runApp(const MyApp());
+  runApp(MyApp());
 
 }
 
@@ -90,10 +91,12 @@ Future<void> getDeviceInfo() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final FirebaseMessagingService _firebaseMessagingService = FirebaseMessagingService();
 
   @override
   Widget build(BuildContext context) {
+    _firebaseMessagingService.initialize();
     return MultiBlocProvider(
       providers: [
         BlocProvider<NavigationCubit>(
