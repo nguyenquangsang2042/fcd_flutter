@@ -127,5 +127,7 @@ abstract class NotifyDao {
   
   @Query('SELECT * FROM Notify WHERE ((flgConfirm = 1 AND flgConfirmed = 0) OR (flgReply = 1 AND flgReplied = 0)) AND ANStatus != -1  ORDER BY flgImmediately DESC, Modified ')
   Future<List<Notify>> checkPopAnnouncement();
-
+  
+  @Query("SELECT * FROM Notify WHERE AnnouncementId  = :announcementId")
+  Future<Notify?> getNotifyWithAnnouncementId(String announcementId);
 }

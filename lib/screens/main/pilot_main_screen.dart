@@ -1,11 +1,14 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/main/banner_screen.dart';
 import 'package:fcd_flutter/screens/main/main_controller.dart';
+import 'package:fcd_flutter/screens/main/popup_notify_unread.dart';
+import 'package:fcd_flutter/screens/main/popup_notify_unread.dart';
 import 'package:fcd_flutter/screens/main/recycle_grid_screen.dart';
 import 'package:fcd_flutter/screens/qr_scan/qr_scan_screen.dart';
 import 'package:flutter/material.dart';
@@ -187,15 +190,13 @@ class PilotMainScreen extends StatelessWidget {
 
   void showNotifyAlert(BuildContext context) {
     Constants.db.notifyDao.checkPopAnnouncement().then((value) {
+      List<Notify> data=value.take(5).toList();
       if(value.isNotEmpty)
         {
-
-          for(Notify item in value.take(5))
-            {
-              showDialog(context: context, builder: (context) {
-                return Container(child: Center(child: Text("data"),),);
-              },);
-            }
+          showDialog(context: context
+            , builder: (context) {
+            return PopupNotifyUnread(data: data,);
+          },);
         }
     });
   }
