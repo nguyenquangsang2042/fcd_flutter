@@ -16,4 +16,7 @@ abstract class UserDao {
   @Query("SELECT * FROM User WHERE (FullNameNoAccent LIKE :keySearch OR Mobile LIKE :keySearch) AND Department = :departmentID AND IFNULL(Status,1) = 1 ORDER BY FullNameNoAccent")
   Stream<List<User>> findByFullnameOrMobileAndDepartment(String keySearch,double departmentID);
 
+  @Query("SELECT * FROM User WHERE Email like :email ")
+  Future<User?> findUserByEmail(String email);
+
 }

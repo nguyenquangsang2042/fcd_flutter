@@ -1,3 +1,5 @@
+import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/screens/contacts/detail_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -22,7 +24,28 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     });
     controller.scannedDataStream.listen((scanData) {
       controller.pauseCamera();//=> dừng quét
-      controller.resumeCamera();// tiếp tục quét
+      if(scanData.code!=null)
+      {
+        RegExp emailRegex = RegExp(r':(\w+@\w+\.\w+)');
+        String email = emailRegex.firstMatch(scanData.code!)?.group(1) ?? '';
+        Constants.db.userDao.findUserByEmail("%${email}%").then((value) {
+          if(value==null)
+            {
+              controller.resumeCamera();
+            }
+          else
+            {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailContactScreen(info: value))).then((value) => controller.resumeCamera());
+            }
+        });
+      }
+      else
+        {
+          controller.resumeCamera();
+        }
     });
   }
 
