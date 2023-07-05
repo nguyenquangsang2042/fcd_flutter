@@ -67,7 +67,6 @@ class _PopupNotifyUnreadState extends State<PopupNotifyUnread> {
                       String? result=navigationAction.request.url?.queryParameters['result'];
                       if(result!=null &&result.isNotEmpty && result.contains("moveToDetail"))
                       {
-
                         Notify? item = await Constants.db.notifyDao.getNotifyWithAnnouncementId(announcementId);
                         if(item!=null)
                         {

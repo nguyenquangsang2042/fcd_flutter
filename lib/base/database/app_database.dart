@@ -14,6 +14,9 @@ import 'package:fcd_flutter/base/database/dao/menuapp_dao.dart';
 import 'package:fcd_flutter/base/database/dao/nation_dao.dart';
 import 'package:fcd_flutter/base/database/dao/pilot_schedule_all_dao.dart';
 import 'package:fcd_flutter/base/database/dao/settings_dao.dart';
+import 'package:fcd_flutter/base/database/dao/student_dao.dart';
+import 'package:fcd_flutter/base/database/dao/survey_dao.dart';
+import 'package:fcd_flutter/base/database/dao/survey_table_dao.dart';
 import 'package:fcd_flutter/base/database/dao/user_dao.dart';
 import 'package:fcd_flutter/base/database/dao/user_ticket_category_dao.dart';
 import 'package:fcd_flutter/base/database/dao/user_ticket_status_dao.dart';
@@ -36,6 +39,9 @@ import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/province.dart';
 import 'package:fcd_flutter/base/model/app/settings.dart';
+import 'package:fcd_flutter/base/model/app/student.dart';
+import 'package:fcd_flutter/base/model/app/survey.dart';
+import 'package:fcd_flutter/base/model/app/survey_table.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
 import 'package:fcd_flutter/base/model/app/ward.dart';
 import 'package:floor/floor.dart';
@@ -83,7 +89,10 @@ part 'app_database.g.dart'; // the generated code will be there
   License,
   BeanLibrary,
   BeanFAQs,
-  Helpdesk
+  Helpdesk,
+  Student,
+  SurveyTable,
+  Survey
 ])
 abstract class AppDatabase extends FloorDatabase {
   SettingsDao get settingDao;
@@ -112,4 +121,7 @@ abstract class AppDatabase extends FloorDatabase {
   LicenceDao get licenceDao;
   LibraryDao get libraryDao;
   HelpdeskDao get helpdeskDao;
+  StudentDao get studentDao;
+  SurveyTableDao get surveyTableDao;
+  SurveyDao get surveyDao;
 }

@@ -11,6 +11,9 @@ import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
+import 'package:fcd_flutter/base/model/app/student.dart';
+import 'package:fcd_flutter/base/model/app/survey.dart';
+import 'package:fcd_flutter/base/model/app/survey_table.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
@@ -420,11 +423,15 @@ class ApiController {
 
 
   Future<void> updateAllDynamicData()async {
+    await updateMenuHome();
+    await updateBanner();
     updateNotify();
     updateLicence();
     updateHelpdesk();
-    await updateMenuHome();
-    await updateBanner();
+    updateStudent();
+    updateSurveyTable();
+    updateSurvey();
+
 
   }
 
@@ -470,6 +477,67 @@ class ApiController {
           .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
     }
   }
+
+  Future<void> updateStudent() async {
+    DBVariable? dbVariable =
+    await Constants.db.dbVariableDao.findDBVariableById("Student");
+    if (dbVariable != null) {
+      ApiList<Student> data = await Constants.api.getStudent(
+          Constants.sharedPreferences.get('set-cookie').toString(),
+          dbVariable.Value,
+          "0");
+      await Constants.db.studentDao.insertStudent(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Student", data.dateNow));
+    } else {
+      ApiList<Student> data = await Constants.api.getStudent(
+          Constants.sharedPreferences.get('set-cookie').toString(), "", "1");
+      await Constants.db.studentDao.insertStudent(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Student", data.dateNow));
+    }
+  }
+
+  Future<void> updateSurveyTable() async {
+    DBVariable? dbVariable =
+    await Constants.db.dbVariableDao.findDBVariableById("SurveyTable");
+    if (dbVariable != null) {
+      ApiList<SurveyTable> data = await Constants.api.getSurveyTable(
+          Constants.sharedPreferences.get('set-cookie').toString(),
+          dbVariable.Value,
+          "0");
+      await Constants.db.surveyTableDao.insertSurveyTable(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("SurveyTable", data.dateNow));
+    } else {
+      ApiList<SurveyTable> data = await Constants.api.getSurveyTable(
+          Constants.sharedPreferences.get('set-cookie').toString(), "", "1");
+      await Constants.db.surveyTableDao.insertSurveyTable(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("SurveyTable", data.dateNow));
+    }
+  }
+
+  Future<void> updateSurvey() async {
+    DBVariable? dbVariable =
+    await Constants.db.dbVariableDao.findDBVariableById("Survey");
+    if (dbVariable != null) {
+      ApiList<Survey> data = await Constants.api.getSurvey(
+          Constants.sharedPreferences.get('set-cookie').toString(),
+          dbVariable.Value,
+          "0");
+      await Constants.db.surveyDao.insertSurvey(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Survey", data.dateNow));
+    } else {
+      ApiList<Survey> data = await Constants.api.getSurvey(
+          Constants.sharedPreferences.get('set-cookie').toString(), "", "1");
+      await Constants.db.surveyDao.insertSurvey(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("Survey", data.dateNow));
+    }
+  }
+
   Future<void> updateHelpdesk() async {
     DBVariable? dbVariable =
         await Constants.db.dbVariableDao.findDBVariableById("Helpdesk");
