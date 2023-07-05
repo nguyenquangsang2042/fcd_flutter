@@ -11,6 +11,7 @@ import 'package:fcd_flutter/screens/payroll/payroll_screen.dart';
 import 'package:fcd_flutter/screens/report/report_screen.dart';
 import 'package:fcd_flutter/screens/schedule/flight_schedule_md_screen.dart';
 import 'package:fcd_flutter/screens/ticket_request/ticket_request_screen.dart';
+import 'package:fcd_flutter/screens/trainning/parent_training.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -165,7 +166,7 @@ class RecycleGridScreen extends StatelessWidget {
         // return TicketRequestScreen();
         return "";
       case 'Training':
-        return 'icon_training';
+        return ParentTrainingScreen();
       case 'Payroll':
         return PayrollScreen();
       case 'Library':

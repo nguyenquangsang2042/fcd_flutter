@@ -35,89 +35,7 @@ class AdminNoticeScreen extends StatelessWidget {
         future: setDefaultSafety(),
         builder: (context, snapshot) {
           return Scaffold(
-            appBar: AppBar(
-              leading: SizedBox(
-                width: 50,
-                height: 50,
-                child: IconButton(
-                  icon: Image.asset(
-                    'asset/images/icon_back30.png',
-                    color: Colors.white,
-                    height: 20,
-                    width: 40,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              title: const Text(
-                'Notice',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              backgroundColor: const Color(0xFF006784),
-              centerTitle: true,
-              actions: [
-                ValueListenableBuilder(
-                  valueListenable: isShowIconFilter,
-                  builder: (context, value, child) {
-                    return Visibility(
-                        visible: value,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          child: IconButton(
-                            icon: Image.asset(
-                              'asset/images/icon_filter.png',
-                              color: Colors.white,
-                              height: 20,
-                              width: 40,
-                            ),
-                            onPressed: () {
-                              isShowSearch.value = false;
-                              _showPopupFilter(context);
-                            },
-                          ),
-                        ));
-                  },
-                ),
-                Container(
-                  width: 50,
-                  height: 50,
-                  child: IconButton(
-                    icon: Image.asset(
-                      'asset/images/icon_sort_descending.png',
-                      color: Colors.white,
-                      height: 20,
-                      width: 40,
-                    ),
-                    onPressed: () {
-                      isShowSearch.value = false;
-                      _showPopupSort(context);
-                    },
-                  ),
-                ),
-                Container(
-                  width: 50,
-                  height: 50,
-                  child: IconButton(
-                    icon: Image.asset(
-                      'asset/images/icon_search26.png',
-                      color: Colors.white,
-                      height: 20,
-                      width: 40,
-                    ),
-                    onPressed: () {
-                      isShowSearch.value = !isShowSearch.value;
-                      if (!isShowSearch.value) {
-                        keyWord.value = "";
-                        streamList.value = setStreamGetData();
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
+            appBar: buildAppBar(context),
             body: Column(
               children: [
                 ValueListenableBuilder(
@@ -149,6 +67,92 @@ class AdminNoticeScreen extends StatelessWidget {
             ),
           );
         });
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+            leading: SizedBox(
+              width: 50,
+              height: 50,
+              child: IconButton(
+                icon: Image.asset(
+                  'asset/images/icon_back30.png',
+                  color: Colors.white,
+                  height: 20,
+                  width: 40,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            title: const Text(
+              'Notice',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            backgroundColor: const Color(0xFF006784),
+            centerTitle: true,
+            actions: [
+              ValueListenableBuilder(
+                valueListenable: isShowIconFilter,
+                builder: (context, value, child) {
+                  return Visibility(
+                      visible: value,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        child: IconButton(
+                          icon: Image.asset(
+                            'asset/images/icon_filter.png',
+                            color: Colors.white,
+                            height: 20,
+                            width: 40,
+                          ),
+                          onPressed: () {
+                            isShowSearch.value = false;
+                            _showPopupFilter(context);
+                          },
+                        ),
+                      ));
+                },
+              ),
+              Container(
+                width: 50,
+                height: 50,
+                child: IconButton(
+                  icon: Image.asset(
+                    'asset/images/icon_sort_descending.png',
+                    color: Colors.white,
+                    height: 20,
+                    width: 40,
+                  ),
+                  onPressed: () {
+                    isShowSearch.value = false;
+                    _showPopupSort(context);
+                  },
+                ),
+              ),
+              Container(
+                width: 50,
+                height: 50,
+                child: IconButton(
+                  icon: Image.asset(
+                    'asset/images/icon_search26.png',
+                    color: Colors.white,
+                    height: 20,
+                    width: 40,
+                  ),
+                  onPressed: () {
+                    isShowSearch.value = !isShowSearch.value;
+                    if (!isShowSearch.value) {
+                      keyWord.value = "";
+                      streamList.value = setStreamGetData();
+                    }
+                  },
+                ),
+              ),
+            ],
+          );
   }
 
   Widget buildTextSearch() {
