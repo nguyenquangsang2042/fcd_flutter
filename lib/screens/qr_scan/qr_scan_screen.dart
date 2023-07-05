@@ -52,10 +52,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Scan QR Code'),
-      ),
-      body: Column(
+      body: Stack(
         children: [
           Expanded(
             child: QRView(
@@ -63,7 +60,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
               onQRViewCreated: onQRViewCreated,
             ),
           ),
-          Row(
+          Align(child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
@@ -80,7 +77,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                 child: const Icon(Icons.flash_on),
               ),
             ],
-          ),
+          ),alignment: Alignment.bottomCenter,)
         ],
       ),
     );
