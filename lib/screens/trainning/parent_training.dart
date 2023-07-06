@@ -9,6 +9,7 @@ class ParentTrainingScreen extends StatelessWidget {
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
   ValueNotifier<String> keyWord = ValueNotifier("");
   List<String> trainingNotify = ["1000", "1010", "5" ];
+  String NewsID = "";
   String SAFETY_CATEGORY_ID = "";
   String QUALIFICATION_CATEGORY_ID = "";
   late List<AnnouncementCategory> listFilter;

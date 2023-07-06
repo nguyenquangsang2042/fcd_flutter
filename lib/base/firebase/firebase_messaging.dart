@@ -15,13 +15,11 @@ class FirebaseMessagingService {
 
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('onMessage: $message');
       // Xử lý thông báo đẩy khi ứng dụng đang mở
       _firebaseMessagingBackgroundHandler(message);
     });
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('onMessageOpenedApp: $message');
       // Xử lý thông báo đẩy khi ứng dụng được khởi động từ trạng thái tắt
       _firebaseMessagingBackgroundHandler(message);
 
@@ -29,7 +27,6 @@ class FirebaseMessagingService {
 
   }
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    print('onBackgroundMessage: $message');
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'channel_id',
       'channel_name',
