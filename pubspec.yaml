@@ -76,6 +76,7 @@ dependencies:
   qr_flutter: ^4.1.0
   camera: ^0.10.5+2
   flutter_local_notifications: ^14.1.1
+  flutter_local_notifications_platform_interface: ^7.0.0+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
