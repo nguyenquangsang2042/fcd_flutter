@@ -20,6 +20,27 @@ class ParentTrainingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
+      body: DefaultTabController(
+        length: 3,
+        child: Column(
+          children: [
+            TabBar(
+              tabs: [
+                Tab(icon: Text("Notice")),
+                Tab(icon: Text("Course")),
+                Tab(icon: Text("Exam")),
+              ],
+            ),
+            Flexible(
+              child: TabBarView(children: [
+                Text("Notice"),
+                Text("Course"),
+                Text("Exam"),
+              ]),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -105,9 +126,7 @@ class ParentTrainingScreen extends StatelessWidget {
                                       defaultSafety.value
                                           .addAll(trainingNotify);
                                     } else {
-                                      defaultSafety.value = [
-                                        value.toString()
-                                      ];
+                                      defaultSafety.value = [value.toString()];
                                     }
                                     //streamList.value = setStreamGetData();
                                     _groupValue = value!;
