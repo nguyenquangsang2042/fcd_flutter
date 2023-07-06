@@ -7,4 +7,6 @@ abstract class SettingsDao {
   Future<void> insertSettings(List<Setting> settings);
   @Query('SELECT * FROM Setting WHERE [KEY] = :key')
   Future<Setting?>findSettingByKey(String key);
+  @Query('Select * from Setting Where [Key] in (:lstKey)')
+  Future<List<Setting>> getListSettingInLstKey(List<String> lstKey);
 }

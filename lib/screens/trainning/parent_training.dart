@@ -1,4 +1,5 @@
 import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,16 +9,12 @@ class ParentTrainingScreen extends StatelessWidget {
   ValueNotifier<bool> isShowIconFilter = ValueNotifier(true);
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
   ValueNotifier<String> keyWord = ValueNotifier("");
-  List<String> trainingNotify = ["1000", "1010", "5" ];
-  String NewsID = "";
-  String SAFETY_CATEGORY_ID = "";
-  String QUALIFICATION_CATEGORY_ID = "";
+  List<String> trainingNotify = ["1000", "1010", "5"];
   late List<AnnouncementCategory> listFilter;
   ValueNotifier<List<String>> defaultSafety = ValueNotifier([]);
   int _groupValue = 0;
   ValueNotifier<String> sortType = ValueNotifier("");
   String _groupValueSort = "Date";
-
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +22,7 @@ class ParentTrainingScreen extends StatelessWidget {
       appBar: buildAppBar(context),
     );
   }
+
   void _showPopupSort(BuildContext context) async {
     List<String> lstSortType = ["Date", "Unread", "Emergency", "Confirm"];
     showDialog(
@@ -42,26 +40,26 @@ class ParentTrainingScreen extends StatelessWidget {
                     itemBuilder: (_, index) {
                       return Material(
                           child: InkResponse(
-                            onTap: () {
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          sortType.value = lstSortType[index];
+                          //streamList.value = setStreamGetData();
+                          _groupValueSort = lstSortType[index];
+                        },
+                        child: ListTile(
+                          title: Text(lstSortType[index]),
+                          leading: Radio(
+                            value: lstSortType[index],
+                            groupValue: _groupValueSort,
+                            onChanged: (value) {
                               Navigator.of(context).pop();
                               sortType.value = lstSortType[index];
                               //streamList.value = setStreamGetData();
                               _groupValueSort = lstSortType[index];
                             },
-                            child: ListTile(
-                              title: Text(lstSortType[index]),
-                              leading: Radio(
-                                value: lstSortType[index],
-                                groupValue: _groupValueSort,
-                                onChanged: (value) {
-                                  Navigator.of(context).pop();
-                                  sortType.value = lstSortType[index];
-                                  //streamList.value = setStreamGetData();
-                                  _groupValueSort = lstSortType[index];
-                                },
-                              ),
-                            ),
-                          ));
+                          ),
+                        ),
+                      ));
                     }),
                 Expanded(
                   child: Container(),
@@ -74,14 +72,8 @@ class ParentTrainingScreen extends StatelessWidget {
   }
 
   void _showPopupFilter(BuildContext context) async {
-    if (!trainingNotify.contains(SAFETY_CATEGORY_ID)) {
-      trainingNotify.add(SAFETY_CATEGORY_ID);
-    }
-    if (!trainingNotify.contains(QUALIFICATION_CATEGORY_ID)) {
-      trainingNotify.add(QUALIFICATION_CATEGORY_ID);
-    }
     Constants.db.announcementCategoryDao
-        .getAnnouncementCategoryNotInListID(trainingNotify)
+        .getAnnouncementCategoryInListID(trainingNotify)
         .listen((event) {
       listFilter = [];
       listFilter.add(AnnouncementCategory.none(0, "All"));
@@ -110,14 +102,12 @@ class ParentTrainingScreen extends StatelessWidget {
                                   onChanged: (value) {
                                     Navigator.of(context).pop();
                                     if (value == 0) {
-                                      defaultSafety.value = [
-                                        SAFETY_CATEGORY_ID,
-                                        QUALIFICATION_CATEGORY_ID
-                                      ];
-                                      defaultSafety.value.addAll(trainingNotify);
-
+                                      defaultSafety.value
+                                          .addAll(trainingNotify);
                                     } else {
-                                      defaultSafety.value = [value.toString()];
+                                      defaultSafety.value = [
+                                        value.toString()
+                                      ];
                                     }
                                     //streamList.value = setStreamGetData();
                                     _groupValue = value!;
@@ -127,12 +117,7 @@ class ParentTrainingScreen extends StatelessWidget {
                               onTap: () {
                                 Navigator.of(context).pop();
                                 if (listFilter[index].id == 0) {
-                                  defaultSafety.value = [
-                                    SAFETY_CATEGORY_ID,
-                                    QUALIFICATION_CATEGORY_ID
-                                  ];
                                   defaultSafety.value.addAll(trainingNotify);
-
                                 } else {
                                   defaultSafety.value = [
                                     listFilter[index].id.toString()
@@ -241,5 +226,4 @@ class ParentTrainingScreen extends StatelessWidget {
       ],
     );
   }
-
 }
