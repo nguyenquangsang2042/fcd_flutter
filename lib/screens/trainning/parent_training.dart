@@ -1,6 +1,7 @@
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
+import 'package:fcd_flutter/screens/trainning/notice_training.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,8 @@ class ParentTrainingScreen extends StatelessWidget {
             ),
             Flexible(
               child: TabBarView(children: [
-                Text("Notice"),
+
+                NoticeTrainingScreen(lstAnnounCategoryId: trainingNotify),
                 Text("Course"),
                 Text("Exam"),
               ]),

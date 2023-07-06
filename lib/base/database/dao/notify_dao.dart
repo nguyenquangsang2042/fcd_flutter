@@ -130,4 +130,7 @@ abstract class NotifyDao {
   
   @Query("SELECT * FROM Notify WHERE AnnouncementId  = :announcementId")
   Future<Notify?> getNotifyWithAnnouncementId(String announcementId);
+  
+  @Query("SELECT * FROM Notify WHERE  AnnounCategoryId IN (:lstAnnounCategoryId) AND ANStatus <> -1 ORDER BY Created DESC ")
+  Stream<List<Notify>> getListNotifyWithLstAnnounCategoryId(List<String>lstAnnounCategoryId);
 }
