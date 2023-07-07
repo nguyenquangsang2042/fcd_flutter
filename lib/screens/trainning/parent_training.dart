@@ -1,6 +1,7 @@
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
+import 'package:fcd_flutter/screens/trainning/course_scrren.dart';
 import 'package:fcd_flutter/screens/trainning/notice_training.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +32,16 @@ class ParentTrainingScreen extends StatelessWidget {
                 Tab(icon: Text("Course")),
                 Tab(icon: Text("Exam")),
               ],
+              onTap: (value) {
+                print("object $value");
+              },
             ),
             Flexible(
               child: TabBarView(children: [
-
                 NoticeTrainingScreen(lstAnnounCategoryId: trainingNotify),
-                Text("Course"),
+                CourseScreen(),
                 Text("Exam"),
-              ]),
+              ],),
             )
           ],
         ),

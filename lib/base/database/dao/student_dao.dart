@@ -5,4 +5,6 @@ import 'package:floor/floor.dart';
 abstract class StudentDao{
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertStudent(List<Student> student);
+  @Query("SELECT * FROM Student ")
+  Stream<List<Student>> getAllStudents();
 }
