@@ -27,7 +27,7 @@ class ExamScreen extends StatelessWidget {
                   minWidth: 100,
                   maxWidth: 100
                 ),
-                margin: EdgeInsets.only(left: 5,right: 5),
+                margin: const EdgeInsets.only(left: 5,right: 5),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black,
