@@ -18,6 +18,7 @@ import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/student.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
+import 'package:fcd_flutter/base/model/app/survey_category.dart';
 import 'package:fcd_flutter/base/model/app/survey_table.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
@@ -141,7 +142,8 @@ abstract class ApiClient {
   Future<ApiList<Survey>> getSurvey(@Header('Cookie') String cookieValue,
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
 
-
+  @GET('/api/ApiSurvey.ashx?func=GetAllSurveyCategory')
+  Future<ApiList<SurveyCategory>> getSurveyCategory(@Header('Cookie') String cookieValue);
 
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanHelpdesk')

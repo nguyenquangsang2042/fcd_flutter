@@ -13,6 +13,7 @@ import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/student.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
+import 'package:fcd_flutter/base/model/app/survey_category.dart';
 import 'package:fcd_flutter/base/model/app/survey_table.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
@@ -431,8 +432,23 @@ class ApiController {
     updateStudent();
     updateSurveyTable();
     updateSurvey();
+    updateSurveyCategory();
 
-
+  }
+  Future<void> updateSurveyCategory() async {
+    DBVariable? dbVariable =
+    await Constants.db.dbVariableDao.findDBVariableById("SurveyCategory");
+    if (dbVariable != null) {
+      await Constants.db.surveyCategoryDao.deleteAll();
+    }
+    Constants.api
+        .getSurveyCategory(Constants.sharedPreferences.get('set-cookie').toString())
+        .then((value) {
+      ApiList<SurveyCategory> data = value;
+      Constants.db.surveyCategoryDao.insertSurveyCategory(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("SurveyCategory", data.dateNow));
+    });
   }
 
   Future<void> updateMenuHome() async {

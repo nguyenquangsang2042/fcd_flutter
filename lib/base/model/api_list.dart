@@ -20,6 +20,7 @@ import 'package:fcd_flutter/base/model/app/pilot_schedule_pdf.dart';
 import 'package:fcd_flutter/base/model/app/province.dart';
 import 'package:fcd_flutter/base/model/app/student.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
+import 'package:fcd_flutter/base/model/app/survey_category.dart';
 import 'package:fcd_flutter/base/model/app/survey_table.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
@@ -105,6 +106,8 @@ class ApiList<T> extends Status {
       return SurveyTable.fromJson(data);
     }else if (T == Survey) {
       return Survey.fromJson(data);
+    } else if (T == SurveyCategory) {
+      return SurveyCategory.fromJson(data);
     } else {
       return null;
     }

@@ -2,15 +2,16 @@ import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
 import 'package:fcd_flutter/screens/trainning/course_scrren.dart';
+import 'package:fcd_flutter/screens/trainning/exam_screen.dart';
 import 'package:fcd_flutter/screens/trainning/notice_training.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ParentTrainingScreen extends StatelessWidget {
   ParentTrainingScreen({super.key});
-  ValueNotifier<bool> isShowIconFilter = ValueNotifier(true);
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
   ValueNotifier<String> keyWord = ValueNotifier("");
+  ValueNotifier<int> currentPage = ValueNotifier(0);
   List<String> trainingNotify = ["1000", "1010", "5"];
   late List<AnnouncementCategory> listFilter;
   ValueNotifier<List<String>> defaultSafety = ValueNotifier([]);
@@ -33,15 +34,18 @@ class ParentTrainingScreen extends StatelessWidget {
                 Tab(icon: Text("Exam")),
               ],
               onTap: (value) {
-                print("object $value");
+                currentPage.value = value;
               },
             ),
             Flexible(
-              child: TabBarView(children: [
-                NoticeTrainingScreen(lstAnnounCategoryId: trainingNotify),
-                CourseScreen(),
-                Text("Exam"),
-              ],),
+              child: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  NoticeTrainingScreen(lstAnnounCategoryId: trainingNotify),
+                  CourseScreen(),
+                  ExamScreen(),
+                ],
+              ),
             )
           ],
         ),
@@ -190,10 +194,10 @@ class ParentTrainingScreen extends StatelessWidget {
       centerTitle: true,
       actions: [
         ValueListenableBuilder(
-          valueListenable: isShowIconFilter,
+          valueListenable: currentPage,
           builder: (context, value, child) {
             return Visibility(
-                visible: value,
+                visible: value == 0,
                 child: Container(
                   width: 40,
                   height: 40,
@@ -212,21 +216,28 @@ class ParentTrainingScreen extends StatelessWidget {
                 ));
           },
         ),
-        Container(
-          width: 40,
-          height: 40,
-          child: IconButton(
-            icon: Image.asset(
-              'asset/images/icon_sort_descending.png',
-              color: Colors.white,
-              height: 20,
-              width: 30,
-            ),
-            onPressed: () {
-              isShowSearch.value = false;
-              _showPopupSort(context);
-            },
-          ),
+        ValueListenableBuilder(
+          valueListenable: currentPage,
+          builder: (context, value, child) {
+            return Visibility(
+                visible: value == 0 || value == 1,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  child: IconButton(
+                    icon: Image.asset(
+                      'asset/images/icon_sort_descending.png',
+                      color: Colors.white,
+                      height: 20,
+                      width: 30,
+                    ),
+                    onPressed: () {
+                      isShowSearch.value = false;
+                      _showPopupSort(context);
+                    },
+                  ),
+                ));
+          },
         ),
         Container(
           width: 40,
