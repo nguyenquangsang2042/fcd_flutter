@@ -37,7 +37,27 @@ class SurveyCategory {
   @JsonKey(name: 'Parent')
   String? parent;
 
-  SurveyCategory();
+  SurveyCategory(
+      this.id,
+      this.title,
+      this.titleEN,
+      this.type,
+      this.code,
+      this.status,
+      this.index,
+      this.parentId,
+      this.modified,
+      this.created,
+      this.isTheory,
+      this.isTheoryTest,
+      this.testForm,
+      this.sessionNo,
+      this.parent);
+
+  SurveyCategory.none();
+
+
+  SurveyCategory.all(this.id, this.title);
 
   factory SurveyCategory.fromJson(Map<String, dynamic> json) =>
       _$SurveyCategoryFromJson(json);
