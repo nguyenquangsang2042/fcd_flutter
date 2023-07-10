@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  awesome_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: awesome_bottom_bar
+      sha256: cd5ea25f7fc559de84da6b391971d40512bb83b284f9f83ad5cdf148facadd8c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.3"
   bloc:
     dependency: transitive
     description:
