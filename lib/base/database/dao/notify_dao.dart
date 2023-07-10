@@ -137,6 +137,6 @@ abstract class NotifyDao {
   @Query("Select * from Notify where ID = :id")
   Stream<Notify?> getNotifyWithID(String id);
   
-  @Query("SELECT * FROM Notify NOLOCK WHERE ANStatus <> -1 AND AnnounCategoryId = :idQua OR AnnounCategoryId = :idSa OR AnnounCategoryId = 3 ORDER BY Created DESC")
+  @Query("SELECT * FROM Notify NOLOCK WHERE FlgRead is not null and  FlgRead = 0 and ANStatus <> -1 AND AnnounCategoryId = :idQua OR AnnounCategoryId = :idSa OR AnnounCategoryId = 3 ORDER BY Created DESC")
   Stream<List<Notify>> getCountSafety(String idQua,String idSa);
 }
