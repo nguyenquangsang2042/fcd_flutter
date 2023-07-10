@@ -78,6 +78,7 @@ dependencies:
   flutter_local_notifications: ^14.1.1
   flutter_local_notifications_platform_interface: ^7.0.0+1
   awesome_bottom_bar: ^1.2.3
+  auto_size_text: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -154,6 +155,10 @@ flutter:
     - asset/images/icon_lang_united_kingdom.png
     - asset/images/icon_lang_vietnam.png
     - asset/images/icon_helpdesk.png
+    - asset/images/ic_jhome.png
+    - asset/images/icon_shield.png
+    - asset/images/ic_news.png
+    - asset/images/ic_schedule.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
