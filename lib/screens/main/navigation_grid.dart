@@ -117,7 +117,7 @@ class NavigationGridScreen extends StatelessWidget {
                           children: data
                               .map((e) => InkResponse(
                                     child: ListTile(
-                                      leading: Icon(Icons.holiday_village),
+                                      leading: ImageIcon(AssetImage('asset/images/${pathImage(e.key)}.png'),color: Colors.orange),
                                       title: Text(e.title),
                                     ),
                                     onTap: () {
