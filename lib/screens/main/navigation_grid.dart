@@ -44,6 +44,14 @@ class NavigationGridScreen extends StatelessWidget {
                 case 2:
                   currentView.value=AdminNoticeScreen();
                   break;
+                case 3:
+                  //schedule chua lam
+                  break;
+                default:
+                  showBottomSheet(context: context, builder: (context) {
+                    return Container();
+                  },);
+                  break;
               }
             },
             items: [
