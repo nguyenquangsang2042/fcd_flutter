@@ -94,7 +94,6 @@ class NavigationGridScreen extends StatelessWidget {
     return showDialog(
       builder: (context) {
         return Container(
-          margin: EdgeInsets.only(bottom: 60),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -112,22 +111,28 @@ class NavigationGridScreen extends StatelessWidget {
                               !element.key.contains("Schedule"))
                           .toList();
                       return Container(
-                        child: Material(
+                        margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                        ),
+                        child: Padding(child: Material(
                             child: Column(
-                          children: data
-                              .map((e) => InkResponse(
-                                    child: ListTile(
-                                      leading: ImageIcon(AssetImage('asset/images/${pathImage(e.key)}.png'),color: Colors.orange),
-                                      title: Text(e.title),
-                                    ),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      indexSelected.value=4;
-                                      currentView.value = redirectToView(e.key);
-                                    },
-                                  ))
-                              .toList(),
-                        )),
+                              children: data
+                                  .map((e) => InkResponse(
+                                child: ListTile(
+                                  tileColor: Colors.transparent,
+                                  leading: ImageIcon(AssetImage('asset/images/${pathImage(e.key)}.png'),color: Colors.orange),
+                                  title: Text(e.title),
+                                ),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  indexSelected.value=4;
+                                  currentView.value = redirectToView(e.key);
+                                },
+                              ))
+                                  .toList(),
+                            )),padding: EdgeInsets.all(10),),
                       );
                     }
                     return SizedBox(
