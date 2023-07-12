@@ -9,44 +9,38 @@ class DetailExam extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          data.title,
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF006784),
-        leading: SizedBox(
-          width: 50,
-          height: 50,
-          child: IconButton(
-            icon: Image.asset(
-              'asset/images/icon_back30.png',
-              color: Colors.white,
-              height: 20,
-              width: 40,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+      appBar: buildAppBar(context),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(
+        data.title,
+        style: TextStyle(color: Colors.white),
+      ),
+      centerTitle: true,
+      backgroundColor: const Color(0xFF006784),
+      leading: SizedBox(
+        width: 50,
+        height: 50,
+        child: IconButton(
+          icon: Image.asset(
+            'asset/images/icon_back30.png',
+            color: Colors.white,
+            height: 20,
+            width: 40,
           ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        actions: [
-          if (data.fileExport != null)
-            IconButton(
-              icon: Image.asset(
-                'asset/images/icon_down.png',
-                color: Colors.white,
-                height: 20,
-                width: 20,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+      ),
+      actions: [
+        if (data.fileExport != null)
           IconButton(
             icon: Image.asset(
-              'asset/images/icon_menu30.png',
+              'asset/images/icon_down.png',
               color: Colors.white,
               height: 20,
               width: 20,
@@ -54,9 +48,19 @@ class DetailExam extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-          )
-        ],
-      ),
+          ),
+        IconButton(
+          icon: Image.asset(
+            'asset/images/icon_menu30.png',
+            color: Colors.white,
+            height: 20,
+            width: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
     );
   }
 }

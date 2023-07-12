@@ -24,8 +24,8 @@ class CourseScreen extends StatelessWidget {
                         index % 2 != 0 ? Colors.white : Colors.blueGrey.shade50,
                     title: Text(
                       snapshot.data![index].title,
-                      style: TextStyle(
-                          color: const Color(0xFF006784),
+                      style: const TextStyle(
+                          color: Color(0xFF006784),
                           fontWeight: FontWeight.w500),
                     ),
                     trailing: Text(Functions.instance.formatDateString(
@@ -44,17 +44,13 @@ class CourseScreen extends StatelessWidget {
               },
             );
           } else {
-            return Container(
-              child: Center(
-                child: Text("No data"),
-              ),
+            return const Center(
+              child: Text("No data"),
             );
           }
         } else {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         }
       },
