@@ -6,9 +6,11 @@ import 'package:fcd_flutter/screens/trainning/exam_screen.dart';
 import 'package:fcd_flutter/screens/trainning/notice_training.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 
 class ParentTrainingScreen extends StatelessWidget {
   ParentTrainingScreen({super.key});
+
   ValueNotifier<bool> isShowSearch = ValueNotifier(false);
   ValueNotifier<String> keyWord = ValueNotifier("");
   ValueNotifier<int> currentPage = ValueNotifier(0);
@@ -18,6 +20,7 @@ class ParentTrainingScreen extends StatelessWidget {
   int _groupValue = 0;
   ValueNotifier<String> sortType = ValueNotifier("");
   String _groupValueSort = "Date";
+  TextEditingController contollerSearch = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +40,59 @@ class ParentTrainingScreen extends StatelessWidget {
                 currentPage.value = value;
               },
             ),
+            ValueListenableBuilder(
+              valueListenable: isShowSearch,
+              builder: (context, value, child) {
+                return Visibility(visible: value, child: buildTextSearch());
+              },
+            ),
             Flexible(
-              child: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  NoticeTrainingScreen(lstAnnounCategoryId: trainingNotify),
-                  CourseScreen(),
-                  ExamScreen(),
-                ],
-              ),
+              child: MultiValueListenableBuilder(valueListenables: [keyWord,currentPage],builder: (context, values, child) {
+                return PageView.builder(
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return [
+                      NoticeTrainingScreen(
+                          lstAnnounCategoryId: trainingNotify,keyWord: keyWord.value),
+                      CourseScreen(),
+                      ExamScreen(),
+                    ][currentPage.value];
+                  },
+                );
+              },),
             )
           ],
+        ),
+      ),
+    );
+  }
+  Widget buildTextSearch() {
+    contollerSearch = TextEditingController(text: keyWord.value);
+    return Container(
+      padding: EdgeInsets.all(5.0),
+      color: Colors.grey.shade400,
+      child: TextField(
+        controller: contollerSearch,
+        onChanged: (value) {
+          keyWord.value = value;
+        },
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+          hintText: "Search",
+          prefixIcon: Icon(Icons.search),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: () {
+              keyWord.value = "";
+              contollerSearch.clear();
+            }, // Replace with delete functionality
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6.0),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );

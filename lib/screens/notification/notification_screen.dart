@@ -135,14 +135,14 @@ class NotificationScreen extends StatelessWidget {
                                     isSafety.value = true;
                                     isShowIconFilter.value = true;
                                     Setting? SAFETY_CATEGORY_ID =
-                                        await Constants
-                                            .db.settingDao
-                                            .findSettingByKey(
-                                                "SAFETY_CATEGORY_ID");
+                                    await Constants
+                                        .db.settingDao
+                                        .findSettingByKey(
+                                        "SAFETY_CATEGORY_ID");
                                     Setting? QUALIFICATION_CATEGORY_ID =
-                                        await Constants.db.settingDao
-                                            .findSettingByKey(
-                                                "QUALIFICATION_CATEGORY_ID");
+                                    await Constants.db.settingDao
+                                        .findSettingByKey(
+                                        "QUALIFICATION_CATEGORY_ID");
                                     defaultSafety.value = [
                                       SAFETY_CATEGORY_ID!.VALUE,
                                       QUALIFICATION_CATEGORY_ID!.VALUE
@@ -475,7 +475,7 @@ class NotificationScreen extends StatelessWidget {
                 });
           } else if (snapshot.connectionState == ConnectionState.done) {
             return const Center(
-              child: Text("Không có dữ liệu"),
+              child: CircularProgressIndicator(),
             );
           } else {
             return const Center(

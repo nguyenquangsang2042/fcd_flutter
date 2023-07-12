@@ -21,6 +21,7 @@ class LoadingScreen extends StatelessWidget {
 
   Future<void> getDynamicData(BuildContext context) async {
     Constants.apiController.updateAllDynamicData();
+
     BlocProvider.of<NavigationCubit>(context).navigateToMainView();
   }
 }

@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import '../notification/news_screen.dart';
 
 class NoticeTrainingScreen extends StatelessWidget {
-  NoticeTrainingScreen({super.key, required this.lstAnnounCategoryId});
+  NoticeTrainingScreen({super.key, required this.lstAnnounCategoryId,required this.keyWord});
   List<String> lstAnnounCategoryId;
+  String keyWord;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -20,16 +21,26 @@ class NoticeTrainingScreen extends StatelessWidget {
           if (snapshot.hasData &&
               snapshot.data != null &&
               snapshot.data!.isNotEmpty) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  color:
+            List<Notify> data= snapshot.data!;
+            if(keyWord.isNotEmpty)
+            {
+              data= data.where((element) =>element.content.toLowerCase().contains(keyWord.toLowerCase())).toList();
+            }
+            if(data.isNotEmpty)
+              {
+                return ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+
+                    return Container(
+                      color:
                       index % 2 != 0 ? Colors.white : Colors.blueGrey.shade50,
-                  child: itemNotify(snapshot, index, context),
+                      child: itemNotify(data, index, context),
+                    );
+                  },
                 );
-              },
-            );
+              }
+            return Container(child: Center(child: Text("No data"),),);
           } else {
             return Container(
               child: Center(
@@ -48,112 +59,114 @@ class NoticeTrainingScreen extends StatelessWidget {
     );
   }
 
-  InkResponse itemNotify(AsyncSnapshot<List<Notify>> snapshot, int index, BuildContext context) {
-    return InkResponse(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 7, right: 7, top: 5, bottom: 5),
-                    child: ListTile(
-                      leading: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: ImageWithCookie(
-                            imageUrl:
-                                '${Constants.baseURL}${snapshot.data![index].iconPath!}',
-                            errImage: 'asset/images/logo_vna120.png'),
+  Widget itemNotify(List<Notify> data, int index, BuildContext context) {
+
+
+        return InkResponse(
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 7, right: 7, top: 5, bottom: 5),
+            child: ListTile(
+              leading: SizedBox(
+                height: 50,
+                width: 50,
+                child: ImageWithCookie(
+                    imageUrl:
+                    '${Constants.baseURL}${data[index].iconPath!}',
+                    errImage: 'asset/images/logo_vna120.png'),
+              ),
+              title: Text(
+                data[index].title != null
+                    ? data[index].title!
+                    : data[index].content,
+                style: TextStyle(
+                    fontWeight: ((data[index].flgRead !=
+                        null &&
+                        !data[index].flgRead) ||
+                        (data[index].flgConfirm &&
+                            data[index].flgConfirmed ==
+                                0) ||
+                        (data[index].flgReply &&
+                            data[index].flgReplied))
+                        ? FontWeight.bold
+                        : FontWeight.normal),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(data[index].content),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Text(Functions.instance
+                            .formatDateString(
+                            data[index].created,
+                            "dd MMM yyyy" )),
                       ),
-                      title: Text(
-                        snapshot.data![index].title != null
-                            ? snapshot.data![index].title!
-                            : snapshot.data![index].content,
-                        style: TextStyle(
-                            fontWeight: ((snapshot.data![index].flgRead !=
-                                            null &&
-                                        !snapshot.data![index].flgRead) ||
-                                    (snapshot.data![index].flgConfirm &&
-                                        snapshot.data![index].flgConfirmed ==
-                                            0) ||
-                                    (snapshot.data![index].flgReply &&
-                                        snapshot.data![index].flgReplied))
-                                ? FontWeight.bold
-                                : FontWeight.normal),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(snapshot.data![index].content),
-                          Row(
-                            children: [
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            if (data[index].flgSurvey)
                               Expanded(
-                                flex: 8,
-                                child: Text(Functions.instance
-                                    .formatDateString(
-                                        snapshot.data![index].created,
-                                        "dd MMM yyyy" )),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Row(
-                                  children: [
-                                    if (snapshot.data![index].flgSurvey)
-                                      Expanded(
-                                        flex: 1,
-                                        child: SizedBox(
-                                          height: 15,
-                                          width: 15,
-                                          child: Image.asset(
-                                              'asset/images/icon_reply.png'),
-                                        ),
-                                      ),
-                                    if (snapshot.data![index].flgReply &&
-                                        !snapshot.data![index].flgReplied)
-                                      Expanded(
-                                        flex: 1,
-                                        child: SizedBox(
-                                          height: 15,
-                                          width: 15,
-                                          child: Image.asset(
-                                              'asset/images/icon_answer.png'),
-                                        ),
-                                      ),
-                                    if (snapshot.data![index].flgConfirm)
-                                      Expanded(
-                                        flex: 1,
-                                        child: SizedBox(
-                                          height: 15,
-                                          width: 15,
-                                          child: Image.asset(
-                                              'asset/images/icon_confirm.png'),
-                                        ),
-                                      ),
-                                    if (snapshot.data![index].flgImmediately)
-                                      Expanded(
-                                        flex: 1,
-                                        child: SizedBox(
-                                          height: 15,
-                                          width: 15,
-                                          child: Image.asset(
-                                              'asset/images/icon_flaghigh.png'),
-                                        ),
-                                      ),
-                                  ],
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: Image.asset(
+                                      'asset/images/icon_reply.png'),
                                 ),
                               ),
-                            ],
-                          )
-                        ],
+                            if (data[index].flgReply &&
+                                !data[index].flgReplied)
+                              Expanded(
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: Image.asset(
+                                      'asset/images/icon_answer.png'),
+                                ),
+                              ),
+                            if (data[index].flgConfirm)
+                              Expanded(
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: Image.asset(
+                                      'asset/images/icon_confirm.png'),
+                                ),
+                              ),
+                            if (data[index].flgImmediately)
+                              Expanded(
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: Image.asset(
+                                      'asset/images/icon_flaghigh.png'),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NewsScreen(
-                                  notify: snapshot.data![index],
-                                )));
-                  },
-                );
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NewsScreen(
+                      notify: data[index],
+                    )));
+          },
+        );
   }
 }

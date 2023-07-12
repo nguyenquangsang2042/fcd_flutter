@@ -7,4 +7,7 @@ abstract class SurveyCategoryDao{
   Future<void> insertSurveyCategory(List<SurveyCategory> survey_category);
   @Query('Delete From SurveyCategory')
   Future<void> deleteAll();
+  
+  @Query('SELECT * FROM SurveyCategory ORDER BY Title')
+  Stream<List<SurveyCategory>> getAll();
 }
