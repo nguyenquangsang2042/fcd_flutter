@@ -51,6 +51,8 @@
     <array>
         <string>tel</string>
     </array>
+    <key>NSCameraUsageDescription</key>
+    <string>Accept to scan QR code</string>
 
 </dict>
 </plist>
