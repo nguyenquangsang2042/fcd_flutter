@@ -426,13 +426,14 @@ class ApiController {
   Future<void> updateAllDynamicData()async {
     await updateMenuHome();
     await updateBanner();
-    updateNotify();
     updateLicence();
     updateHelpdesk();
     updateStudent();
     updateSurveyTable();
     updateSurvey();
     updateSurveyCategory();
+    updateNotify();
+
 
   }
   Future<void> updateSurveyCategory() async {
