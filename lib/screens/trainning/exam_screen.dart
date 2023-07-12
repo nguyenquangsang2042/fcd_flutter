@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 
 class ExamScreen extends StatelessWidget {
-  ExamScreen({super.key});
+  ExamScreen({super.key,required this.keySearch});
+  String keySearch;
   ValueNotifier<bool> isShowUngrade = ValueNotifier(false);
   ValueNotifier<SurveyCategory> type =
       ValueNotifier(SurveyCategory.all(0, "All"));
@@ -120,6 +121,10 @@ class ExamScreen extends StatelessWidget {
                 builder: (context, values, child) {
                   if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     List<Survey> data = snapshot.data!;
+                    if(keySearch.isNotEmpty)
+                      {
+                        data=data.where((element) => element.title.toLowerCase().contains(keySearch.toLowerCase())).toList();
+                      }
                     if (isShowUngrade.value) {
                       data = data
                           .where((element) =>

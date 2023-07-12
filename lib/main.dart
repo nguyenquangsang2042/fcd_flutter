@@ -92,11 +92,11 @@ Future<void> getDeviceInfo() async {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final FirebaseMessagingService _firebaseMessagingService = FirebaseMessagingService();
+  //final FirebaseMessagingService _firebaseMessagingService = FirebaseMessagingService();
 
   @override
   Widget build(BuildContext context) {
-    _firebaseMessagingService.initialize();
+    //_firebaseMessagingService.initialize();
     return MultiBlocProvider(
       providers: [
         BlocProvider<NavigationCubit>(

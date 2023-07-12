@@ -54,8 +54,8 @@ class ParentTrainingScreen extends StatelessWidget {
                     return [
                       NoticeTrainingScreen(
                           lstAnnounCategoryId: trainingNotify,keyWord: keyWord.value),
-                      CourseScreen(),
-                      ExamScreen(),
+                      CourseScreen(keySearch: keyWord.value,),
+                      ExamScreen(keySearch: keyWord.value),
                     ][currentPage.value];
                   },
                 );
@@ -265,7 +265,7 @@ class ParentTrainingScreen extends StatelessWidget {
           valueListenable: currentPage,
           builder: (context, value, child) {
             return Visibility(
-                visible: value == 0 || value == 1,
+                visible: value == 0 ,
                 child: Container(
                   width: 40,
                   height: 40,
