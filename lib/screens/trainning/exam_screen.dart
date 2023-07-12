@@ -1,4 +1,5 @@
 import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/bean_salary.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
 import 'package:fcd_flutter/base/model/app/survey_category.dart';
@@ -37,35 +38,44 @@ class ExamScreen extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(2),
-                      child: StreamBuilder(
-                        stream: Constants.db.surveyCategoryDao.getAll(),
-                        builder: (context, snapshot) {
-                          if(snapshot.connectionState==ConnectionState.active)
-                            {
-                              if(snapshot.hasData&&snapshot.data!.isNotEmpty)
-                                {
-                                  return PopupMenuButton(
-                                    offset: Offset(0, 35),
-                                    child: ValueListenableBuilder(valueListenable: type, builder: (context, value, child) {
+                        padding: EdgeInsets.all(2),
+                        child: StreamBuilder(
+                          stream: Constants.db.surveyCategoryDao.getAll(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              if (snapshot.hasData &&
+                                  snapshot.data!.isNotEmpty) {
+                                return PopupMenuButton(
+                                  offset: Offset(0, 35),
+                                  child: ValueListenableBuilder(
+                                    valueListenable: type,
+                                    builder: (context, value, child) {
                                       return Text(type.value.title!);
-                                    },),itemBuilder: (context) {
-                                      List<SurveyCategory> data = [SurveyCategory.all(0, "All")];
-                                      data.addAll(snapshot.data!);
-                                    return data.map((e) =>  PopupMenuItem(child: Text(e.title!),onTap: () {
-                                      type.value=e;
-                                    },)).toList();
-                                  },);
-                                }
+                                    },
+                                  ),
+                                  itemBuilder: (context) {
+                                    List<SurveyCategory> data = [
+                                      SurveyCategory.all(0, "All")
+                                    ];
+                                    data.addAll(snapshot.data!);
+                                    return data
+                                        .map((e) => PopupMenuItem(
+                                              child: Text(e.title!),
+                                              onTap: () {
+                                                type.value = e;
+                                              },
+                                            ))
+                                        .toList();
+                                  },
+                                );
+                              }
+                              return Text("All");
+                            } else {
                               return Text("All");
                             }
-                          else
-                            {
-                              return Text("All");
-                            }
-                        },
-                      )
-                    ),
+                          },
+                        )),
                   ),
                 ],
               ),
@@ -99,40 +109,131 @@ class ExamScreen extends StatelessWidget {
           height: 1,
           color: Colors.grey.shade200,
         ),
-        Flexible(child: StreamBuilder(stream: Constants.db.surveyDao.getAll(),builder: (context, snapshot) {
-          if(snapshot.connectionState==ConnectionState.active)
-            {
-                return MultiValueListenableBuilder(valueListenables: [type,isShowUngrade], builder: (context, values, child) {
-                  if(snapshot.hasData&& snapshot.data!.isNotEmpty)
-                  {
+        Flexible(
+            child: StreamBuilder(
+          stream: Constants.db.surveyDao.getAll(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              return MultiValueListenableBuilder(
+                valueListenables: [type, isShowUngrade],
+                builder: (context, values, child) {
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     List<Survey> data = snapshot.data!;
-                    if(isShowUngrade.value)
-                    {
-                      data=data.where((element) => element.point==null|| element.point!.isEmpty).toList();
+                    if (isShowUngrade.value) {
+                      data = data
+                          .where((element) =>
+                              element.point == null || element.point!.isEmpty)
+                          .toList();
                     }
-                    if(type.value.id!!=0)
-                      {
-                        data = data.where((element) => element.surveyCategoryId==type.value.id).toList();
-                      }
-                    if(data.isNotEmpty)
-                      {
-                        return ListView.builder(itemCount: data.length,itemBuilder: (context, index) {
-                          return ListTile(title: Text(data[index].title),);
-                        },);
-                      }
-                    return Container(child: Center(child: Text("No data"),),);
+                    if (type.value.id! != 0) {
+                      data = data
+                          .where((element) =>
+                              element.surveyCategoryId == type.value.id)
+                          .toList();
+                    }
+                    if (data.isNotEmpty) {
+                      return ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return buildItemList(data, index);
+                        },
+                      );
+                    }
+                    return Container(
+                      child: Center(
+                        child: Text("No data"),
+                      ),
+                    );
+                  } else {
+                    return Container(
+                      child: Center(
+                        child: Text("No data"),
+                      ),
+                    );
                   }
-                  else{
-                    return Container(child: Center(child: Text("No data"),),);
-                  }
-                },);
+                },
+              );
+            } else {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
-          else
-            {
-              return Container(child: Center(child: CircularProgressIndicator(),),);
-            }
-        },))
+          },
+        ))
       ],
     );
+  }
+
+  InkResponse buildItemList(List<Survey> data, int index) {
+    return InkResponse(
+      child: ListTile(
+        subtitle: StreamBuilder(
+          stream: Constants.db.surveyCategoryDao
+              .getSurveyCategoryWithID(data[index].surveyCategoryId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData && snapshot.data != null) {
+                return Text("Type: ${snapshot.data!.title}");
+              }
+              return SizedBox(
+                height: 0,
+                width: 0,
+              );
+            }
+            return SizedBox(
+              height: 0,
+              width: 0,
+            );
+          },
+        ),
+        tileColor: index % 2 != 0 ? Colors.white : Colors.grey.shade50,
+        trailing: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                child: SizedBox(
+                  height: 18,
+                  width: 18,
+                  child: Image.asset(
+                      'asset/images/${getImageType(data[index])}.png'),
+                ),
+              ),
+              Spacer(),
+              Text(data[index].created == null
+                  ? ""
+                  : Functions.instance
+                      .formatDateString(data[index].created!, "dd MMM yyy"))
+            ]),
+        title: Text(
+          data[index].title,
+          style: TextStyle(color: Color(0xFF006784)),
+        ),
+      ),
+      onTap: () {},
+    );
+  }
+
+  String getImageType(Survey survey) {
+    if (survey.permissionType == true) // Giao vien
+    {
+      if (survey.actionStatus == 0 || survey.actionStatus == null) {
+        return 'icon_exam_active';
+      } else if (survey.actionStatus == 1) {
+        return 'icon_view';
+      } else {
+        return 'icon_exam_complete';
+      }
+    } else // Hoc vien
+    {
+      if (survey.actionStatus == 3) {
+        return 'icon_exam_complete';
+      } else {
+        return 'icon_view';
+      }
+    }
   }
 }

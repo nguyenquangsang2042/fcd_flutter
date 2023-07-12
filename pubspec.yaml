@@ -159,6 +159,9 @@ flutter:
     - asset/images/icon_shield.png
     - asset/images/ic_news.png
     - asset/images/ic_schedule.png
+    - asset/images/icon_exam_active.png
+    - asset/images/icon_view.png
+    - asset/images/icon_exam_complete.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

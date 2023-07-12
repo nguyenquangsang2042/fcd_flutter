@@ -10,4 +10,7 @@ abstract class SurveyCategoryDao{
   
   @Query('SELECT * FROM SurveyCategory ORDER BY Title')
   Stream<List<SurveyCategory>> getAll();
+  
+  @Query('Select * from SurveyCategory WHERE ID = :id')
+  Stream<SurveyCategory?> getSurveyCategoryWithID(int id);
 }
