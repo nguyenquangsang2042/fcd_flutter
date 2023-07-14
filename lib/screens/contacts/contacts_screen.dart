@@ -3,6 +3,7 @@ import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/user.dart';
 import 'package:fcd_flutter/base/widgets/circle_image_cookie.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
+import 'package:fcd_flutter/base/widgets/nodata.dart';
 import 'package:fcd_flutter/screens/contacts/detail_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -87,9 +88,7 @@ class ContactScreen extends StatelessWidget {
                             ));
                           }
                           return const Expanded(
-                              child: Center(
-                                child: Text("No data"),
-                              ));
+                              child: NoData());
                         } else {
                           return const Expanded(
                               child: Center(

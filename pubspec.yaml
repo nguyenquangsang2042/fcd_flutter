@@ -164,6 +164,8 @@ flutter:
     - asset/images/icon_exam_complete.png
     - asset/images/icon_menu30.png
     - asset/images/icon_down.png
+    - asset/images/icon_editpencil.png
+    - asset/images/icon_list_empty.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -49,7 +49,8 @@ class LicenceScreen extends StatelessWidget {
             future: Constants.apiController.updateLicence(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return ValueListenableBuilder(valueListenable: isSync, builder: (context, value, child) => DeclarativeRefreshIndicator(
+                return ValueListenableBuilder(valueListenable: isSync, builder: (context, value, child) =>
+                    DeclarativeRefreshIndicator(
                     refreshing: isSync.value,
                     color: const Color(0xFF006784),
                     onRefresh: () async {

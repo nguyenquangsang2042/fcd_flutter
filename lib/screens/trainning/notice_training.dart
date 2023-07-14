@@ -1,7 +1,9 @@
+import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
+import 'package:fcd_flutter/base/widgets/nodata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,22 +13,34 @@ class NoticeTrainingScreen extends StatelessWidget {
   NoticeTrainingScreen({super.key, required this.lstAnnounCategoryId,required this.keyWord});
   List<String> lstAnnounCategoryId;
   String keyWord;
+  ValueNotifier<bool> isRefresh= ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: Constants.db.notifyDao
-          .getListNotifyWithLstAnnounCategoryId(lstAnnounCategoryId),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          if (snapshot.hasData &&
-              snapshot.data != null &&
-              snapshot.data!.isNotEmpty) {
-            List<Notify> data= snapshot.data!;
-            if(keyWord.isNotEmpty)
-            {
-              data= data.where((element) =>element.content.toLowerCase().contains(keyWord.toLowerCase())).toList();
-            }
-            if(data.isNotEmpty)
+    Constants.apiController.updateNotify();
+    return ValueListenableBuilder(valueListenable: isRefresh, builder: (context, value, child) {
+      return DeclarativeRefreshIndicator(refreshing: value, onRefresh: () async {
+        isRefresh.value=true;
+        await Constants.apiController.updateNotify();
+        Constants.apiController.updateSurvey();
+        Constants.apiController.updateSurveyTable();
+        Constants.apiController.updateSurveyCategory();
+        Constants.apiController.updateStudent();
+        isRefresh.value=false;
+      },child: StreamBuilder(
+        stream: Constants.db.notifyDao
+            .getListNotifyWithLstAnnounCategoryId(lstAnnounCategoryId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData &&
+                snapshot.data != null &&
+                snapshot.data!.isNotEmpty) {
+              List<Notify> data= snapshot.data!;
+              if(keyWord.isNotEmpty)
+              {
+                data= data.where((element) =>element.content.toLowerCase().contains(keyWord.toLowerCase())).toList();
+              }
+              if(data.isNotEmpty)
               {
                 return ListView.builder(
                   itemCount: data.length,
@@ -40,23 +54,18 @@ class NoticeTrainingScreen extends StatelessWidget {
                   },
                 );
               }
-            return Container(child: Center(child: Text("No data"),),);
+              return const NoData();
+            } else {
+              return const NoData();
+            }
           } else {
-            return Container(
-              child: Center(
-                child: Text("No data"),
-              ),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
-        } else {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
+        },
+      ),);
+    },);
   }
 
   Widget itemNotify(List<Notify> data, int index, BuildContext context) {

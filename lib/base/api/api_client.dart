@@ -19,6 +19,7 @@ import 'package:fcd_flutter/base/model/app/notify.dart';
 import 'package:fcd_flutter/base/model/app/student.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
 import 'package:fcd_flutter/base/model/app/survey_category.dart';
+import 'package:fcd_flutter/base/model/app/survey_list_pilot.dart';
 import 'package:fcd_flutter/base/model/app/survey_table.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_category.dart';
 import 'package:fcd_flutter/base/model/app/user_ticket_status.dart';
@@ -170,4 +171,9 @@ abstract class ApiClient {
   @POST('/API/HelpDesk.ashx?func=add')
   @FormUrlEncoded()
   Future<Status> sendQuestionToHelpDesk( @Header('Cookie') String cookieValue,@Field("data") String data);
+  
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanSurveyListPilot&obj=false')
+  Future<ApiList<SurveyListPilot>> getSurveyListPilot(
+      @Header('Cookie') String cookieValue,
+      @Query('rid') String rid );
 }

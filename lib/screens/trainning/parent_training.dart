@@ -1,3 +1,4 @@
+import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/announcement_category.dart';
@@ -21,7 +22,6 @@ class ParentTrainingScreen extends StatelessWidget {
   ValueNotifier<String> sortType = ValueNotifier("");
   String _groupValueSort = "Date";
   TextEditingController contollerSearch = TextEditingController(text: '');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

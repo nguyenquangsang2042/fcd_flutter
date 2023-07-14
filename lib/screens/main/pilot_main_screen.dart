@@ -166,11 +166,11 @@ class PilotMainScreen extends StatelessWidget {
                 child: ValueListenableBuilder<bool>(
                   valueListenable: isRefresh,
                   builder: (_, value, __) {
-                    if(isNeedShowAds)
+                    /*if(isNeedShowAds)
                       {
                         showNotifyAlert(context);
                         isNeedShowAds=false;
-                      }
+                      }*/
                     return DeclarativeRefreshIndicator(
                         child: RecycleGridScreen(),
                         refreshing: value,
