@@ -156,11 +156,11 @@ class RecycleGridScreen extends StatelessWidget {
       case 'Licence':
         return LicenceScreen();
       case 'Schedule':
-        // if (Constants.currentUser.userType == 1) {
-        //   return const FlightScheduleScreen();
-        // } else {
-        //   return FlightScheduleMDScreen();
-        // }
+        if (Constants.currentUser.userType == 1) {
+          return const FlightScheduleScreen();
+        } else {
+          return FlightScheduleMDScreen();
+        }
         return "";
       case 'Ticket request':
         // return TicketRequestScreen();
