@@ -4,6 +4,7 @@ import 'package:fcd_flutter/base/model/app/bean_salary.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
 import 'package:fcd_flutter/base/model/app/survey_category.dart';
 import 'package:fcd_flutter/screens/trainning/detail_exam.dart';
+import 'package:fcd_flutter/screens/trainning/survey_list_pilot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
@@ -223,7 +224,7 @@ class ExamScreen extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailExam(data: data[index],)));
+                builder: (context) => SurveyListPilot(data: data[index],)));
       },
     );
   }
