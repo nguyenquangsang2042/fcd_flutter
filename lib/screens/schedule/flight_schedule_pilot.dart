@@ -1,3 +1,6 @@
+import 'package:fcd_flutter/base/constants.dart';
+import 'package:fcd_flutter/base/model/app/pilot_schedule.dart';
+import 'package:fcd_flutter/base/widgets/nodata.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -7,7 +10,7 @@ class FlightSchedulePilot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: DefaultTabController(
           length: 2,
           child: Column(
@@ -17,20 +20,52 @@ class FlightSchedulePilot extends StatelessWidget {
   }
 
   Widget buildBody() {
-    return ValueListenableBuilder(valueListenable: isCalendar, builder: (context, value, child) {
-      return value?buildTableCalendar():Container();
-    },);
+    return ValueListenableBuilder(
+      valueListenable: isCalendar,
+      builder: (context, value, child) {
+        return StreamBuilder(
+          stream: Constants.db.pilotScheduleDao.getScheduleEvents(),
+          builder: (context, snapshot) {
+            if(snapshot.connectionState==ConnectionState.active)
+              {
+                if((snapshot.hasData && snapshot.data!=null) || (snapshot.data==null && value))
+                  {
+                    return value ? buildTableCalendar(context,snapshot.data) : Container();
+                  }
+                else
+                  {
+                    return const NoData();
+                  }
+              }
+            else
+              {
+                return const Center(child: CircularProgressIndicator(),);
+              }
+          },
+        );
+      },
+    );
   }
 
-  TableCalendar<dynamic> buildTableCalendar() {
+  TableCalendar<dynamic> buildTableCalendar(BuildContext context,List<PilotSchedule>? data) {
     return TableCalendar(
-      headerStyle: HeaderStyle(
-        formatButtonVisible: false,
-        titleCentered: true
-      ),
-      focusedDay: DateTime.now().add(Duration(days: 7)),
-      firstDay: DateTime.now().add(Duration(days: -365)),
-      lastDay: DateTime.now().add(Duration(days: 365)));
+        onDaySelected: (selectedDay, focusedDay) {
+          showDialog(context: context, builder: (context) {
+            return Container();
+          },);
+        },
+        eventLoader: (day) {
+          if (day.weekday == DateTime.monday && data!=null) {
+            return data.where((element) => element.id==1).toList();
+          }
+
+          return [];
+        },
+        headerStyle:
+            const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+        focusedDay: DateTime.now().add(const Duration(days: 7)),
+        firstDay: DateTime.now().add(const Duration(days: -365)),
+        lastDay: DateTime.now().add(const Duration(days: 365)));
   }
 
   Row buildHeader() {
@@ -49,20 +84,23 @@ class FlightSchedulePilot extends StatelessWidget {
                       child: Text(
                         "Calendar",
                         style: TextStyle(
-                            color: value ? Color(0xFF006784) : Colors.black),
+                            color:
+                                value ? const Color(0xFF006784) : Colors.black),
                       ),
                       onTap: () {
                         isCalendar.value = true;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     InkWell(
                       child: Text(
                         "List",
                         style: TextStyle(
-                            color: !value ? Color(0xFF006784) : Colors.black),
+                            color: !value
+                                ? const Color(0xFF006784)
+                                : Colors.black),
                       ),
                       onTap: () {
                         isCalendar.value = false;
@@ -72,7 +110,7 @@ class FlightSchedulePilot extends StatelessWidget {
                 ));
           },
         ),
-        Expanded(
+        const Expanded(
           flex: 1,
           child: Text("Daily Flight"),
         )

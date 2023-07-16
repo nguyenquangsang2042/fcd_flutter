@@ -11,6 +11,7 @@ import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
+import 'package:fcd_flutter/base/model/app/pilot_schedule.dart';
 import 'package:fcd_flutter/base/model/app/student.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
 import 'package:fcd_flutter/base/model/app/survey_category.dart';
@@ -433,6 +434,7 @@ class ApiController {
     updateSurvey();
     updateSurveyCategory();
     updateNotify();
+    updatePilotSchedule();
 
 
   }
@@ -492,6 +494,25 @@ class ApiController {
       await Constants.db.notifyDao.insertNotifies(data.data);
       Constants.db.dbVariableDao
           .insertDBVariable(DBVariable.haveParams("Notify", data.dateNow));
+    }
+  }
+  Future<void> updatePilotSchedule() async {
+    DBVariable? dbVariable =
+    await Constants.db.dbVariableDao.findDBVariableById("PilotSchedule");
+    if (dbVariable != null) {
+      ApiList<PilotSchedule> data = await Constants.api.getPilotSchedule(
+          Constants.sharedPreferences.get('set-cookie').toString(),
+          dbVariable.Value,
+          "0");
+      await Constants.db.pilotScheduleDao.insertPilotSchedules(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("PilotSchedule", data.dateNow));
+    } else {
+      ApiList<PilotSchedule> data = await Constants.api.getPilotSchedule(
+          Constants.sharedPreferences.get('set-cookie').toString(), "", "1");
+      await Constants.db.pilotScheduleDao.insertPilotSchedules(data.data);
+      Constants.db.dbVariableDao
+          .insertDBVariable(DBVariable.haveParams("PilotSchedule", data.dateNow));
     }
   }
 
