@@ -51,8 +51,10 @@
     <array>
         <string>tel</string>
     </array>
-    <key>NSCameraUsageDescription</key>
-    <string>Accept to scan QR code</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>App needs access to photo lib for profile images</string>
 
+    <key>NSCameraUsageDescription</key>
+    <string>To capture profile photo please grant camera access</string>
 </dict>
 </plist>

@@ -21,12 +21,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       TextEditingController(text: Constants.currentUser.email);
   TextEditingController emailUserController =
       TextEditingController(text: Constants.currentUser.email2);
-  TextEditingController birthdayController =
-      TextEditingController(text: Functions.instance.formatDateString(Constants.currentUser.birthday!, "dd/MM/yyyy"));
+  TextEditingController birthdayController = TextEditingController(
+      text: Functions.instance
+          .formatDateString(Constants.currentUser.birthday!, "dd/MM/yyyy"));
   TextEditingController nationalController =
       TextEditingController(text: Constants.currentUser.nationality);
-  TextEditingController sexController =
-      TextEditingController(text: Constants.currentUser.gender? "Male" : "Female");
+  TextEditingController sexController = TextEditingController(
+      text: Constants.currentUser.gender ? "Male" : "Female");
   TextEditingController crewCodeController =
       TextEditingController(text: Constants.currentUser.code2);
   TextEditingController myIDTravelAccountController =
@@ -45,52 +46,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: SingleChildScrollView(child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildAvartarQrCodeLogout(),
-          name(),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child:  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                //buildGeneral(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Address".toUpperCase(),
-                    style: const TextStyle(
-                        color: Color(0xFF295989),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  Column(
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildAvartarQrCodeLogout(),
+            name(),
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //buildGeneral(),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    Text(
-                      "Nation".toUpperCase(),
-                      style: const TextStyle(
-                          color: Color(0xFF006784),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
-                       InkWell(child:  const SizedBox(
-                         height: 40,
-                         child: TextField(
-                           enabled: false,
-                           style: TextStyle(color: Colors.black),
-                         ),
-                       ),onTap: () {
-
-                       },)
+                        Text(
+                          "Address".toUpperCase(),
+                          style: const TextStyle(
+                              color: Color(0xFF295989),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Nation".toUpperCase(),
+                                style: const TextStyle(
+                                    color: Color(0xFF006784),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                              ),
+                              SizedBox(
+                                height: 40,
+                                child: Row(
+                                  children: [
+                                    TextField(
+                                      enabled: false,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    Icon(Icons.expand_more_sharp)
+                                  ],
+                                ),
+                              )
+                            ]),
+                        buildElementEdit(
+                            "Street".toUpperCase(),
+                            streetController,
+                            TextInputType.text,
+                            [],
+                            widget.enableEdit.value),
+                      ],
+                    )
                   ]),
-                  buildElementEdit("Street".toUpperCase(),streetController,TextInputType.text,[],widget.enableEdit.value),
-                ],)
-              ]),
-          )
-        ],
-      ),),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -98,27 +112,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-                const Text(
-                  "GENERAL",
-                  style: TextStyle(
-                      color: Color(0xFF295989),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-                buildElementEdit("Mobile".toUpperCase(),mobileController,TextInputType.number,[FilteringTextInputFormatter.digitsOnly],widget.enableEdit.value),
-                buildElementEdit("Email VNA".toUpperCase(),emailVNaController,TextInputType.emailAddress,[],widget.enableEdit.value),
-                buildElementEdit("Email User".toUpperCase(),emailVNaController,TextInputType.emailAddress,[],widget.enableEdit.value),
-                buildElementEdit("Birthday".toUpperCase(),birthdayController,TextInputType.datetime,[],widget.enableEdit.value),
-                buildElementEdit("NATIONALITY".toUpperCase(),nationalController,TextInputType.text,[],widget.enableEdit.value),
-                buildElementEdit("SEX".toUpperCase(),sexController,TextInputType.text,[],widget.enableEdit.value),
-                buildElementEdit("CREW CODE".toUpperCase(),crewCodeController,TextInputType.text,[],widget.enableEdit.value),
-                buildElementEdit("my id travel Account".toUpperCase(),myIDTravelAccountController,TextInputType.text,[],widget.enableEdit.value),
-                buildElementEdit("HR CODE".toUpperCase(),myIDTravelAccountController,TextInputType.text,[],widget.enableEdit.value),
-                buildElementEdit("DEPARTMENT/FLEET".toUpperCase(),departmentFleetController,TextInputType.text,[],widget.enableEdit.value),
-                buildElementEdit("RANK".toUpperCase(),rankController,TextInputType.text,[],widget.enableEdit.value),
-                buildElementEdit("SPECIAL CONTENT".toUpperCase(),specialContentController,TextInputType.text,[],widget.enableEdit.value),
-
-              ],);
+        const Text(
+          "GENERAL",
+          style: TextStyle(
+              color: Color(0xFF295989),
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
+        ),
+        buildElementEdit(
+            "Mobile".toUpperCase(),
+            mobileController,
+            TextInputType.number,
+            [FilteringTextInputFormatter.digitsOnly],
+            widget.enableEdit.value),
+        buildElementEdit("Email VNA".toUpperCase(), emailVNaController,
+            TextInputType.emailAddress, [], widget.enableEdit.value),
+        buildElementEdit("Email User".toUpperCase(), emailVNaController,
+            TextInputType.emailAddress, [], widget.enableEdit.value),
+        buildElementEdit("Birthday".toUpperCase(), birthdayController,
+            TextInputType.datetime, [], widget.enableEdit.value),
+        buildElementEdit("NATIONALITY".toUpperCase(), nationalController,
+            TextInputType.text, [], widget.enableEdit.value),
+        buildElementEdit("SEX".toUpperCase(), sexController, TextInputType.text,
+            [], widget.enableEdit.value),
+        buildElementEdit("CREW CODE".toUpperCase(), crewCodeController,
+            TextInputType.text, [], widget.enableEdit.value),
+        buildElementEdit(
+            "my id travel Account".toUpperCase(),
+            myIDTravelAccountController,
+            TextInputType.text,
+            [],
+            widget.enableEdit.value),
+        buildElementEdit("HR CODE".toUpperCase(), myIDTravelAccountController,
+            TextInputType.text, [], widget.enableEdit.value),
+        buildElementEdit(
+            "DEPARTMENT/FLEET".toUpperCase(),
+            departmentFleetController,
+            TextInputType.text,
+            [],
+            widget.enableEdit.value),
+        buildElementEdit("RANK".toUpperCase(), rankController,
+            TextInputType.text, [], widget.enableEdit.value),
+        buildElementEdit(
+            "SPECIAL CONTENT".toUpperCase(),
+            specialContentController,
+            TextInputType.text,
+            [],
+            widget.enableEdit.value),
+      ],
+    );
   }
 
   Column buildElementEdit(
@@ -130,7 +172,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Text(
           header,
           style: const TextStyle(
