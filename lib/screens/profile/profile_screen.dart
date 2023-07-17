@@ -81,15 +81,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               SizedBox(
                                 height: 40,
-                                child: Row(
-                                  children: [
-                                    TextField(
-                                      enabled: false,
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    Icon(Icons.expand_more_sharp)
-                                  ],
-                                ),
+                                child: InkWell(child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Username',
+                                    suffixIcon: Icon(Icons.expand_more_sharp), // Add your desired icon here
+                                  ),
+                                  enabled: false,
+                                  style: TextStyle(color: Colors.black),
+                                ),onTap: () {
+
+                                },),
                               )
                             ]),
                         buildElementEdit(
