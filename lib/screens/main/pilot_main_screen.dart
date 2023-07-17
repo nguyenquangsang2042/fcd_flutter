@@ -4,12 +4,14 @@ import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/bean_banner.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
+import 'package:fcd_flutter/base/widgets/image_selection_screen.dart';
 import 'package:fcd_flutter/base/widgets/image_with_cookie.dart';
 import 'package:fcd_flutter/screens/main/banner_screen.dart';
 import 'package:fcd_flutter/screens/main/main_controller.dart';
 import 'package:fcd_flutter/screens/main/popup_notify_unread.dart';
 import 'package:fcd_flutter/screens/main/popup_notify_unread.dart';
 import 'package:fcd_flutter/screens/main/recycle_grid_screen.dart';
+import 'package:fcd_flutter/screens/profile/profile_screen.dart';
 import 'package:fcd_flutter/screens/qr_scan/qr_scan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -73,22 +75,20 @@ class PilotMainScreen extends StatelessWidget {
                               ),
                             ),
                             height: 50,
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: ClipOval(
-                                    child: Container(
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white),
-                                      child: Image.asset(
-                                          'asset/images/icon_avatar64.png'),
-                                    ),
+                            child: Row(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: ClipOval(
+                                  child: Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white),
+                                    child: buildAvatar(context),
                                   ),
-                                )),
-                          ),
+                                ),
+                              )
+                            ],)),
                         ),
                         Flexible(
                           child: Container(
@@ -142,8 +142,7 @@ class PilotMainScreen extends StatelessWidget {
                                     height: 40.0,
                                     decoration: const BoxDecoration(
                                         color: Colors.white),
-                                    child: Image.asset(
-                                        'asset/images/icon_avatar64.png'),
+                                    child: buildAvatar(context),
                                   ),
                                 ),
                               )),
@@ -186,6 +185,15 @@ class PilotMainScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  GestureDetector buildAvatar(BuildContext context) {
+    return GestureDetector(child: ImageWithCookie(imageUrl: '${Constants.baseURL}/Data/Users/${Constants.currentUser.id}/avatar.jpg?ver=${Functions.instance.formatDateToStringWithFormat(DateTime.now(), 'yyyyMMddHHmmss')}',errImage: 'asset/images/icon_avatar64.png'),onTap: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>  ProfileScreen()));
+    },);
   }
 
   void showNotifyAlert(BuildContext context) {

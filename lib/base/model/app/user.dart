@@ -27,6 +27,8 @@ class User{
   late String? mobile;
   @JsonKey(name: 'Email')
   late String? email;
+  @JsonKey(name: 'Email2')
+  late String? email2;
   @JsonKey(name: 'Avatar')
   late String? avatar;
   @JsonKey(name: 'EmailNoDomain')
@@ -84,6 +86,7 @@ class User{
       this.birthplace,
       this.mobile,
       this.email,
+      this.email2,
       this.avatar,
       this.emailNoDomain,
       this.department,

@@ -33,6 +33,8 @@ class DownloadFile {
           url,
           onReceiveProgress: showDownloadProgress,
           options: Options(
+            receiveTimeout: Duration(minutes: 5),
+              sendTimeout: Duration(minutes: 5),
               responseType: ResponseType.bytes,
               followRedirects: false,
               validateStatus: (status) {
