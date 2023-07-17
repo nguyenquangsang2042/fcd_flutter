@@ -79,6 +79,7 @@ dependencies:
   flutter_local_notifications_platform_interface: ^7.0.0+1
   awesome_bottom_bar: ^1.2.3
   auto_size_text: ^3.0.0
+  table_calendar: ^3.0.9
 dev_dependencies:
   flutter_test:
     sdk: flutter

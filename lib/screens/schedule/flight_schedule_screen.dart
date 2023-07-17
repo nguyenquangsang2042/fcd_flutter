@@ -1,3 +1,4 @@
+import 'package:fcd_flutter/screens/schedule/flight_schedule_pilot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,20 @@ class FlightScheduleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
+      body: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              Container(height: 40,child: TabBar(tabs: [
+                Text("Flight"),
+                Text("Work"),
+              ],),),
+              Flexible(child: TabBarView(children: [
+                FlightSchedulePilot(),
+                FlightSchedulePilot(),
+              ]))
+            ],
+          )),
     );
   }
 

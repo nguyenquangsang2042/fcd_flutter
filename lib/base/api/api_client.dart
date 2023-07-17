@@ -16,6 +16,7 @@ import 'package:fcd_flutter/base/model/app/menu_app.dart';
 import 'package:fcd_flutter/base/model/app/menu_home.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/model/app/notify.dart';
+import 'package:fcd_flutter/base/model/app/pilot_schedule.dart';
 import 'package:fcd_flutter/base/model/app/student.dart';
 import 'package:fcd_flutter/base/model/app/survey.dart';
 import 'package:fcd_flutter/base/model/app/survey_category.dart';
@@ -129,6 +130,9 @@ abstract class ApiClient {
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanNotify')
   Future<ApiList<Notify>> getNotify(@Header('Cookie') String cookieValue,
+      @Query("Modified") String modified, @Query("isFirst") String isFirst);
+  @GET('/API/ApiPublic.ashx?func=get&bname=BeanPilotSchedule')
+  Future<ApiList<PilotSchedule>> getPilotSchedule(@Header('Cookie') String cookieValue,
       @Query("Modified") String modified, @Query("isFirst") String isFirst);
 
   @GET('/API/ApiPublic.ashx?func=get&bname=BeanStudent')
