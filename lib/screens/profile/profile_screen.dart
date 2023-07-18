@@ -11,38 +11,43 @@ import 'package:qr_flutter/qr_flutter.dart';
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
   ValueNotifier<bool> enableEdit = ValueNotifier(true);
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController mobileController =
-      TextEditingController(text: Constants.currentUser.mobile);
+  TextEditingController(text: Constants.currentUser.mobile);
   TextEditingController emailVNaController =
-      TextEditingController(text: Constants.currentUser.email);
+  TextEditingController(text: Constants.currentUser.email);
   TextEditingController emailUserController =
-      TextEditingController(text: Constants.currentUser.email2);
+  TextEditingController(text: Constants.currentUser.email2);
   TextEditingController birthdayController = TextEditingController(
       text: Functions.instance
           .formatDateString(Constants.currentUser.birthday!, "dd/MM/yyyy"));
   TextEditingController nationalController =
-      TextEditingController(text: Constants.currentUser.nationality);
+  TextEditingController(text: Constants.currentUser.nationality);
   TextEditingController sexController = TextEditingController(
       text: Constants.currentUser.gender ? "Male" : "Female");
   TextEditingController crewCodeController =
-      TextEditingController(text: Constants.currentUser.code2);
+  TextEditingController(text: Constants.currentUser.code2);
   TextEditingController myIDTravelAccountController =
-      TextEditingController(text: Constants.currentUser.code3);
+  TextEditingController(text: Constants.currentUser.code3);
   TextEditingController hrCodeController =
-      TextEditingController(text: Constants.currentUser.code);
+  TextEditingController(text: Constants.currentUser.code);
   TextEditingController departmentFleetController =
-      TextEditingController(text: Constants.currentUser.departmentName);
+  TextEditingController(text: Constants.currentUser.departmentName);
   TextEditingController rankController =
-      TextEditingController(text: Constants.currentUser.positionName);
+  TextEditingController(text: Constants.currentUser.positionName);
   TextEditingController specialContentController =
-      TextEditingController(text: Constants.currentUser.specialContent);
+  TextEditingController(text: Constants.currentUser.specialContent);
   TextEditingController streetController =
-      TextEditingController(text: Constants.currentUser.address);
+  TextEditingController(text: Constants.currentUser.address);
+  TextEditingController nationTitleController =
+  TextEditingController(text: "");
+  ValueNotifier<Nation?> nationSelected = ValueNotifier(null);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,15 +104,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       SizedBox(
         height: 40,
         child: InkWell(
-          child: const TextField(
-            decoration: InputDecoration(
-              labelText: 'Please choose your nation',
-              suffixIcon:
-                  Icon(Icons.expand_more_sharp), // Add your desired icon here
-            ),
-            enabled: false,
-            style: TextStyle(color: Colors.black),
-          ),
+          child: ValueListenableBuilder(
+            valueListenable: nationSelected, builder: (context, value, child) {
+            if (value != null) {
+              nationTitleController.text = value!.title;
+            }
+            return TextField(
+              controller: nationTitleController,
+              decoration: InputDecoration(
+                labelText: value == null ? 'Please choose your nation' : "",
+                suffixIcon:
+                Icon(Icons.expand_more_sharp), // Add your desired icon here
+              ),
+              enabled: false,
+              style: TextStyle(color: Colors.black),
+            );
+          },),
           onTap: () {
             _showPopupChoiseNation(context);
           },
@@ -118,13 +130,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _showPopupChoiseNation(BuildContext context) {
     ValueNotifier<String> keySearchNation = ValueNotifier("");
-    TextEditingController nationSearchController=TextEditingController(text: "");
+    TextEditingController nationSearchController = TextEditingController(
+        text: "");
     showDialog(
       context: context,
       builder: (context) {
         return Dialog(
           backgroundColor: Colors.white,
           child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+              color: Colors.white, // Replace with your desired background color
+            ),
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -136,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     hintText: 'Search...',
                   ),
                   onChanged: (value) {
-                    keySearchNation.value=value;
+                    keySearchNation.value = value;
                   },
                 ),
                 const SizedBox(height: 16.0),
@@ -144,32 +161,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: FutureBuilder(
                     future: Constants.db.nationDao.getAllNation(),
                     builder: (context, snapshot) {
-                      if(snapshot.connectionState==ConnectionState.done)
-                        {
-                          return ValueListenableBuilder(valueListenable: keySearchNation, builder: (context, value, child) {
-                            List<Nation> data= snapshot.data!;
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return ValueListenableBuilder(
+                          valueListenable: keySearchNation, builder: (context,
+                            value, child) {
+                          List<Nation> data = snapshot.data!;
 
-                            if(value.isNotEmpty)
-                              {
-                                data=data.where((element) => element.title.toLowerCase().contains(value)).toList();
-                              }
-                            return ListView.builder(
-                              itemCount: data.length, // Replace with your actual list length
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(data[index].title),
-                                  onTap: () {
-                                    // Handle item selection
-                                  },
-                                );
-                              },
-                            );
-                          },);
-                        }
-                      else
-                        {
-                          return Center(child: CircularProgressIndicator(),);
-                        }
+                          if (value.isNotEmpty) {
+                            data = data.where((element) =>
+                                Functions.instance.removeDiacritics(
+                                    element.title)
+                                    .toLowerCase()
+                                    .contains(Functions.instance.removeDiacritics(value).toLowerCase())).toList();
+                          }
+                          return ListView.builder(
+                          itemCount: data.length, // Replace with your actual list length
+                          itemBuilder: (context, index) {
+                          return ListTile(
+                          title: Text(data[index].title),
+                          onTap: () {
+                          nationSelected.value=data[index];
+                          Navigator.pop(context);
+
+                          },
+                          );
+                          },
+                          );
+                        },);
+                      }
+                      else {
+                        return Center(child: CircularProgressIndicator(),);
+                      }
                     },
                   ),
                 ),
@@ -236,8 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Column buildElementEdit(
-      String header,
+  Column buildElementEdit(String header,
       TextEditingController controller,
       TextInputType? keyboardType,
       List<TextInputFormatter>? inputFormatters,
@@ -309,19 +330,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Colors.black,
             child: ImageSelectionScreen(
               urlPath:
-                  '${Constants.baseURL}/Data/Users/${Constants.currentUser.id}/avatar.jpg?ver=${Functions.instance.formatDateToStringWithFormat(DateTime.now(), 'yyyyMMddHHmmss')}',
+              '${Constants.baseURL}/Data/Users/${Constants.currentUser
+                  .id}/avatar.jpg?ver=${Functions.instance
+                  .formatDateToStringWithFormat(
+                  DateTime.now(), 'yyyyMMddHHmmss')}',
               errPath: 'asset/images/icon_avatar64.png',
             ),
             margin: EdgeInsets.only(right: 10, left: 10),
           ),
           Flexible(
               child: InkWell(
-            child: const AutoSizeText(
-              "Log out",
-              style: TextStyle(color: Color(0xFF006784)),
-            ),
-            onTap: () {},
-          ))
+                child: const AutoSizeText(
+                  "Log out",
+                  style: TextStyle(color: Color(0xFF006784)),
+                ),
+                onTap: () {},
+              ))
         ],
       ),
     );
