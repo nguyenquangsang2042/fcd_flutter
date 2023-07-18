@@ -59,53 +59,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //buildGeneral(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Address".toUpperCase(),
-                          style: const TextStyle(
-                              color: Color(0xFF295989),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Nation".toUpperCase(),
-                                style: const TextStyle(
-                                    color: Color(0xFF006784),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14),
-                              ),
-                              SizedBox(
-                                height: 40,
-                                child: InkWell(child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Username',
-                                    suffixIcon: Icon(Icons.expand_more_sharp), // Add your desired icon here
-                                  ),
-                                  enabled: false,
-                                  style: TextStyle(color: Colors.black),
-                                ),onTap: () {
-
-                                },),
-                              )
-                            ]),
-                        buildElementEdit(
-                            "Street".toUpperCase(),
-                            streetController,
-                            TextInputType.text,
-                            [],
-                            widget.enableEdit.value),
-                      ],
-                    )
+                    buildAdress(context)
                   ]),
             )
           ],
         ),
       ),
+    );
+  }
+
+  Column buildAdress(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Address".toUpperCase(),
+          style: const TextStyle(
+              color: Color(0xFF295989),
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
+        ),
+        buildNation(context),
+        buildElementEdit("Street".toUpperCase(), streetController,
+            TextInputType.text, [], widget.enableEdit.value),
+      ],
+    );
+  }
+
+  Column buildNation(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(
+        "Nation".toUpperCase(),
+        style: const TextStyle(
+            color: Color(0xFF006784),
+            fontWeight: FontWeight.bold,
+            fontSize: 14),
+      ),
+      SizedBox(
+        height: 40,
+        child: InkWell(
+          child: const TextField(
+            decoration: InputDecoration(
+              labelText: 'Please choose your nation',
+              suffixIcon:
+                  Icon(Icons.expand_more_sharp), // Add your desired icon here
+            ),
+            enabled: false,
+            style: TextStyle(color: Colors.black),
+          ),
+          onTap: () {
+            _showPopupChoiseNation(context);
+          },
+        ),
+      )
+    ]);
+  }
+
+  _showPopupChoiseNation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 100, // Replace with your actual list length
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text('Item $index'),
+                        onTap: () {
+                          // Handle item selection
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

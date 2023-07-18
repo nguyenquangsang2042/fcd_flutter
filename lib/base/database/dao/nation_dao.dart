@@ -8,4 +8,7 @@ import 'package:floor/floor.dart';
 abstract class NationDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertNations(List<Nation> nation);
+  
+  @Query("Select * from Nation")
+  Future<List<Nation>> getAllNation();
 }
