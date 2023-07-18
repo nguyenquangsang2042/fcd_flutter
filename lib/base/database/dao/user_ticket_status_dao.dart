@@ -7,4 +7,6 @@ import '../../model/app/user_ticket_status.dart';
 abstract class UserTicketStatusDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertUserTicketStatuses(List< UserTicketStatus> userTicketStatuses);
+  @Query('Delete From UserTicketStatus')
+  Future<void> deleteAll();
 }

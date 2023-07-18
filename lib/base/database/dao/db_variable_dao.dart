@@ -9,4 +9,6 @@ abstract class DBVariableDao {
   Future<List<DBVariable>> findAllDBVariable();
   @Query('Select * from DBVariable where Id like :id')
   Future<DBVariable? >findDBVariableById(String id);
+  @Query('delete from DBVariable')
+  Future<void> deleteAll();
 }

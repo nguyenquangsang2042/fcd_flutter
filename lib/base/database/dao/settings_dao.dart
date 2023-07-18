@@ -9,4 +9,6 @@ abstract class SettingsDao {
   Future<Setting?>findSettingByKey(String key);
   @Query('Select * from Setting Where [Key] in (:lstKey)')
   Future<List<Setting>> getListSettingInLstKey(List<String> lstKey);
+  @Query('Delete From Setting')
+  Future<void> deleteAll();
 }

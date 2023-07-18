@@ -11,4 +11,6 @@ abstract class NationDao {
   
   @Query("Select * from Nation")
   Future<List<Nation>> getAllNation();
+  @Query('Delete From Nation')
+  Future<void> deleteAll();
 }

@@ -13,4 +13,5 @@ abstract class SurveyCategoryDao{
   
   @Query('Select * from SurveyCategory WHERE ID = :id')
   Stream<SurveyCategory?> getSurveyCategoryWithID(int id);
+
 }

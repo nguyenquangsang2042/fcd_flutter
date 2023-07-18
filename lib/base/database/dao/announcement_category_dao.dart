@@ -11,4 +11,6 @@ abstract class AnnouncementCategoryDao {
   Stream<List<AnnouncementCategory>> getAnnouncementCategoryInListID(List<String> lstId);
   @Query('SELECT * FROM AnnouncementCategory WHERE ID NOT IN (:lstId) ORDER BY Orders')
   Stream<List<AnnouncementCategory>> getAnnouncementCategoryNotInListID(List<String> lstId);
+  @Query('Delete From AnnouncementCategory')
+  Future<void> deleteAll();
 }

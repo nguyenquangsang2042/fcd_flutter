@@ -18,5 +18,7 @@ abstract class UserDao {
 
   @Query("SELECT * FROM User WHERE Email like :email ")
   Future<User?> findUserByEmail(String email);
+  @Query('Delete From User')
+  Future<void> deleteAll();
 
 }

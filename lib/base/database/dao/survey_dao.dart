@@ -8,4 +8,6 @@ abstract class SurveyDao
   Future<void> insertSurvey(List<Survey> survey);
   @Query('SELECT * FROM Survey where (Status <> -1 or Status <> -2)  ORDER BY Created DESC')
   Stream<List<Survey>> getAll();
+  @Query('Delete From Survey')
+  Future<void> deleteAll();
 }

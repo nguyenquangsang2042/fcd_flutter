@@ -7,4 +7,6 @@ import '../../model/app/pilot_schedule_pdf.dart';
 abstract class PilotSchedulePdfDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertPilotSchedulePdf(List<PilotSchedulePdf> pilotSchedulePdf);
+  @Query('Delete From PilotSchedulePdf')
+  Future<void> deleteAll();
 }

@@ -7,4 +7,6 @@ import '../../model/app/user.dart';
 abstract class WardDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertWard(List<Ward> ward);
+  @Query('Delete From Ward')
+  Future<void> deleteAll();
 }

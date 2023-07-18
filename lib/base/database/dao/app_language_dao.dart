@@ -6,4 +6,6 @@ import 'package:floor/floor.dart';
 abstract class AppLanguageDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertAppLanguage(List<AppLanguage> appLanguages);
+  @Query('Delete From AppLanguage')
+  Future<void> deleteAll();
 }

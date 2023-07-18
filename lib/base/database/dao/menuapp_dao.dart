@@ -9,4 +9,6 @@ abstract class MenuAppDao {
   Future<void> insertMenuApp(List<MenuApp> menuapps);
   @Query("SELECT * FROM MenuApp WHERE status = :intStatus AND languageId = :languageId")
   Stream<List<MenuApp>> getMenuAppByStatusAndLanguageID(int intStatus,int languageId);
+  @Query('Delete From MenuApp')
+  Future<void> deleteAll();
 }

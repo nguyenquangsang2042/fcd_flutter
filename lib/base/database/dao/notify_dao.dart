@@ -142,4 +142,7 @@ abstract class NotifyDao {
   
   @Query("SELECT * FROM Notify NOLOCK WHERE FlgRead is not null and  FlgRead = 0 and ANStatus <> -1 AND AnnounCategoryId = :idQua OR AnnounCategoryId = :idSa OR AnnounCategoryId = 3 ORDER BY Created DESC")
   Stream<List<Notify>> getCountSafety(String idQua,String idSa);
+
+  @Query('Delete From Notify')
+  Future<void> deleteAll();
 }

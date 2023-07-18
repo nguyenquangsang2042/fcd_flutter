@@ -14,4 +14,6 @@ abstract class LibraryDao {
 
   @Query('Delete from BeanLibrary where id = :id')
   Future<void> deleteLibraryByID(int id);
+  @Query('Delete From BeanLibrary')
+  Future<void> deleteAll();
 }

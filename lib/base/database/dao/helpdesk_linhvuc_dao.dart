@@ -8,4 +8,6 @@ abstract class HelpDeskLinhVucDao {
   Future<void> insertHelpDeskLinhVucs(List<HelpDeskLinhVuc> helpDeskLinhVucs);
   @Query('Select * from HelpDeskLinhVuc Order by [Order]')
   Stream<List<HelpDeskLinhVuc>> getAllHelpdeskLinhVuc();
+  @Query('Delete From HelpDeskLinhVuc')
+  Future<void> deleteAll();
 }

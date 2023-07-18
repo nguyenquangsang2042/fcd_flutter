@@ -6,4 +6,6 @@ abstract class SurveyTableDao
 {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertSurveyTable(List<SurveyTable> surveyTable);
+  @Query('Delete From SurveyTable')
+  Future<void> deleteAll();
 }

@@ -10,4 +10,6 @@ abstract class DepartmentDao {
   Future<void> insertDepartment(List<Department> departments);
   @Query("SELECT * FROM Department WHERE Effect = :effect ORDER BY TITLE")
   Stream<List<Department>> getListDepartmentByEffect(int effect);
+  @Query('Delete From Department')
+  Future<void> deleteAll();
 }

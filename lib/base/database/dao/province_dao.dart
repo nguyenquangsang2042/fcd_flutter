@@ -8,4 +8,6 @@ import '../../model/app/province.dart';
 abstract class ProvinceDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertProvince(List<Province> provinces);
+  @Query('Delete From Province')
+  Future<void> deleteAll();
 }

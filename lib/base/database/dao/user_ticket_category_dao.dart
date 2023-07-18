@@ -7,4 +7,6 @@ import 'package:floor/floor.dart';
 abstract class UserTicketCategoryDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertUserTicketCategories(List<UserTicketCategory> userTicketCategories);
+  @Query('Delete From UserTicketCategory')
+  Future<void> deleteAll();
 }

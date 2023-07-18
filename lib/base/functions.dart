@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fcd_flutter/base/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,38 @@ class Functions {
     if (!await launchUrl(smsLaunchUri)) {
       throw Exception('Could not launch $_url');
     }
+  }
+  Future<void> deleteAllDataAndGetMassterdata()async{
+    Constants.sharedPreferences.remove('email');
+    Constants.sharedPreferences.remove('pass');
+    Constants.sharedPreferences.remove('set-cookie');
+    Constants.db.airportDao.deleteAll();
+    Constants.db.announcementCategoryDao.deleteAll();
+    Constants.db.appLanguageDao.deleteAll();
+    Constants.db.departmentDao.deleteAll();
+    Constants.db.districtDao.deleteAll();
+    Constants.db.faqDao.deleteAll();
+    Constants.db.helpDeskCategoryDao.deleteAll();
+    Constants.db.helpdeskDao.deleteAll();
+    Constants.db.libraryDao.deleteAll();
+    Constants.db.licenceDao.deleteAll();
+    Constants.db.menuAppDao.deleteAll();
+    Constants.db.nationDao.deleteAll();
+    Constants.db.dbVariableDao.deleteAll();
+    Constants.db.notifyDao.deleteAll();
+    Constants.db.pilotScheduleAllDao.deleteAll();
+    Constants.db.pilotSchedulePdfDao.deleteAll();
+    Constants.db.provinceDao.deleteAll();
+    Constants.db.settingDao.deleteAll();
+    Constants.db.studentDao.deleteAll();
+    Constants.db.surveyCategoryDao.deleteAll();
+    Constants.db.surveyDao.deleteAll();
+    Constants.db.surveyTableDao.deleteAll();
+    Constants.db.userDao.deleteAll();
+    Constants.db.userTicketCategoryDao.deleteAll();
+    Constants.db.userTicketStatusDao.deleteAll();
+    Constants.db.wardDao.deleteAll();
+    Constants.apiController.updateMasterData();
   }
   Future<void> launchZalo(String phoneNumber) async {
     final urlScheme = 'zalo://chat?phone=$phoneNumber';

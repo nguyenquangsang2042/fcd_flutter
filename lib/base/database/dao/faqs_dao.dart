@@ -9,4 +9,6 @@ abstract class FAQsDao {
   Future<void> insertFAQs(List<FAQs> faqs);
   @Query('SELECT * FROM FAQs WHERE Status = 1  and ID not in (:lstID) and Language = :langCode ORDER BY Created DESC')
   Stream<List<FAQs>> getListFaqsDifLstIDAndLang(List<int>lstID,String langCode);
+  @Query('Delete From FAQs')
+  Future<void> deleteAll();
 }

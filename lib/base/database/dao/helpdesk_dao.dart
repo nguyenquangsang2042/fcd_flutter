@@ -8,4 +8,6 @@ abstract class HelpdeskDao {
   
   @Query("SELECT * FROM Helpdesk WHERE Status = 1  ORDER BY Created DESC")
   Stream<List<Helpdesk>> getAllHelpDeskStatusEquals1();
+  @Query('Delete From Helpdesk')
+  Future<void> deleteAll();
 }

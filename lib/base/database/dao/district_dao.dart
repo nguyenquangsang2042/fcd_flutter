@@ -8,4 +8,6 @@ import '../../model/app/district.dart';
 abstract class DistrictDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertDistrict(List<District> districts);
+  @Query('Delete From District')
+  Future<void> deleteAll();
 }

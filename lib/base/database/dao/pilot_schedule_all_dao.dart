@@ -5,4 +5,6 @@ import 'package:floor/floor.dart';
 abstract class PilotScheduleAllDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertPilotScheduleAll(List<PilotScheduleAll> pilotScheduleAll);
+  @Query('Delete From PilotScheduleAll')
+  Future<void> deleteAll();
 }

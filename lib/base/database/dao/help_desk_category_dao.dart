@@ -8,4 +8,6 @@ import 'package:floor/floor.dart';
 abstract class HelpDeskCategoryDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertHelpDeskCategory(List<HelpDeskCategory> helpDeskCategories);
+  @Query('Delete From HelpDeskCategory')
+  Future<void> deleteAll();
 }

@@ -12,4 +12,5 @@ abstract class LicenceDao {
   Future<void> deleteAll();
   @Query('SELECT * FROM License')
   Stream<List<License>?> findAll();
+
 }

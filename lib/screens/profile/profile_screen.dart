@@ -3,9 +3,12 @@ import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
 import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/widgets/image_selection_screen.dart';
+import 'package:fcd_flutter/blocs/login/login_cubit.dart';
+import 'package:fcd_flutter/blocs/navigation/navigation_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -310,11 +313,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Opacity(
+          Expanded(child: const Opacity(
             opacity: 0,
             child: Text("Sign out"),
-          ),
-          Container(
+          ),flex: 1,),
+          Expanded(child: Container(
             margin: EdgeInsets.only(right: 10),
             height: 120,
             width: 120,
@@ -323,11 +326,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               version: QrVersions.auto,
               size: 200.0,
             ),
-          ),
-          Container(
+          ),flex: 3,),
+          Expanded(child: Container(child: SizedBox(
             height: 120,
             width: 120,
-            color: Colors.black,
             child: ImageSelectionScreen(
               urlPath:
               '${Constants.baseURL}/Data/Users/${Constants.currentUser
@@ -336,16 +338,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   DateTime.now(), 'yyyyMMddHHmmss')}',
               errPath: 'asset/images/icon_avatar64.png',
             ),
-            margin: EdgeInsets.only(right: 10, left: 10),
-          ),
-          Flexible(
-              child: InkWell(
-                child: const AutoSizeText(
-                  "Log out",
-                  style: TextStyle(color: Color(0xFF006784)),
-                ),
-                onTap: () {},
-              ))
+          ),padding: EdgeInsets.all(5)),flex: 3,),
+          Expanded(child: InkWell(
+            child: Container(child: Icon(Icons.logout), margin: EdgeInsets.only(top: 2),),
+            onTap: () {
+              Functions.instance.deleteAllDataAndGetMassterdata();
+              context.read<LoginCubit>().emit(LoginMailState());
+              context.read<NavigationCubit>().navigateToLoginView();
+              Navigator.pop(context);
+            },
+          ),flex: 1,)
         ],
       ),
     );
