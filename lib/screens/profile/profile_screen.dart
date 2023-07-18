@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fcd_flutter/base/constants.dart';
 import 'package:fcd_flutter/base/exports_base.dart';
+import 'package:fcd_flutter/base/model/app/nation.dart';
 import 'package:fcd_flutter/base/widgets/image_selection_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -116,6 +117,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _showPopupChoiseNation(BuildContext context) {
+    ValueNotifier<String> keySearchNation = ValueNotifier("");
+    TextEditingController nationSearchController=TextEditingController(text: "");
     showDialog(
       context: context,
       builder: (context) {
@@ -127,22 +130,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: nationSearchController,
+                  decoration: const InputDecoration(
                     hintText: 'Search...',
                   ),
+                  onChanged: (value) {
+                    keySearchNation.value=value;
+                  },
                 ),
                 const SizedBox(height: 16.0),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: 100, // Replace with your actual list length
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text('Item $index'),
-                        onTap: () {
-                          // Handle item selection
-                        },
-                      );
+                  child: FutureBuilder(
+                    future: Constants.db.nationDao.getAllNation(),
+                    builder: (context, snapshot) {
+                      if(snapshot.connectionState==ConnectionState.done)
+                        {
+                          return ValueListenableBuilder(valueListenable: keySearchNation, builder: (context, value, child) {
+                            List<Nation> data= snapshot.data!;
+
+                            if(value.isNotEmpty)
+                              {
+                                data=data.where((element) => element.title.toLowerCase().contains(value)).toList();
+                              }
+                            return ListView.builder(
+                              itemCount: data.length, // Replace with your actual list length
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(data[index].title),
+                                  onTap: () {
+                                    // Handle item selection
+                                  },
+                                );
+                              },
+                            );
+                          },);
+                        }
+                      else
+                        {
+                          return Center(child: CircularProgressIndicator(),);
+                        }
                     },
                   ),
                 ),
