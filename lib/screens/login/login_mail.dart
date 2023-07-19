@@ -20,13 +20,15 @@ class LoginMailScreen extends StatelessWidget {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('asset/images/Background.png'),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
           child: ProgressHUD(
             child: Builder(
               builder: (context) {
-                return Column(
+                return Container(
+                  margin: EdgeInsets.all(10),
+                  child: Column(
                   children: <Widget>[
                     const SizedBox(
                       height: 30,
@@ -131,7 +133,7 @@ class LoginMailScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                );
+                ),);
               },
             ),
           )),
